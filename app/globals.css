@@ -8,7 +8,7 @@
   --background-end-rgb: 255, 255, 255;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
@@ -24,4 +24,22 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+}
+.grid-title {
+  --tw-text-opacity: 1;
+  color: rgb(0 0 0 / var(--tw-text-opacity));
+  font-size: 1.875rem/* 30px */;
+  line-height: 2.25rem/* 36px */;
+  font-weight: 400;
+  font-family: 'Junicode';
+}
+
+@font-face {
+  font-family: 'Junicode';
+  src: url('/fonts/Junicode.ttf');
+}
+
+@font-face {
+  font-family: 'Epilogue';
+  src: url('/fonts/Epilogue-Regular.ttf');
 }

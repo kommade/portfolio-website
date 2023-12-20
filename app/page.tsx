@@ -1,112 +1,112 @@
-import Image from 'next/image'
+import Image from 'next/image';
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <main className="flex min-h-screen flex-col items-center justify-between overflow-x-clip">
+      <div className="w-screen h-[2217px] relative bg-white ">
+
+        <div className="w-[91.67%] h-[5.7%] left-[4.17%] top-0 absolute flex flex-col justify-between ">
+          <div className="text-center text-black text-[40px] font-normal font-['Junicode'] bg-zinc-400 p-1">
+            Juliette Khoo
+          </div>
+          <div className="text-center text-black text-xl font-normal font-['Junicode'] leading-tight pt-8">
+            I’m a dreamer and a UX designer, currently based in Singapore. Here’s some of my work:
+          </div>
         </div>
-      </div>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+        <div className="w-[28.89%] h-[18.76%] left-[5%] top-[9.57%] absolute bg-zinc-400" />
+        <div className="w-[27.35%] h-[13.54%] left-[5.83%] top-[10.03%] absolute bg-white" />
+        <div className="w-[19.58%] h-[1.76%] left-[10%] top-[16.32%] absolute text-center text-black text-sm font-normal font-['Epilogue'] leading-[0.85rem]">
+          How might we design a meditative and safe space to rest and relax?
+        </div>
+        <div className="w-[27.01%] h-[1.76%] left-[6.25%] top-[24.61%] absolute grid-title">
+          CapitaStar UX/UI
+        </div>
+        <div className="w-[27.01%] h-[0.95%] left-[6.25%] top-[26.81%] absolute text-black text-xl font-normal font-['Epilogue']">2019</div>
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+        <div className="w-[28.89%] h-[18.76%] left-[35.56%] top-[9.57%] absolute bg-zinc-400" />
+        <div className="w-[27.35%] h-[13.54%] left-[36.39%] top-[10.11%] absolute bg-white" />
+        <div className="w-[19.58%] h-16 left-[40.63%] top-[15.81%] absolute text-center text-black text-sm font-normal font-['Epilogue'] leading-[0.85rem]">
+          How might we encourage neighbours to communicate their grievances with each other so as to promote harmonious living?
+        </div>
+        <div className="w-[27.01%] h-[1.76%] left-[36.39%] top-[24.61%] absolute grid-title">
+          BlockTalk
+        </div>
+        <div className="w-[27.01%] h-[0.95%] left-[36.81%] top-[26.81%] absolute text-black text-xl font-normal font-['Epilogue']">2023</div>
+        
+        <div className="w-[28.89%] h-[18.76%] left-[66.11%] top-[9.57%] absolute bg-zinc-400 kindergarten-bg-top" />
+        <div className="w-[28.89%] h-[18.86%] left-[66.11%] top-[28.30%] absolute bg-zinc-400 kindergarten-bg-bot" />
+        <div className="w-[27.35%] h-[27.02%] left-[66.81%] top-[10.03%] absolute bg-white" />
+        <div className="w-[27.01%] h-[1.76%] left-[66.53%] top-[38.48%] absolute grid-title">
+          Kindergarten
+        </div>
+        <div className="w-[27.01%] h-[0.95%] left-[66.53%] top-[40.69%] absolute text-black text-xl font-normal font-['Epilogue']">
+          2020
+        </div>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+        <div className="w-[59.44%] h-[17.58%] left-[5%] top-[29.58%] absolute bg-zinc-400" />
+        <div className="w-[57.36%] h-[12.86%] left-[6.04%] top-[30.49%] absolute bg-white" />
+        <div className="w-[27.01%] h-[1.76%] left-[5.69%] top-[43.77%] absolute grid-title">
+          Window to Another World
+        </div>
+        <div className="w-[27.01%] h-[0.95%] left-[6.25%] top-[46.03%] absolute text-black text-xl font-normal font-['Epilogue']">
+          2023
+        </div>
+        
+        <div className="w-[28.89%] h-[18.76%] left-[5%] top-[49.11%] absolute bg-zinc-400" />
+        <div className="w-[27.35%] h-[13.54%] left-[5.83%] top-[50.01%] absolute bg-white" />
+        <div className="w-[27.01%] h-[1.76%] left-[5.56%] top-[63.55%] absolute grid-title">
+          Critical Moves
+        </div>
+        <div className="w-[27.01%] h-[0.95%] left-[5.69%] top-[66.92%] absolute text-black text-xl font-normal font-['Epilogue']">
+          2022
+        </div>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
+        <div className="w-[28.89%] h-[18.76%] left-[35.56%] top-[49.11%] absolute bg-zinc-400" />
+        <div className="w-[27.35%] h-[13.54%] left-[36.39%] top-[50.01%] absolute bg-white" />
+        <div className="w-[27.01%] h-[1.76%] left-[36.11%] top-[63.55%] absolute grid-title">
+          Dream Machine
+        </div>
+        <div className="w-[27.01%] h-[0.95%] left-[36.25%] top-[66.92%] absolute text-black text-xl font-normal font-['Epilogue']">
+          2022
+        </div>
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+        <div className="w-[28.89%] h-[18.76%] left-[66.11%] top-[49.11%] absolute bg-zinc-400" />
+        <div className="w-[27.35%] h-[13.54%] left-[66.81%] top-[50.01%] absolute bg-white" />
+        <div className="w-[27.01%] h-[1.76%] left-[66.53%] top-[63.55%] absolute grid-title">
+          Drawing on the Ordinary
+        </div>
+        <div className="w-[27.01%] h-[0.95%] left-[66.53%] top-[66.92%] absolute text-black text-xl font-normal font-['Epilogue']">
+          2022
+        </div>
+         
+        <div className="w-[89.17%] h-[29.6%] left-[5%] top-[70.55%] absolute bg-zinc-400" />
+        <div className="w-[27.01%] h-[4.47%] left-[35.69%] top-[71.06%] absolute text-center text-black text-[40px] font-normal font-['Junicode']">About Me</div>
+        <div className="w-[28.75%] h-[16.53%] left-[43.33%] top-[74.54%] absolute bg-white" />
+        <div className="w-[25.69%] h-[8.35%] left-[44.72%] top-[75.94%] absolute text-gray-700 text-xs font-normal font-['Epilogue'] leading-[17.40px] tracking-tight">
+          My name is Juliette and I grew up in the sunny island of Singapore. Since I was little, I've always been busy making things with my hands.<br /> <br />After graduating with a BSc (Hons) in Architecture from the University of Bath in 2023, I returned to Singapore to pursue a career in user research & user experience design. I'm interested in how we can create digital experiences that are not only seamless but have a personal, human touch embedded in them.<br /><br />Drop me a line if you're interested to chat!
+        </div>
+        <div className="w-[10.83%] left-[59.51%] top-[92.41%] absolute justify-start items-start gap-5 inline-flex">
+          <div className="w-1.25% h-1.25% relative" />
+          <div className="w-1.25% h-1.25% relative" /> {/* links */}
+          <div className="w-1.25% h-1.25% relative" />
+          <div className="w-1.25% h-1.25% relative" />
+        </div>
+        <div />
+        <div className="w-[13.61%] h-[8.46%] left-[28.19%] top-[87.21%] absolute">
+          <span className="text-gray-700 text-xs font-semibold font-['Epilogue'] leading-[17.40px] tracking-tight">
+            COMPETENCIES<br />
+          </span>
+          <span className="text-gray-700 text-xs font-normal font-['Epilogue'] leading-[17.40px] tracking-tight">
+            Usability Testing<br />User Research<br />Design Thinking<br />2D and 3D Prototyping<br />Design Strategy<br /><br /><br />
+          </span>
+          <span className="text-gray-700 text-xs font-semibold font-['Epilogue'] leading-[17.40px] tracking-tight">
+            TECHNICAL SKILLS<br />
+          </span>
+          <span className="text-gray-700 text-xs font-normal font-['Epilogue'] leading-[17.40px] tracking-tight">
+            Photoshop, Illustrator, InDesign, Figma, Miro, Keynote, Rhino 7
+          </span>
+        </div>
       </div>
     </main>
   )
