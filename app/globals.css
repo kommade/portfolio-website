@@ -2,37 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: var(--Pale-Butter, #FBFBF1);
 }
+
 .grid-title {
-  --tw-text-opacity: 1;
-  color: rgb(0 0 0 / var(--tw-text-opacity));
-  font-size: 1.875rem/* 30px */;
-  line-height: 2.25rem/* 36px */;
+  color: var(--Air-Force-Blue, #3688D5);
+  font-family: Junicode;
+  font-size: 36px;
+  font-style: normal;
   font-weight: 400;
-  font-family: 'Junicode';
+  line-height: normal;
+  letter-spacing: -1.8px;
 }
+
+.grid-year {
+  color: var(--Warm-Grey, #AAADA3);
+  font-family: Epilogue;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.about-list {
+  color: #4a5568; /* text-gray-700 */
+  font-size: 0.75rem; /* text-xs */
+  font-family: 'Epilogue', sans-serif;
+  line-height: 1.74; /* leading-[17.40px] */
+  letter-spacing: -0.02em; /* tracking-tight */
+}
+
 
 @font-face {
   font-family: 'Junicode';
