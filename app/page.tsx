@@ -5,18 +5,17 @@ export default function Home() {
   return (
     <main className="flex flex-col items-center justify-between overflow-x-clip">
       <div className="w-screen relative flex flex-col">
-        <div className="title-header w-full h-fit fixed z-10 bg-orange-50 flex flex-col justify-center border-b border-neutral-400">
+        <div className="title-header w-full h-fit fixed z-10 bg-orange-50 flex flex-col justify-center border-b-2 border-neutral-400">
           <div className="text-center text-blue-500 text-[40px] font-normal font-['Junicode'] p-1">
             Juliette Khoo
           </div>
         </div>
 
-        <div className="work-display w-[85%] h-[1100px] left-[7.5%] relative justify-center mt-28 grid grid-cols-3 grid-rows-3 grid-flow-row gap-4">
+        <div className="work-display w-[85%] h-fit left-[7.5%] relative justify-center mt-28 grid grid-cols-1 lg:grid-cols-3 grid-flow-row gap-y-6 gap-x-0 lg:gap-x-6">
           <GridComponent
             popup="How might we design a meditative and safe space to rest and relax?"
             title="CapitaStar UX/UI"
             year="2019"
-            img="https://via.placeholder.com/532x331"
           />
 
           <GridComponent
@@ -30,6 +29,7 @@ export default function Home() {
             title="Kindergarten"
             year="2020"
             row={2}
+            img="https://via.placeholder.com/510x854"
           />
 
           <GridComponent
@@ -37,6 +37,7 @@ export default function Home() {
             title="Window to Another World"
             year="2023"
             col={2}
+            img="https://via.placeholder.com/1062x412"
           />
 
           <GridComponent
@@ -65,6 +66,7 @@ export default function Home() {
           <div className="info-container flex justify-center">
             <div className="photo-competencies flex flex-col mr-4">
               <img
+                className=""
                 src="https://cdn.myportfolio.com/e5eed4ea-cfaa-4dbb-a47a-b4cea49e8024/d6503de0-057b-4fc3-9556-4d8fcf7cedfb_rw_1200.jpg?h=912b99a49b81440a1d427d7fe18629af"
                 width="176.62" />
               <div className="justify-between">
@@ -82,11 +84,11 @@ export default function Home() {
                 </span>
               </div>
             </div>
-            <div className="w-[28.75%] h-full p-4 bg-white flex flex-col justify-between">
+            <div className="w-[35%] h-full p-4 bg-white flex flex-col justify-between">
               <div className="about-list"> 
               My name is Juliette and I grew up in the sunny island of Singapore. Since I was little, I've always been busy making things with my hands.<br /> <br />After graduating with a BSc (Hons) in Architecture from the University of Bath in 2023, I returned to Singapore to pursue a career in user research & user experience design. I'm interested in how we can create digital experiences that are not only seamless but have a personal, human touch embedded in them.<br /><br />Drop me a line if you're interested to chat!
               </div>
-              <div className="w-[50%] h-[10%] ml-auto items-start inline-flex justify-between max-w-[145px]">
+              <div className="w-[60%] h-[10%] items-end inline-flex mt-4 mb-[5%] ml-auto mr-[5%] justify-between max-w-[145px] gap-[10%]">
                 <a href="">
                   <Image
                     src="/icons/email.svg"
@@ -111,12 +113,14 @@ export default function Home() {
                     height={24}
                   />
                 </a>
-                <Image
-                  src="/icons/m.svg"
-                  alt="m svg"
-                  width={24}
-                  height={24}
-                />
+                <a>
+                  <Image
+                    src="/icons/m.svg"
+                    alt="m svg"
+                    width={24}
+                    height={24}
+                  />
+                </a>
               </div>
             </div>
           </div>
