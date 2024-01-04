@@ -69,6 +69,7 @@ export default function Home() {
                 <img
                   className="object-cover object-bottom"
                   src="https://cdn.myportfolio.com/e5eed4ea-cfaa-4dbb-a47a-b4cea49e8024/d6503de0-057b-4fc3-9556-4d8fcf7cedfb_rw_1200.jpg?h=912b99a49b81440a1d427d7fe18629af"
+                  alt="profile photo"
                 />
               </div>
               <ul className="about flex flex-col items-center pt-4 lg:pb-0 pb-4">
@@ -88,7 +89,7 @@ export default function Home() {
             </section>
             <section className="w-[35%] min-w-[400px] h-full p-8 bg-white flex flex-col justify-between">
               <p className="about"> 
-              My name is Juliette and I grew up in the sunny island of Singapore. Since I was little, I've always been busy making things with my hands.<br /> <br />After graduating with a BSc (Hons) in Architecture from the University of Bath in 2023, I returned to Singapore to pursue a career in user research & user experience design. I'm interested in how we can create digital experiences that are not only seamless but have a personal, human touch embedded in them.<br /><br />Drop me a line if you're interested to chat!
+              My name is Juliette and I grew up in the sunny island of Singapore. Since I was little, I&apos;ve always been busy making things with my hands.<br /> <br />After graduating with a BSc (Hons) in Architecture from the University of Bath in 2023, I returned to Singapore to pursue a career in user research & user experience design. I&apos;m interested in how we can create digital experiences that are not only seamless but have a personal, human touch embedded in them.<br /><br />Drop me a line if you&apos;re interested to chat!
               </p>
             </section>
           </article>
