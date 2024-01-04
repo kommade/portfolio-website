@@ -12,9 +12,10 @@ function useWindowSize() {
 
     window.addEventListener('resize', handleResize);
     handleResize();
+    // TODO: add an update when the page is first loaded
 
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [window]);
 
   return windowSize;
 }

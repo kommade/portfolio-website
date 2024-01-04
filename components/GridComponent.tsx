@@ -14,12 +14,9 @@ interface GridComponentProps {
 
 const GridComponent: React.FC<GridComponentProps> = ({ popup, title, year, img = "https://via.placeholder.com/510x412", row = 1, col = 1 }) => {
     const { width } = useWindowSize();
-    const isLargeScreen = width >= 1024; 
-    const adjustedCol = isLargeScreen ? col : 1;
+    const isWindowLarge = width >= 1024;
     const [isHovered, setIsHovered] = useState(false);
     const span = {
-        gridRow: row > 1 ? `span 2` : 'auto',
-        gridColumn: adjustedCol > 1 ? `span 2` : 'auto',
         aspectRatio: (() => {
             let gap = 24;
             if (width >= 1536) {
@@ -27,9 +24,11 @@ const GridComponent: React.FC<GridComponentProps> = ({ popup, title, year, img =
             } else if (width >= 1280) {
                 gap = 32;
             }
-            gap -= 3 // no clue why but it fixes the widths of everything
-            const blockWidth = (width * 0.85) / 3 - 2 * gap;
-            if (adjustedCol > 1) {
+            const blockWidth = (width * 0.85 - 2 * gap) / 3;
+            if (col > 1) {
+                if (!isWindowLarge) {
+                    return '1/1'
+                }
                 return `${2 * blockWidth + gap} / ${blockWidth}`
             } else if (row > 1) {
                 return `${blockWidth} / ${2 * blockWidth + gap}`
@@ -38,10 +37,9 @@ const GridComponent: React.FC<GridComponentProps> = ({ popup, title, year, img =
             }
         })(),
     };
-
     return (
-        <article className="bg-white relative overflow-hidden border-2 border-neutral-400" style={span}>
-            <section className="absolute inset-2 inset-y-0 border-2 border-neutral-400 bottom-[20%] top-2"
+        <article className={`bg-white relative overflow-hidden border-2 border-neutral-400 ${row === 2 ? 'grid-long' : col === 2 ? 'grid-wide' : 'aspect-square'}`} style={span}>
+            <section className='absolute inset-2 inset-y-0 border-2 border-neutral-400 top-2 bottom-[20%]'
                 onMouseOver={() => setIsHovered(true)}
                 onMouseOut={() => setIsHovered(false)}
             >
