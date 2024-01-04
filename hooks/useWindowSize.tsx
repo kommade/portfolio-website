@@ -1,23 +1,22 @@
-import { useEffect, useState, useRef } from 'react';
+'use client';
+
+import { useEffect, useState } from 'react';
 
 function useWindowSize() {
   const [windowSize, setWindowSize] = useState({
     width: typeof window !== 'undefined' ? window.innerWidth : 0,
   });
 
-  const windowRef = useRef(window);
-
   useEffect(() => {
     function handleResize() {
-      setWindowSize({ width: windowRef.current.innerWidth });
+      setWindowSize({ width: window.innerWidth });
     }
 
-    windowRef.current.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize);
     handleResize();
-    // TODO: add an update when the page is first loaded
 
-    return () => windowRef.current.removeEventListener('resize', handleResize);
-  });
+    return () => window.removeEventListener('resize', handleResize);
+  }, [windowSize]);
 
   return windowSize;
 }
