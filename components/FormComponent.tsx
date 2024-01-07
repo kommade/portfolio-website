@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { kv } from "@vercel/kv";
 import { put } from "@vercel/blob";
 

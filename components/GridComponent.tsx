@@ -1,7 +1,7 @@
 'use client';
 
+import { getProjectData } from "@/actions/actions";
 import React, { useEffect, useState } from 'react';
-import { kv } from "@vercel/kv";
 
 interface GridComponentProps {
     projectKey: string;
@@ -27,17 +27,23 @@ const GridComponent: React.FC<GridComponentProps> = ({ projectKey , span }) => {
             if (!projectKey) {
                 return;
             }
-            let stored = localStorage.getItem(projectKey);
+            let stored;
+            if (typeof localStorage !== 'undefined') {
+                stored = localStorage.getItem(projectKey);
+            }
             if (!stored) {
-                const response = await fetch(`/api/projectData?projectKey=${projectKey}`);
-                const data = await response.json();
-                localStorage.setItem('myData', JSON.stringify(data));
-                setData(data);
+                const res = await getProjectData(projectKey);
+                if (!res.success) {
+                    return;
+                }
+                if (typeof localStorage !== 'undefined') {
+                    localStorage.setItem('myData', JSON.stringify(data));
+                }
+                setData(res.data as ProjectData | null);
             } else {
                 const data = JSON.parse(stored)
                 setData(data);
             }
-            
             
         };
  

@@ -36,7 +36,6 @@ function generateComponentProperties(k: number): ComponentProperties[] {
 
 async function Home() {
   const keys = await kv.keys("project:*");
-  console.log(keys);
   let spanMap = generateComponentProperties(keys.length);
   return (
     <main className="flex flex-col items-center justify-between overflow-x-clip">
@@ -61,8 +60,8 @@ async function Home() {
           <h2 className="text-center about-title pb-8">
             About Me
           </h2>
-          <article className="info-container h-[475px] flex flex-col lg:flex-row justify-center items-stretch">
-            <section className="photo-competencies flex flex-col lg:mr-6">
+          <article className="info-container lg:h-[475px] h-fit flex flex-col lg:flex-row justify-center items-center lg:items-stretch">
+            <section className="photo-competencies flex flex-col lg:mr-6 items-center">
               <div className=" w-[198px] h-[256px] overflow-hidden">
                 <img
                   className="object-cover object-bottom"
@@ -85,7 +84,10 @@ async function Home() {
                 </li>
               </ul>
             </section>
-            <section className="w-[35%] min-w-[400px] h-full p-8 bg-white flex flex-col justify-between self-stretch">
+            <section className="w-[35%] min-w-[400px] h-fit p-8 bg-white flex flex-col justify-between lg:self-stretch">
+              {
+              // TODO: fix this stretch
+              }
               <p className="about"> 
               My name is Juliette and I grew up in the sunny island of Singapore. Since I was little, I&apos;ve always been busy making things with my hands.<br /> <br />After graduating with a BSc (Hons) in Architecture from the University of Bath in 2023, I returned to Singapore to pursue a career in user research & user experience design. I&apos;m interested in how we can create digital experiences that are not only seamless but have a personal, human touch embedded in them.<br /><br />Drop me a line if you&apos;re interested to chat!
               </p>
