@@ -4,6 +4,7 @@ import { getProjectData } from "@/actions/actions";
 import React, { useEffect, useRef, useState } from 'react';
 import LoadingComponent from "./LoadingComponent";
 import SomethingWentWrongComponent from "./SomethingWentWrongComponent";
+import Link from "next/link";
 
 interface GridComponentProps {
     projectKey: string;
@@ -88,7 +89,7 @@ const GridComponent: React.FC<GridComponentProps> = ({ projectKey, span }) => {
     }
     return (
         <article className={`bg-white relative overflow-hidden border-2 border-neutral-400 ${span.row === 2 ? 'grid-long' : span.col === 2 ? 'grid-wide' : 'aspect-square'}`}>
-            <a href={`/projects/${data.id}`} rel="noopener noreferrer">
+            <Link href={`/projects/${data.id}`} rel="noopener noreferrer">
                 <section className='absolute inset-2 inset-y-0 border-2 border-neutral-400 top-2 bottom-[20%]'
                     onMouseOver={() => setIsHovered(true)}
                     onMouseOut={() => setIsHovered(false)}
@@ -102,7 +103,7 @@ const GridComponent: React.FC<GridComponentProps> = ({ projectKey, span }) => {
                     <h1 className="grid-title">{data.name}</h1>
                     <h2 className="grid-year">{data.year}</h2>
                 </section>
-            </a>
+            </Link>
         </article>
     );
 }

@@ -1,9 +1,11 @@
 "use server";
 
+import { logout } from "@/components/AuthContext";
 import { put } from "@vercel/blob";
 import { kv } from "@vercel/kv";
 import bcrypt from 'bcrypt';
 import jwt, { TokenExpiredError } from "jsonwebtoken";
+import { revalidatePath } from "next/cache";
 
 interface User {
     id: string,

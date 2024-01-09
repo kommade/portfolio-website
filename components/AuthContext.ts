@@ -1,3 +1,5 @@
+"use client";
+
 export default function isLoggedIn() {
     if (typeof localStorage !== 'undefined') {
         return localStorage.getItem("token") !== null;
@@ -16,4 +18,4 @@ export const logout = () => {
     if (typeof localStorage !== 'undefined') {
       localStorage.removeItem("token");
     }
-  }
+}

@@ -1,4 +1,5 @@
 import Image from "next/image"
+import Link from "next/link"
 
 const FooterComponent = () => {
   return (
@@ -22,34 +23,34 @@ const FooterComponent = () => {
                 </a>
             </li>
             <li>
-                <a href="https://www.instagram.com/JUEKO_/" target="_blank" rel="noopener noreferrer">
-                <Image
-                    src="/icons/instagram.svg"
-                    alt="insta svg"
-                    width={24}
-                    height={24}
-                />
-                </a>
+                <Link href="https://www.instagram.com/JUEKO_/" target="_blank" rel="noopener noreferrer">
+                    <Image
+                        src="/icons/instagram.svg"
+                        alt="insta svg"
+                        width={24}
+                        height={24}
+                    />
+                </Link>
             </li>
             <li>
-                <a href="https://www.linkedin.com/in/juliette-khoo/" target="_blank" rel="noopener noreferrer">
-                <Image
-                    src="/icons/linkedin.svg"
-                    alt="linkedin svg"
-                    width={24}
-                    height={24}
-                />
-                </a>
+                <Link href="https://www.linkedin.com/in/juliette-khoo/" target="_blank" rel="noopener noreferrer">
+                    <Image
+                        src="/icons/linkedin.svg"
+                        alt="linkedin svg"
+                        width={24}
+                        height={24}
+                    />
+                </Link>
             </li>
             <li>
-                <a href="https://medium.com/@khoo.juliette" target="_blank" rel="noopener noreferrer">
-                <Image
-                    src="/icons/m.svg"
-                    alt="medium svg"
-                    width={24}
-                    height={24}
-                />
-            </a>
+                <Link href="https://medium.com/@khoo.juliette" target="_blank" rel="noopener noreferrer">
+                    <Image
+                        src="/icons/m.svg"
+                        alt="medium svg"
+                        width={24}
+                        height={24}
+                    />
+                </Link>
             </li>
         </ul>
     </footer>

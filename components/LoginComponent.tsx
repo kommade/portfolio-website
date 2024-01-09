@@ -18,7 +18,7 @@ const LoginComponent = () => {
                 return;
             }
             setOutput(out.message);
-        }} className="w-full h-fit relative items-center justify-center mt-28 flex flex-col">
+        }} className="w-full h-[68vh] relative items-center justify-center mt-28 flex flex-col">
             <div className="flex flex-row m-2">
                 <section className="flex flex-col m-2">
                     <label className="h-6 m-[6px]">

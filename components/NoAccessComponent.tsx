@@ -1,9 +1,11 @@
 import React from 'react'
 
-const NoAccessComponent = () => {
+const NoAccessComponent = (
+  { text = "You do not have permission to view this page." }
+    : { text?: string }) => {
   return (
-      <div className="w-full h-fit relative items-center justify-center mt-28 flex flex-col font-['Epilogue'] text-3xl text-center">
-          You do not have permission to view this page.
+      <div className="w-full h-[68vh] relative items-center justify-center mt-28 flex flex-col font-['Epilogue'] text-3xl text-center">
+          {text}
       </div>
   )
 }

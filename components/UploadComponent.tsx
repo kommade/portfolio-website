@@ -1,6 +1,6 @@
 import { submit } from "@/actions/actions";
 
-const FormComponent: React.FC = () => {
+const UploadComponent: React.FC = () => {
     return (
         <form className="flex flex-col justify-center items-center" action={submit}>
             <label>
@@ -20,4 +20,4 @@ const FormComponent: React.FC = () => {
         );
 }
     
-export default FormComponent;
+export default UploadComponent;

@@ -1,21 +1,41 @@
 "use client";
 
-import { getProjectData, getProjectKey } from "@/actions/actions";
-import { getToken } from "@/components/AuthContext";
+import { getProjectData, getProjectKey, isAllowedToAccess } from "@/actions/actions";
+import { getToken, logout } from "@/components/AuthContext";
+import FooterComponent from "@/components/FooterComponent";
 import { ProjectData } from "@/components/GridComponents";
 import HeaderComponent from "@/components/HeaderComponent";
 import LoadingComponent from "@/components/LoadingComponent";
+import NoAccessComponent from "@/components/NoAccessComponent";
 import SomethingWentWrongComponent from "@/components/SomethingWentWrongComponent";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 export default function ProjectPage({
     params,
 }: {
     params: { id: string };
     }) {
+    const router = useRouter();
     const [data, setData] = useState<ProjectData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [access, setAccess] = useState(false);
     useEffect(() => {
         const fetchData = async () => {
+            const token = getToken();
+            const allowed = await isAllowedToAccess(token, params.id)
+            switch (allowed) {
+                case "expired":
+                    logout();
+                    router.push("/");
+                    setIsLoading(false);
+                    return;
+                case "yes":
+                    setAccess(true);
+                    break;
+                default:
+                    setIsLoading(false);
+                    return;
+            }
             const res = await getProjectKey(params.id);
             if (!res.success) {
                 return;
@@ -45,32 +65,43 @@ export default function ProjectPage({
         };
         fetchData();
     }, [params.id]);
-    if (data === null && !isLoading) {
+    if (data === null && !isLoading && access) {
         return (
-            <SomethingWentWrongComponent/>
+            <main className="flex flex-col items-center justify-between overflow-x-clip">
+                <div className="w-screen relative flex flex-col">
+                    <HeaderComponent/>
+                    <SomethingWentWrongComponent/>
+                </div>
+            </main>
         );
     } else if (isLoading) {
         return (
-            <LoadingComponent/>
+            <main className="flex flex-col items-center justify-between overflow-x-clip">
+                <div className="w-screen relative flex flex-col">
+                    <HeaderComponent/>
+                    <LoadingComponent/>
+                </div>
+            </main>
         )
     }
     return (
         <main className="flex flex-col items-center justify-between overflow-x-clip">
             <div className="w-screen relative flex flex-col">
                 <HeaderComponent/>
-
-                <div className="w-[85%] h-fit left-[7.5%] relative justify-center mt-28 flex flex-col">
-                    <h1>
-                        {data?.name as string}     
-                    </h1>
-                    <h1>
-                        {data?.desc as string}     
-                    </h1>
-                    <h1>
-                        {data?.year as string}
-                    </h1>
-                </div>
-            
+                {
+                    access ? (<div className="w-[85%] h-[68vh] left-[7.5%] relative justify-center mt-28 flex flex-col">
+                            <h1>
+                                {data?.name as string}     
+                            </h1>
+                            <h1>
+                                {data?.desc as string}     
+                            </h1>
+                            <h1>
+                                {data?.year as string}
+                            </h1>
+                        </div>) : <NoAccessComponent text="This project is private. Sorry!"/>
+                }
+                <FooterComponent/>
             </div>
       </main>
     )

@@ -1,5 +1,6 @@
-import FormComponent from "@/components/FormComponent";
+import UploadComponent from "@/components/UploadComponent";
 import HeaderComponent from "@/components/HeaderComponent";
+import FooterComponent from "@/components/FooterComponent";
 
 export default function Projects() {
     return (
@@ -12,7 +13,7 @@ export default function Projects() {
               Future see all page
             </h1>
           </div>
-          
+          <FooterComponent/>
         </div>
       </main>
     )

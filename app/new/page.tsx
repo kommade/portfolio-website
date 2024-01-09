@@ -1,22 +1,23 @@
 "use client";
 
 import { isAllowedToAccess } from "@/actions/actions";
-import FormComponent from "@/components/FormComponent";
+import UploadComponent from "@/components/UploadComponent";
 import HeaderComponent from "@/components/HeaderComponent";
 import { getToken, logout } from "@/components/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import NoAccessComponent from "@/components/NoAccessComponent";
 import LoadingComponent from "@/components/LoadingComponent";
+import FooterComponent from "@/components/FooterComponent";
 
 export default function New() {
     const router = useRouter();
     const token = getToken();
     const [access, setAccess] = useState(false);
-  const [checking, setChecking] = useState(true);
-  const redirect = () => {
-    router.push("/")
-  }
+    const [checking, setChecking] = useState(true);
+    const redirect = () => {
+      router.push("/")
+    }
     useEffect(() => {
         const fetchAccess = async () => {
             if (!token) {
@@ -24,7 +25,6 @@ export default function New() {
                 setAccess(false);
             } else {
                 const res = await isAllowedToAccess(token, "admin")
-                console.log(res)
                 setChecking(false);
                 switch (res) {
                     case "expired":
@@ -48,10 +48,11 @@ export default function New() {
 
           <div className="w-[85%] h-fit left-[7.5%] relative justify-center mt-28">
             {
-                checking ? <LoadingComponent/> : access ? <FormComponent/> : <NoAccessComponent/>         
+                checking ? <LoadingComponent/> : access ? <UploadComponent/> : <NoAccessComponent/>         
             }
           </div>
           
+          <FooterComponent/>
         </div>
       </main>
     )

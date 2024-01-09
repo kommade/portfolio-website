@@ -6,6 +6,7 @@ import FooterComponent from "@/components/FooterComponent";
 import { getAllProjects } from "@/actions/actions";
 import { useEffect, useState } from "react";
 import ScrollToTop from "@/components/ScrollToTop";
+import Link from "next/link";
 
 function Home() {
   const [keys, setKeys] = useState<string[]>([])
@@ -60,16 +61,20 @@ function Home() {
                   engagement with the user</strong>. My cross-disciplinary background pushes me to dream bigger, better, and beyond the digital screen. <br /><br />
                   Current areas of interest include: Information design, data journalism, user experience design, strategic design
                 </p>
-                <button className="w-[50%] h-[10%] mt-2 place-self-center flex justify-center items-center bg-white rounded-[15px] border border-gray-700">
+                <Link
+                  className="w-[50%] h-[10%] mt-2 place-self-center flex justify-center items-center bg-white rounded-[15px] border border-gray-700 transform transition duration-500 ease-in-out hover:scale-110 hover:cursor-pointer"
+                  href="/contact"
+                  rel="noopener noreferrer"
+                >
                   <div className="w-full h-fit text-center text-gray-700 text-base font-light font-['Epilogue'] leading-normal tracking-tight">
                     Drop me a message
                   </div>
-                </button>
-                <button className="w-[50%] h-[10%] mb-2 place-self-center flex justify-center items-center bg-white rounded-[15px] border border-gray-700">
+                </Link>
+                <a className="w-[50%] h-[10%] mb-2 place-self-center flex justify-center items-center bg-white rounded-[15px] border border-gray-700 transform transition duration-500 ease-in-out hover:scale-110 hover:cursor-pointer">
                   <div className="w-full h-fit text-center text-gray-700 text-base font-light font-['Epilogue'] leading-normal tracking-tight">
                     Fun stuff I&apos;ve made 
                   </div>
-                </button>
+                </a>
               </section>
             </div>
           </article>
