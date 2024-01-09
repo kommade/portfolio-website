@@ -1,19 +1,36 @@
 "use client";
 
+import { submitContactForm } from "@/actions/actions";
 import FooterComponent from "@/components/FooterComponent";
 import HeaderComponent from "@/components/HeaderComponent"
+import { useRouter } from "next/navigation";
 import React, { useState } from 'react'
 
 const Contact = () => {
+    const router = useRouter()
     const [output, setOutput] = useState("");
     return (
         <main className="flex flex-col items-center justify-between overflow-x-clip">
             <div className="w-screen relative flex flex-col">
                 <HeaderComponent/>
                 <form
-                    className="w-full h-fit relative items-center justify-center mt-28 flex flex-col"
-                    action="https://formspree.io/f/xkndndoo"
-                    method="POST"
+                    className="w-full h-[68vh] relative items-center justify-center mt-28 flex flex-col"
+                    action={async (formData) => {
+                        const res = await submitContactForm(formData);
+                        if (res.success) {
+                            router.push("/")
+                            // show a popup
+                        } else {
+                            switch (res.message) {
+                                case "invalid email":
+                                    setOutput("Invalid email")
+                                    break;
+                                default:
+                                    setOutput("Something went wrong")
+                                    break;
+                            }
+                        }
+                    }}
                 >
                     <div className="flex flex-row m-2">
                         <section className="flex flex-col m-2">

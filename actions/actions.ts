@@ -1,11 +1,11 @@
 "use server";
 
-import { logout } from "@/components/AuthContext";
+import { Resend } from "resend";
 import { put } from "@vercel/blob";
 import { kv } from "@vercel/kv";
 import bcrypt from 'bcrypt';
 import jwt, { TokenExpiredError } from "jsonwebtoken";
-import { revalidatePath } from "next/cache";
+import emailTemplate from "./emailTemplate";
 
 interface User {
     id: string,
@@ -100,4 +100,28 @@ export async function isAllowedToAccess(token: string | null, pageId: string) {
 
 export async function getAllProjects() {
     return await kv.keys("project:*");
+}
+
+export async function submitContactForm(formData : FormData) {
+    const resend = new Resend(process.env.RESEND_API_KEY)
+    const response = {
+        name: formData.get("name") as string,
+        email: formData.get("email") as string,
+        message: formData.get("message") as string
+    }
+    if (!response.email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g)) {
+        return { success: false, message: "email invalid"}
+    }
+    try {
+        await resend.emails.send({
+            from: "Contact Form <onboarding@resend.dev>",
+            to: ["khoojarrell@gmail.com"],
+            subject: "Message from contact form",
+            react: emailTemplate(response),
+            text: ""
+        });
+    } catch (error) {
+        return { success: false, message: "email failed to send"}
+    }
+    return { success: true };
 }

@@ -88,9 +88,9 @@ const GridComponent: React.FC<GridComponentProps> = ({ projectKey, span }) => {
         return <></>;
     }
     return (
-        <article className={`bg-white relative overflow-hidden border-2 border-neutral-400 ${span.row === 2 ? 'grid-long' : span.col === 2 ? 'grid-wide' : 'aspect-square'}`}>
+        <article className={`bg-white relative overflow-hidden border-[1px] border-neutral-400 ${span.row === 2 ? 'grid-long' : span.col === 2 ? 'grid-wide' : 'aspect-square'}`}>
             <Link href={`/projects/${data.id}`} rel="noopener noreferrer">
-                <section className='absolute inset-2 inset-y-0 border-2 border-neutral-400 top-2 bottom-[20%]'
+                <section className='absolute inset-2 inset-y-0 border-[1px] border-neutral-400 top-2 bottom-[20%]'
                     onMouseOver={() => setIsHovered(true)}
                     onMouseOut={() => setIsHovered(false)}
                 >

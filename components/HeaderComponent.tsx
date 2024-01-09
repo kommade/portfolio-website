@@ -1,11 +1,12 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import isLoggedIn, { logout } from "./AuthContext";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
 const HeaderComponent = ({ isLoginPage = false, isNewPage = false }) => {
+  const pathname = usePathname();
   const [isClient, setIsClient] = useState(false)
   useEffect(() => {
     setIsClient(true)
@@ -19,18 +20,18 @@ const HeaderComponent = ({ isLoginPage = false, isNewPage = false }) => {
   }
   return (
     isClient ? (
-      <header className=" w-[100vw] pr-2 h-fit fixed z-10 bg-orange-50 flex flex-col justify-center border-b-2 border-neutral-400">
+      <header className=" w-[100vw] pr-2 h-fit fixed z-10 bg-[#FBFBF1] flex flex-col justify-center shadow">
         <div className="flex justify-between w-full">
             <div className="flex justify-start w-[30%]">
             {( loggedIn  && !isNewPage ) && (
-              <Link className="place-self-center m-6" href="/new" rel="noopener noreferrer">
+              <Link className="place-self-center m-6 cursor-pointer" href="/new" rel="noopener noreferrer">
                 New
               </Link>
             )}
             </div>
           <div className="flex justify-center w-full">
-            <Link href="/" rel="noopener noreferrer">
-              <h1 className="text-center text-blue-500 text-[40px] font-normal font-['Junicode'] p-1">
+            <Link className="" href="/" rel="noopener noreferrer">
+              <h1 className="text-center text-blue-500 text-[48px] font-normal font-['Junicode'] p-1 hover:cursor-pointer">
               Juliette Khoo
               </h1>
             </Link>
@@ -38,7 +39,7 @@ const HeaderComponent = ({ isLoginPage = false, isNewPage = false }) => {
           <div className="flex justify-end w-[30%]">
             {
               !isLoginPage ? (!loggedIn ? (
-              <Link className="place-self-center m-6" href="/login" rel="noopener noreferrer">
+              <Link className="place-self-center m-6 hover:cursor-pointer" href={`/login?redirect=${pathname}`} rel="noopener noreferrer">
                 Login
               </Link>
             ) : (
@@ -51,11 +52,11 @@ const HeaderComponent = ({ isLoginPage = false, isNewPage = false }) => {
           </div>
         </div>
       </header>) : (
-        <header className=" w-[100vw] pr-2 h-fit fixed z-10 bg-orange-50 flex flex-col justify-center border-b-2 border-neutral-400">
+        <header className=" w-[100vw] pr-2 h-fit fixed z-10 bg-[#FBFBF1] flex flex-col justify-center shadow">
           <div className="flex justify-between w-full">
             <div className="flex justify-center w-full">
               <Link href="/" rel="noopener noreferrer">
-                <h1 className="text-center text-blue-500 text-[40px] font-normal font-['Junicode'] p-1">
+                <h1 className="text-center text-blue-500 text-[48px] font-normal font-['Junicode'] p-1 hover:cursor-pointer">
                 Juliette Khoo
                 </h1>
               </Link>

@@ -99,7 +99,7 @@ export default function ProjectPage({
                             <h1>
                                 {data?.year as string}
                             </h1>
-                        </div>) : <NoAccessComponent text="This project is private. Sorry!"/>
+                        </div>) : <NoAccessComponent text="This project is private. Please login to proceed!"/>
                 }
                 <FooterComponent/>
             </div>

@@ -1,10 +1,10 @@
 "use client";
 
 import { login } from "@/actions/actions";
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import React, { useState } from 'react'
 
-const LoginComponent = () => {
+const LoginComponent = ( { redirect } : { redirect : string } ) => {
     const router = useRouter();
     const [output, setOutput] = useState("");
     return (
@@ -14,7 +14,7 @@ const LoginComponent = () => {
                 if (typeof localStorage !== 'undefined') {
                     localStorage.setItem("token", out.message)
                 }
-                router.push("/");
+                router.push(redirect);
                 return;
             }
             setOutput(out.message);

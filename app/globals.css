@@ -51,7 +51,7 @@ body {
 
 .grid-long {
   grid-row: span 2;
-  aspect-ratio: 1 / 2.08;
+  aspect-ratio: 1 / 2.1;
 }
 
 @media (max-width: 1024px) {
@@ -64,7 +64,7 @@ body {
 @media (min-width: 1024px) {
   .grid-wide {
     grid-column: span 2;
-    aspect-ratio: 2.08 / 1;
+    aspect-ratio: 2.1 / 1;
   }
 }
 

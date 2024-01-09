@@ -3,12 +3,14 @@
 import HeaderComponent from "@/components/HeaderComponent";
 import LoginComponent from "@/components/LoginComponent";
 import isLoggedIn from "@/components/AuthContext";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import FooterComponent from "@/components/FooterComponent";
 
 export default function Login() {
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const redirect = searchParams.get("redirect")
     useEffect(() => {
         if (isLoggedIn()) {
             router.push("/");
@@ -19,7 +21,7 @@ export default function Login() {
         <main className="flex flex-col items-center justify-between overflow-x-clip">
             <div className="w-screen relative flex flex-col">
                 <HeaderComponent isLoginPage={true} />
-                <LoginComponent />
+                <LoginComponent redirect={redirect ? redirect : "/"} />
                 <FooterComponent/>
             </div>
         </main>

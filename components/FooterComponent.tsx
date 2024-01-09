@@ -3,7 +3,7 @@ import Link from "next/link"
 
 const FooterComponent = () => {
   return (
-    <footer className="w-full h-fit relative flex bg-orange-50">
+    <footer className="w-full h-fit relative flex bg-[#FBFBF1]">
         <section className="w-[40%] h-[40%] flex flex-col items-start my-4 ml-[10%]">
             <article>
                 <p className="text-black text-xs lg:text-sm font-normal font-['Epilogue']">
