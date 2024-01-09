@@ -1,22 +1,8 @@
-import { kv } from "@vercel/kv";
-import { put } from "@vercel/blob";
+import { submit } from "@/actions/actions";
 
 const FormComponent: React.FC = () => {
-    const handleSubmit = async (formData: FormData) => {
-        "use server";
-        const keys = await kv.keys("project:*");
-        const nextId = keys.length;
-        const image = formData.get("image") as File;
-        const imageURL = await put(image.name, image, { access: "public"})
-        await kv.hmset(`project:${nextId}`, {
-            name: formData.get("title"),
-            desc: formData.get("desc"),
-            image: imageURL.url
-        })
-    };
-    
     return (
-        <form className="flex flex-col justify-center items-center" action={handleSubmit}>
+        <form className="flex flex-col justify-center items-center" action={submit}>
             <label>
                 Title:
                 <input type="text" name="title" defaultValue='placeholder'/>

@@ -1,7 +1,9 @@
 'use client';
 
 import { getProjectData } from "@/actions/actions";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import LoadingComponent from "./LoadingComponent";
+import SomethingWentWrongComponent from "./SomethingWentWrongComponent";
 
 interface GridComponentProps {
     projectKey: string;
@@ -10,16 +12,49 @@ interface GridComponentProps {
         col: number;
     };
 }
-interface ProjectData {
+
+export interface ProjectData {
     name: string;
     desc: string;
     image: string;
     year: string;
     id: string;
     [key: string]: unknown;
- }
+}
 
-const GridComponent: React.FC<GridComponentProps> = ({ projectKey , span }) => {
+interface ComponentProperties {
+    row: number;
+    col: number;
+}
+  
+function generateComponentProperties(k: number): ComponentProperties[] {
+const result: ComponentProperties[] = [];
+for (let i = 1; i <= k; i++) {
+    let currentRow = 1;
+    let currentCol = 1;
+    const breakpoint = k - k % 4;
+    if (i <= breakpoint) {
+    switch (i % 4) {
+        case 3:
+        currentRow = 2;
+        break;
+        case 0:
+        currentCol = 2;
+        break;
+        default:
+        break;
+    }
+    } else {
+    if (k % 4 === 1) {
+        result[result.length - 1].col = 1;
+    }
+    }
+    result.push({ row: currentRow, col: currentCol });
+}
+return result;
+}
+
+const GridComponent: React.FC<GridComponentProps> = ({ projectKey, span }) => {
     const [isHovered, setIsHovered] = useState(false);
     const [data, setData] = useState<ProjectData | null>(null);
     useEffect(() => {
@@ -46,15 +81,10 @@ const GridComponent: React.FC<GridComponentProps> = ({ projectKey , span }) => {
             }
             
         };
- 
         fetchData();
     }, [projectKey]);
     if (data === null) {
-        return (
-            <div>
-                Loading...
-            </div>
-        )
+        return <></>;
     }
     return (
         <article className={`bg-white relative overflow-hidden border-2 border-neutral-400 ${span.row === 2 ? 'grid-long' : span.col === 2 ? 'grid-wide' : 'aspect-square'}`}>
@@ -77,4 +107,33 @@ const GridComponent: React.FC<GridComponentProps> = ({ projectKey , span }) => {
     );
 }
 
-export default GridComponent;
+const GridComponents = ({ keys, max }: { keys: string[], max: number }) => {
+    let spanMap = generateComponentProperties(keys.length);
+
+    const [isRenderingComplete, setIsRenderingComplete] = useState(false);
+
+    useEffect(() => {
+        setIsRenderingComplete(true);
+    }, []);
+    
+    const renderGrid = keys.slice(0, max - 1).map((key, index) => {
+        return (
+            <GridComponent
+            key={index}
+            projectKey={key}
+            span={spanMap[index]}
+            />
+        )
+    })
+
+    return (
+        isRenderingComplete ? (
+            <section className="work-display w-[85%] h-fit min-h-[70vh] left-[7.5%] relative justify-center mt-28 grid grid-cols-1 lg:grid-cols-3 grid-flow-row gap-y-6 gap-x-0 lg:gap-x-6 xl:gap-8 2xl:gap-10">
+                {renderGrid}
+            </section>
+        ) : <LoadingComponent/>
+    )
+}
+
+
+export default GridComponents;

@@ -33,7 +33,7 @@ const LoginComponent = () => {
                     <input className="m-1 bg-slate-400 border-2 border-neutral-600" name="password" type="password" />
                 </section>
             </div>
-            <input className="bg-slate-400 rounded-xl px-2 font-['Epilogue']" type="submit" value="Login" />
+            <input className="bg-slate-400 rounded-xl px-6 py-1 font-['Epilogue'] hover:cursor-pointer" type="submit" value="Login" />
             <h1 className="text-red-600">{output}</h1>
         </form>
   )
