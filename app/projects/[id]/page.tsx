@@ -7,6 +7,7 @@ import { ProjectData } from "@/components/GridComponents";
 import HeaderComponent from "@/components/HeaderComponent";
 import LoadingComponent from "@/components/LoadingComponent";
 import NoAccessComponent from "@/components/NoAccessComponent";
+import ScrollComponent from "@/components/ScrollComponent";
 import SomethingWentWrongComponent from "@/components/SomethingWentWrongComponent";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -89,18 +90,81 @@ export default function ProjectPage({
             <div className="w-screen relative flex flex-col">
                 <HeaderComponent/>
                 {
-                    access ? (<div className="w-[85%] h-[68vh] left-[7.5%] relative justify-center mt-28 flex flex-col">
-                            <h1>
-                                {data?.name as string}     
-                            </h1>
-                            <h1>
-                                {data?.desc as string}     
-                            </h1>
-                            <h1>
-                                {data?.year as string}
-                            </h1>
-                        </div>) : <NoAccessComponent text="This project is private. Please login to proceed!"/>
+                    access ? (
+                        <section className="w-[100%] h-fit min-h-[70vh] relative justify-center mt-28 ml-14 flex">
+                            <article className="sidebar w-[20%] flex flex-col justify-start items-start mr-4">
+                                <ul className="h-fit flex-col justify-start items-start inline-flex my-4">
+                                    <li className="text-black text-[26px] font-[600] font-['Junicode']">Love Our Hood Fund</li>
+                                    <li className="text-black text-sm font-normal font-['Epilogue'] tracking-tight">2023</li>
+                                </ul>
+                                <ul className="h-fit flex-col justify-start items-start inline-flex my-4">
+                                    <li className="project-list-title text-blue-500">PROJECT TYPE</li>
+                                    <li className="project-list-subtitle">Industrial/Product Design</li>
+                                    <li className="project-list-subtitle">Community grant</li>
+                                </ul>
+                                <ul className="h-fit flex-col justify-start items-start inline-flex my-4">
+                                    <li className="project-list-title text-blue-500">TEAM</li>
+                                    <li className="project-list-subtitle">4 team members including myself</li>
+                                </ul>
+                                <ul className="h-fit flex-col justify-start items-start inline-flex my-4">
+                                    <li className="project-list-title text-blue-500">SKILLSET</li>
+                                    <li className="project-list-subtitle">Industrial/Product Design, Community grant</li>
+                                </ul>
+                                <ul className="h-fit flex-col justify-start items-start inline-flex my-4">
+                                    <li className="project-list-title text-blue-500">APPROACH</li>
+                                    <li className="project-list-subtitle">Problem definition</li>
+                                    <li className="project-list-subtitle">Research and Ideation</li>
+                                    <li className="project-list-subtitle">Prototyping and design</li>
+                                    <li className="project-list-subtitle">Project pitch</li>
+                                    <li className="project-list-subtitle">Iteration</li>
+                                    <li className="project-list-subtitle">Manufacture and assembly</li>
+                                </ul>
+                            </article>
+                            <article className="project-main w-[75%] mx-4 flex flex-col">
+                                <section className="w-[90%] flex-col justify-center items-start flex my-4">
+                                <div className="w-full h-[534px] bg-zinc-300 my-4" />
+                                    <h1 className="project-list-title text-gray-700">BRIEF</h1>
+                                    <p className="project-list-subtitle">
+                                        This was a design challenge done as part of a youth challenge launched by the Municipal Services Office (MSO) Singapore. MSO mentors and funds youths up to $10,000 to pilot municipal-related ideas within their community. We chose to tackle the problem of neighbourhood noise in HDB blocks in Singapore.
+                                    </p>
+                                </section>
+                                <section className="w-[90%] flex-col justify-center items-start flex my-4">
+                                    <h1 className="project-list-title text-gray-700">PROBLEM DEFINITION</h1>
+                                    <p className="project-list-subtitle">
+                                        Statistics show that noise-related feedback to the town council and police force increased sharply during the COVID-19 pandemic and remained at elevated levels. 42% of all the feedback received was regarding noise from DIY renovation.
+                                    </p>
+                                    <div className="w-full h-[534px] bg-zinc-300 my-4" />
+                                </section>
+                                <section className="w-[90%] flex-col justify-start items-start flex gap-6 my-4">
+                                    <h1 className="project-list-title text-gray-700">RESEARCH AND IDEATION</h1>
+                                    <p className="project-list-subtitle">
+                                        Our interviews revealed that neighbours want a non-confrontational, fuss-free way to address noise-related issues. Through ideation sessions, the idea of having a notification message board that promoted communication and interaction arose, inspired by the way locksmiths arrange keys.
+                                    </p>
+                                    <div className="w-full justify-start items-start gap-6 inline-flex">
+                                        <div className="w-[63%] h-[372px] bg-zinc-300" />
+                                        <div className="w-[37%] h-[372px] bg-zinc-300" />
+                                    </div>
+                                    <div className="w-full justify-start items-start gap-6 inline-flex">
+                                        <div className="w-[50%] h-[302px] bg-zinc-300" />
+                                        <div className="w-[50%] h-[302px] bg-zinc-300" />
+                                    </div>
+                                </section>
+                                <section className="w-[90%] flex-col justify-start items-start flex gap-6 my-4">
+                                    <h1 className="project-list-title text-gray-700">PROTOTYPING, DESIGN AND PITCHING</h1>
+                                    <div className="w-full justify-start items-start gap-6 inline-flex">
+                                        <div className="w-[63%] h-[372px] bg-zinc-300" />
+                                        <div className="w-[37%] h-[372px] bg-zinc-300" />
+                                    </div>
+                                    <div className="w-full justify-start items-start gap-6 inline-flex">
+                                        <div className="w-[50%] h-[302px] bg-zinc-300" />
+                                        <div className="w-[50%] h-[302px] bg-zinc-300" />
+                                    </div>
+                                </section>
+                            </article>
+                        </section>
+                    ) : <NoAccessComponent text="This project is private. Please login to proceed!"/>
                 }
+                <ScrollComponent/>
                 <FooterComponent/>
             </div>
       </main>

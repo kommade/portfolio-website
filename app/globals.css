@@ -68,13 +68,28 @@ body {
   }
 }
 
-
-
 .about {
   font-size: 0.75rem; /* text-xs */
   font-family: 'Epilogue', sans-serif;
   line-height: 1.74; /* leading-[17.40px] */
-  letter-spacing: -0.02em; /* tracking-tight */
+  letter-spacing: -0.025em; /* tracking-tight */
+}
+
+.project-list-title {
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 600; /* font-[600] */
+  font-family: 'Epilogue';
+  line-height: 29px; /* leading-[29px] */
+  letter-spacing: -0.025em; /* tracking-tight */
+}
+
+.project-list-subtitle {
+  color: #4b5563; /* text-gray-700 */
+  font-size: 0.75rem; /* text-xs */
+  font-weight: normal; /* font-normal */
+  font-family: 'Epilogue';
+  line-height: 1.5; /* leading-normal */
+  letter-spacing: -0.025em; /* tracking-tight */
 }
 
 @font-face {

@@ -6,12 +6,12 @@ const FooterComponent = () => {
     <footer className="w-full h-fit relative flex bg-[#FBFBF1]">
         <section className="w-[40%] h-[40%] flex flex-col items-start my-4 ml-[10%]">
             <article>
-                <p className="text-black text-xs lg:text-sm font-normal font-['Epilogue']">
+                <p className="text-black text-[8px] lg:text-[10px] xl:text-[12px] font-normal font-['Epilogue']">
                 ©2024 Juliette Khoo<br/>Designed and built by Juliette and Jarrell Khoo
                 </p>
             </article>
         </section>
-        <ul className="w-[60%] h-[10%] items-center inline-flex my-auto ml-[25%] mr-[10%] lg:mr-0 justify-between max-w-[145px] gap-[10%]">
+        <ul className="w-[90%] h-[10%] items-center inline-flex my-auto ml-[30%] mr-[10%] lg:mr-0 justify-between max-w-[145px] gap-[10%]">
             <li>
                 <a target="_blank" rel="noopener noreferrer">
                 <Image

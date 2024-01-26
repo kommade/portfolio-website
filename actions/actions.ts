@@ -115,7 +115,7 @@ export async function submitContactForm(formData : FormData) {
     try {
         await resend.emails.send({
             from: "Contact Form <onboarding@resend.dev>",
-            to: ["khoojarrell@gmail.com"],
+            to: [process.env.CONTACT_FORM_EMAIL_ENDPOINT!],
             subject: "Message from contact form",
             react: emailTemplate(response),
             text: ""

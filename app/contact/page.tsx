@@ -32,26 +32,28 @@ const Contact = () => {
                         }
                     }}
                 >
-                    <div className="flex flex-row m-2">
-                        <section className="flex flex-col m-2">
-                            <label className="h-6 m-[6px]">
+                    <div className="flex flex-col">
+                        <h1 className="m-2 text-red-600 font-['Epilogue'] text-xs">{output}</h1>
+                        <section className="flex flex-col m-2 gap-2.5">
+                            <label className="text-start text-gray-700 text-sm font-semibold font-['Epilogue'] leading-[17.40px] tracking-tight">
                                 Name:
                             </label>
-                            <label className="h-6 m-[6px]">
+                            <input className="w-[300px] h-[35px] bg-neutral-200 pl-2 font-['Epilogue'] text-sm" spellCheck={false} name="name" required/>
+                        </section>
+                        <section className="flex flex-col m-2 gap-2.5">
+                            <label className="text-start text-gray-700 text-sm font-semibold font-['Epilogue'] leading-[17.40px] tracking-tight" >
                                 Email:
                             </label>
-                            <label className="h-6 m-[6px]">
+                            <input className="w-[300px] h-[35px] bg-neutral-200 pl-2 font-['Epilogue'] text-sm focus:ring-2" spellCheck={false} name="email" type="email" required/>
+                        </section>
+                        <section className="flex flex-col m-2 gap-2.5">
+                            <label className="text-start text-gray-700 text-sm font-semibold font-['Epilogue'] leading-[17.40px] tracking-tight" >
                                 Message:
                             </label>
-                        </section>
-                        <section className="flex flex-col m-2">
-                            <input className="m-1 bg-slate-400 border-2 border-neutral-600" name="name" placeholder="Your Name..." required/>
-                            <input className="m-1 bg-slate-400 border-2 border-neutral-600" name="email" placeholder="Your Email..." required/>
-                            <textarea className="m-1 bg-slate-400 border-2 border-neutral-600" name="message" placeholder="Your Message..." required/>
+                            <textarea className="w-[300px] h-[100px] bg-neutral-200 p-2 font-['Epilogue'] text-sm focus:ring-2" name="message" required/>
                         </section>
                     </div>
-                    <input className="bg-slate-400 rounded-xl px-6 py-1 font-['Epilogue'] hover:cursor-pointer" type="submit" value="Submit" />
-                    <h1 className="text-red-600">{output}</h1>
+                    <input className="m-3 w-[300px] h-[54px] bg-gray-700 rounded-xl px-6 py-1 hover:cursor-pointer text-center text-white text-base font-light font-['Epilogue'] leading-normal tracking-tight active:bg-orange-50 active:border border-gray-700 active:text-gray-700" type="submit" value="Submit" />
                 </form>
                 <FooterComponent/>
             </div>
