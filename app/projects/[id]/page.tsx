@@ -91,8 +91,8 @@ export default function ProjectPage({
                 <HeaderComponent/>
                 {
                     access ? (
-                        <section className="w-[100%] h-fit min-h-[70vh] relative justify-center mt-28 ml-14 flex">
-                            <article className="sidebar w-[20%] flex flex-col justify-start items-start mr-4">
+                        <section className="w-[100%] h-fit min-h-[70vh] relative justify-center items-center lg:items-start mt-28 lg:ml-14 flex flex-col lg:flex-row">
+                            <article className="sidebar lg:w-[20%] w-fit flex flex-col justify-start items-start mr-4">
                                 <ul className="h-fit flex-col justify-start items-start inline-flex my-4">
                                     <li className="text-black text-[26px] font-[600] font-['Junicode']">Love Our Hood Fund</li>
                                     <li className="text-black text-sm font-normal font-['Epilogue'] tracking-tight">2023</li>
@@ -120,9 +120,9 @@ export default function ProjectPage({
                                     <li className="project-list-subtitle">Manufacture and assembly</li>
                                 </ul>
                             </article>
-                            <article className="project-main w-[75%] mx-4 flex flex-col">
+                            <article className="project-main lg:w-[70%] w-fit mx-4 flex flex-col justify-center items-center">
                                 <section className="w-[90%] flex-col justify-center items-start flex my-4">
-                                <div className="w-full h-[534px] bg-zinc-300 my-4" />
+                                    <div className="w-full h-[534px] bg-zinc-300 my-4" />
                                     <h1 className="project-list-title text-gray-700">BRIEF</h1>
                                     <p className="project-list-subtitle">
                                         This was a design challenge done as part of a youth challenge launched by the Municipal Services Office (MSO) Singapore. MSO mentors and funds youths up to $10,000 to pilot municipal-related ideas within their community. We chose to tackle the problem of neighbourhood noise in HDB blocks in Singapore.
