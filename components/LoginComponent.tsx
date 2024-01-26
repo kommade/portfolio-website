@@ -23,6 +23,8 @@ const LoginComponent = ( { redirect } : { redirect : string | undefined } ) => {
             } else {
                 if (out.message === "Incorrect password") {
                     setResponse({ username: false, password: true })
+                } else if (out.message = "Please fill in the required blanks") {
+                    setResponse({ username: true, password: true })
                 } else {
                     setResponse({ username: true, password: false })
                 }
