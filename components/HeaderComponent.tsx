@@ -40,18 +40,18 @@ const HeaderComponent = ({ isLoginPage = false, isNewPage = false }) => {
   }
   return (
     isClient ? (
-      <header className=" w-[100vw] pr-2 h-fit fixed z-10 bg-[#FBFBF1] flex flex-col justify-center shadow">
+      <header className=" w-[100vw] pr-2 h-[60px] fixed z-10 bg-[#FBFBF1] flex flex-col justify-center shadow">
         <div className="flex justify-between w-full">
             <div className="flex justify-start w-[30%]">
             {( loggedIn  && !isNewPage && isAdmin) && (
               <Link className="place-self-center m-6 cursor-pointer" href="/new" rel="noopener noreferrer">
-                New
+                NEW
               </Link>
             )}
             </div>
           <div className="flex justify-center w-full">
             <Link className="" href="/" rel="noopener noreferrer">
-              <h1 className="text-center text-blue-500 text-[48px] font-normal font-['Junicode'] p-1 hover:cursor-pointer">
+              <h1 className="text-center text-blue-500 text-[40px] font-normal font-['Junicode'] p-1 hover:cursor-pointer">
               Juliette Khoo
               </h1>
             </Link>
@@ -60,23 +60,23 @@ const HeaderComponent = ({ isLoginPage = false, isNewPage = false }) => {
             {
               !isLoginPage ? (!loggedIn ? (
               <Link className="place-self-center m-6 hover:cursor-pointer" href={pathname === "/" ? "/login" : `/login?redirect=${pathname}`} rel="noopener noreferrer">
-                Login
+                LOGIN
               </Link>
             ) : (
               <button className="place-self-center m-6 " onClick={handleLogOut} rel="noopener noreferrer">
-                Logout
+                LOGOUT
               </button>
                 )
               ) : <></>
             }
           </div>
         </div>
-      </header>) : (
-        <header className=" w-[100vw] pr-2 h-fit fixed z-10 bg-[#FBFBF1] flex flex-col justify-center shadow">
+      </header>) : ( // TODO: this ssr header is positioned wrong
+        <header className=" w-[100vw] pr-2 h-[60px] fixed z-10 bg-[#FBFBF1] flex flex-col justify-center shadow">
           <div className="flex justify-between w-full">
             <div className="flex justify-center w-full">
               <Link href="/" rel="noopener noreferrer">
-                <h1 className="text-center text-blue-500 text-[48px] font-normal font-['Junicode'] p-1 hover:cursor-pointer">
+                <h1 className="text-center text-blue-500 text-[40px] font-normal font-['Junicode'] p-1 hover:cursor-pointer">
                 Juliette Khoo
                 </h1>
               </Link>
