@@ -7,15 +7,107 @@ body {
   overscroll-behavior-x: none;
 }
 
-.grid-title {
-  color: var(--Air-Force-Blue, #3688D5);
-  font-family: Junicode;
-  font-size: 32px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: -1.8px;
-  white-space: nowrap;
+h1 {
+    font-size: 48px;
+    font-family: Junicode;
+    font-weight: normal;
+    line-height: 100%;
+    letter-spacing: -2.4px;
+    color: var(--Air-Force-Blue, #3688D5);
+}
+
+h2 {
+    font-size: 32px;
+    font-family: Junicode;
+    font-weight: normal;
+    line-height: 100%;
+    letter-spacing: -1.6px;
+    color: var(--Eggplant-Purple, #37344B);
+}
+
+h3 {
+    font-size: 32px;
+    font-family: Junicode;
+    font-weight: normal;
+    font-style: italic;
+    line-height: 100%;
+    letter-spacing: -1.6px;
+    color: var(--Eggplant-Purple, #37344B);
+}
+
+h4 {
+    font-size: 20px;
+    font-family: Junicode;
+    font-weight: 600;
+    line-height: 100%;
+    letter-spacing: 0.4px;
+}
+
+h5 {
+    font-size: 20px;
+    font-family: Epilogue;
+    font-weight: normal;
+    line-height: 145%;
+    letter-spacing: 0.48px;
+}
+
+.s-regular {
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 145%;
+    letter-spacing: 0.36px;
+}
+
+.s-light {
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 145%;
+    letter-spacing: 0.36px;
+}
+
+.xs-regular {
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 145%;
+    letter-spacing: 0.36px;
+}
+
+.xs-semibold {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 145%;
+    letter-spacing: 0.36px;
+}
+
+@media (max-width: 1024px) {
+    h1 {
+        font-size: 32px;
+        letter-spacing: -1.6px;
+    }
+    h2 {
+        font-size: 20px;
+        letter-spacing: -1px;
+    }
+    h3 {
+        font-size: 20px;
+        letter-spacing: -1px;
+    }
+    h4 {
+        font-size: 16px;
+        letter-spacing: 0.32px;
+    }
+    h5 {
+        font-size: 16px;
+        letter-spacing: 0.32px;
+    }
+    .s-regular {
+        font-size: 16px;
+        letter-spacing: 0.32px;
+    }
+    .s-light {
+        font-size: 16px;
+        letter-spacing: 0.32px;
+    }
 }
 
 .grid-year {
@@ -57,7 +149,7 @@ body {
   
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
   .grid-wide {
     grid-column: span 1;
     aspect-ratio: 1 / 1;
@@ -90,7 +182,7 @@ body {
 
 .fun-stuff-title {
   width: 100%;
-  text-align: center;
+  text-align: start;
   transition-property: color;
   transition-duration: 300ms;
   transition-timing-function: ease-in-out;

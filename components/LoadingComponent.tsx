@@ -2,10 +2,10 @@ import Image from "next/image"
 
 const LoadingComponent = () => {
   return (
-    <div className="w-full min-h-[calc(100vh_-_128px)] relative items-center justify-center mt-[60px] flex flex-col">
-      <h1 className="font-['Epilogue'] text-3xl text-center">
+    <div className="w-full min-h-[calc(100vh_-_108px)] lg:min-h-[calc(100vh_-_138px)] relative items-center justify-center mt-[40px] lg:mt-[70px] flex flex-col">
+      <h2>
       Almost done...
-      </h1>
+      </h2>
       <Image
         className=" animate-spin"
         width={24}

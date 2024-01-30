@@ -18,8 +18,8 @@ const FunStuff = () => {
     const [data, setData] = useState<FunStuffData | null>(null);
     const [error, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const [percentage, setPercentage] = useState(-20);
-    const [prevPercentage, setPrevPercentage] = useState(-20);
+    const [percentage, setPercentage] = useState(-108);
+    const [prevPercentage, setPrevPercentage] = useState(-108);
     const [mousePos, setMousePos] = useState(0);
     const imageHolder = useRef(null);
     const [transition, setTransition] = useState(false);
@@ -118,7 +118,7 @@ const FunStuff = () => {
     const updatePosition = (duration: number = 1200, movement: number = percentage) => {
         if (imageHolder.current) {
             (imageHolder.current as HTMLElement).animate({
-                transform: `translate(${movement}vmin, -50%)`
+                transform: `translate(${movement}vmin, calc((50% - 3.75vw) * -1))`
             }, { duration: duration, fill: "forwards" });
         }
         // scary vanilla javascript in a react dom !!!
@@ -154,9 +154,9 @@ const FunStuff = () => {
             return;
         }
         setN(data![newCategory].length)
-        setPercentage(-64)
-        setPrevPercentage(-64)
-        updatePosition(800, -64)
+        setPercentage(-108)
+        setPrevPercentage(-108)
+        updatePosition(800, -108)
         setTransition(true)
         setTimeout(() => {
             setCategory(newCategory)
@@ -170,31 +170,31 @@ const FunStuff = () => {
             <div className="w-screen h-[100vh] relative flex flex-col">
                 <HeaderComponent/>
                 <section
-                    className="w-full h-[calc(100%_-128px)] relative justify-start items-center mt-[60px] inline-flex flex-col"
+                    className="w-full min-h-[calc(100vh_-_108px)] lg:min-h-[calc(100vh_-_138px)] relative justify-start items-start mt-[40px] lg:mt-[70px] inline-flex flex-col"
                     onMouseDown={handleMouseDown}
                     onMouseUp={handleMouseUp}
                     onMouseMove={handleMouseMove}
                     onWheel={handleWheel}
                     onClick={handleMouseClick}
                 >
-                    <nav id="cancel" className={`w-[50%] h-fit my-[10px] flex justify-between px-4 text-neutral-400 text-[2.2vw] font-normal font-['Junicode'] transition-opacity duration-300 ease-in-out ${currentFullScreen > -1 ? "opacity-0" : ""}`}>
-                        <button
+                    <nav id="cancel" className={`w-fit h-fit my-[10px] ml-[1vmin] flex flex-col justify-between px-4 transition-opacity duration-300 ease-in-out cursor-pointer ${currentFullScreen > -1 ? "opacity-0" : ""}`}>
+                        <h5
                             className={`fun-stuff-title ${category === "sketchbook" ? "text-blue-500" : ""}`}
                             onClick={(e) => categoryClicked(e, "sketchbook")}>
                             Sketchbook
-                        </button>
-                        <button
+                        </h5>
+                        <h5
                             className={`fun-stuff-title ${category === "photography" ? "text-blue-500" : ""}`}
                             onClick={(e) => categoryClicked(e, "photography")}>
                             Photography
-                        </button>
-                        <button
+                        </h5>
+                        <h5
                             className={`fun-stuff-title ${category === "craft" ? "text-blue-500" : ""}`}
                             onClick={(e) => categoryClicked(e, "craft")}>
                             Craft
-                        </button>
+                        </h5>
                     </nav>
-                    <article ref={imageHolder} className={`w-full flex gap-[4vmin] absolute left-1/2 top-1/2 transform -translate-x-[64vmin] -translate-y-1/2 select-none transition-opacity duration-300 ease-in-out ${transition ? 'opacity-0': ''}`}>
+                    <article ref={imageHolder} className={`w-full flex gap-[4vmin] absolute left-1/2 top-1/2 transform -translate-x-[108vmin] -translate-y-[calc(50%_-_3.75vw)] select-none transition-opacity duration-300 ease-in-out ${transition ? 'opacity-0': ''}`}>
                         {
                             data![category].map((image, index) => (
                                 <img

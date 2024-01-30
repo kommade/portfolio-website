@@ -6,7 +6,7 @@ const FooterComponent = () => {
     <footer className="w-full h-[68px] relative flex justify-between px-10 bg-[#FBFBF1]">
         <section className="h-[40%] flex flex-col items-start my-4">
             <article>
-                <p className="text-black text-[8px] lg:text-[10px] xl:text-[12px] font-normal font-['Epilogue']">
+                <p className="xs-regular text-[#37344B]">
                 ©2024 Juliette Khoo<br/>Designed and built by Juliette and Jarrell Khoo
                 </p>
             </article>

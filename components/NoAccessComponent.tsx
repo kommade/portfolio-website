@@ -4,9 +4,9 @@ const NoAccessComponent = (
   { text = "You do not have permission to view this page." }
     : { text?: string }) => {
   return (
-      <div className="w-full min-h-[calc(100vh_-_128px)] relative items-center justify-center mt-[60px] flex flex-col font-['Epilogue'] text-3xl text-center">
+      <h2 className="w-full min-h-[calc(100vh_-_108px)] lg:min-h-[calc(100vh_-_138px)] relative items-center justify-center h-[40px] lg:h-[70px] flex flex-col">
           {text}
-      </div>
+      </h2>
   )
 }
 

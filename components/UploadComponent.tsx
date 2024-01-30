@@ -36,19 +36,19 @@ const UploadComponent = ({ type }: { type: string | undefined }) => {
     switch (type) {
         case "project":
             return (
-                <form className="w-full min-h-[calc(100vh_-_128px)] mt-[60px] flex flex-col justify-center items-center" action={()=>{}}>
-                    <label>
+                <form className="w-full min-h-[calc(100vh_-_108px)] lg:min-h-[calc(100vh_-_138px)] mt-[40px] lg:mt-[70px] flex flex-col justify-center items-center" action={()=>{}}>
+                    <h5>
                         Title:
                         <input type="text" name="title" defaultValue='placeholder'/>
-                    </label>
-                    <label>
+                    </h5>
+                    <h5>
                         Description:
                         <input type="text" name="desc" defaultValue='placeholder'/>
-                    </label>
-                    <label>
+                    </h5>
+                    <h5>
                         Image:
                         <input type="file" name="image" accept="image/*"/>
-                    </label>
+                    </h5>
                     <button className=" bg-white" type="submit">Submit</button>
                 </form>
             );
@@ -81,24 +81,24 @@ const UploadComponent = ({ type }: { type: string | undefined }) => {
                     }>
                         <div className="flex flex-col m-4 ">
                             <section className="flex flex-col gap-2.5">
-                                <label className="text-start text-gray-700 text-sm font-semibold font-['Epilogue'] leading-[17.40px] tracking-tight">
+                                <label className="xs-semibold text-start text-[#37344B]">
                                     Name:
                                 </label>
                                 <input className={`w-[300px] h-[42px] bg-neutral-200 pl-2 font-['Epilogue'] text-sm focus:ring-2`} spellCheck={false} name="name" required/>
                             </section>
                             <section className="flex flex-col mt-2 gap-2.5">
-                                <label className="text-start text-gray-700 text-sm font-semibold font-['Epilogue'] leading-[17.40px] tracking-tight">
+                                <label className="xs-semibold text-start text-[#37344B]">
                                     Type:
                                 </label>
                                 <div
                                     ref={parentDropdownRef}
-                                    className={`w-[300px] h-[42px] bg-neutral-200 pl-2 font-['Epilogue'] text-sm rounded-lg text-start flex justify-start items-center z-[1]`}
+                                    className={`w-[300px] h-[42px] bg-neutral-200 pl-2 rounded-lg text-start flex justify-start items-center z-[1]`}
                                     onClick={() => setDropdown(true)}>
-                                    <h1 className="select-none ">{dropdown ? "..." : category}</h1>
+                                    <p className="xs-regular select-none ">{dropdown ? "..." : category}</p>
                                 </div>
-                                <div ref={dropdownRef} className={` absolute translate-y-1/2 w-[300px] h-[126px] bg-neutral-200 text-sm rounded-lg rounded-t-none font-['Epilogue'] p-2 z-0 ${dropdown ? "" : "hidden"}`}>
+                                <div ref={dropdownRef} className={` absolute translate-y-1/2 w-[300px] h-[126px] bg-neutral-200 text-sm rounded-lg rounded-t-none p-2 z-0 ${dropdown ? "" : "hidden"}`}>
                                     <div
-                                        className="w-full flex justify-start items-center gap-2 py-2 rounded-lg hover:bg-white hover:cursor-pointer"
+                                        className="xs-regular w-full flex justify-start items-center gap-2 py-2 pl-2 rounded-lg hover:bg-white hover:cursor-pointer"
                                         onClick={() => {
                                             setCategory("Sketchbook")
                                             setDropdown(false)
@@ -106,7 +106,7 @@ const UploadComponent = ({ type }: { type: string | undefined }) => {
                                         Sketchbook
                                     </div>
                                     <div
-                                        className="w-full flex justify-start items-center gap-2 py-2 rounded-lg hover:bg-white hover:cursor-pointer"
+                                        className="xs-regular w-full flex justify-start items-center gap-2 py-2 pl-2 rounded-lg hover:bg-white hover:cursor-pointer"
                                         onClick={() => {
                                             setCategory("Photography")
                                             setDropdown(false)
@@ -114,7 +114,7 @@ const UploadComponent = ({ type }: { type: string | undefined }) => {
                                         Photography
                                     </div>
                                     <div
-                                        className="w-full flex justify-start items-center gap-2 py-2 rounded-lg hover:bg-white hover:cursor-pointer"
+                                        className="xs-regular w-full flex justify-start items-center gap-2 py-2 pl-2 rounded-lg hover:bg-white hover:cursor-pointer"
                                         onClick={() => {
                                             setCategory("Craft")
                                             setDropdown(false)
@@ -124,17 +124,17 @@ const UploadComponent = ({ type }: { type: string | undefined }) => {
                                 </div>
                             </section>
                             <section className="flex flex-col mt-2 gap-2.5">
-                                <label className="text-start text-gray-700 text-sm font-semibold font-['Epilogue'] leading-[17.40px] tracking-tight">
+                                <label className="xs-semibold text-start text-[#37344B]">
                                     Image:
                                 </label>
                                 <div {...getRootProps()} className={` w-[300px] h-[84px] bg-neutral-200 pl-2 font-['Epilogue'] text-sm flex justify-center items-center text-center rounded-lg ${fileRejections.length > 0 ? "border-2 border-red-600" : ""}`}>
                                     <input {...getInputProps()}/>
-                                    <h1>{ acceptedFiles.length > 0 ? acceptedFiles.at(0)!.name : "Drop file here or click to upload..." }</h1>
+                                    <p className="xs-regular">{ acceptedFiles.length > 0 ? acceptedFiles.at(0)!.name : "Drop file here or click to upload..." }</p>
                                 </div>  
-                                <h1 className="h-[10px] m-2 text-red-600 font-['Epilogue'] text-xs">{fileRejections.length > 0 ? fileRejections.at(-1)!.errors.at(0)!.message : ""}</h1>
+                                <p className="h-[10px] m-2 text-red-600 xs-regular">{fileRejections.length > 0 ? fileRejections.at(-1)!.errors.at(0)!.message : ""}</p>
                             </section>
                         </div>
-                        <input className={`m-2 w-[300px] h-[54px] bg-gray-700 rounded-xl px-6 py-1 hover:cursor-pointer text-center text-base font-light font-['Epilogue'] leading-normal tracking-tight active:bg-orange-50 active:border active:border-gray-700 active:text-gray-700 ${submit ? "bg-orange-50 border border-gray-700 text-gray-700" : "text-white"}`} type="submit" value="Upload" disabled={submit}/>
+                        <input className={`m-2 w-[300px] h-[54px] bg-[#37344B] rounded-xl px-6 py-1 hover:cursor-pointer text-center s-light active:bg-orange-50 active:border active:border-[#37344B] active:text-[#37344B] ${submit ? "bg-orange-50 border border-[#37344B] text-[#37344B]" : "text-white"}`} type="submit" value="Upload" disabled={submit}/>
                     </form>
                     <PopUpComponent popUpProps={popUp} />
                 </>

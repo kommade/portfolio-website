@@ -2,9 +2,9 @@ import React from 'react'
 
 const SomethingWentWrongComponent = () => {
   return (
-      <div className="w-full min-h-[calc(100%_-_128px)] relative items-center justify-center mt-[60px] flex flex-col font-['Epilogue'] text-3xl text-center">
+      <h2 className="w-full min-h-[calc(100vh_-_108px)] lg:min-h-[calc(100vh_-_138px)] relative items-center justify-center mt-[40px] lg:mt-[70px] flex flex-col text-center">
           Whoops! Something went wrong. 
-      </div>
+      </h2>
   )
 }
 

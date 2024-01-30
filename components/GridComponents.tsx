@@ -86,13 +86,13 @@ const GridComponent: React.FC<GridComponentProps> = ({ projectKey, span }) => {
                 onMouseOut={() => setIsHovered(false)}
             >
                 <img className={`object-cover object-left w-full h-full absolute mix-blend-luminosity transition-all ${isHovered ? ' blur-[2px]' : ''}`} src={data.image} alt={`${data.name} image`} />
-                <p className={`popup w-full h-full absolute flex p-20 items-center justify-center text-center transition-all text-black text-sm font-normal font-['Epilogue'] leading-[0.85rem] ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
+                <p className={`popup w-full h-full absolute flex p-20 items-center justify-center text-center transition-all text-black xs-regular ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
                 {data.desc}
                 </p>
             </section>
-            <section className="top-[80%] absolute left-2">
-                <h1 className="grid-title">{data.name}</h1>
-                <h2 className="grid-year">{data.year}</h2>
+            <section className="top-[80%] absolute left-2 p-2">
+                <h3 className="text-[#AAADA3] whitespace-nowrap">{data.name}</h3>
+                <h5 className="text-[#AAADA3]">{data.year}</h5>
             </section>
         </Link>
     );
@@ -119,7 +119,7 @@ const GridComponents = ({ keys, max }: { keys: string[], max: number }) => {
 
     return (
         isRenderingComplete ? (
-            <section className="work-display w-[85%] h-fit min-h-[calc(100vh_-_128px)] left-[7.5%] relative justify-center mt-28 grid grid-cols-1 lg:grid-cols-3 grid-flow-row gap-y-6 gap-x-0 lg:gap-x-6 xl:gap-8 2xl:gap-10">
+            <section className="work-display w-[85%] h-fit min-h-[calc(100vh_-_108px)] lg:min-h-[calc(100vh_-_138px)] left-[7.5%] relative justify-center mt-[50px] lg:mt-[80px] grid grid-cols-1 lg:grid-cols-3 grid-flow-row gap-y-6 gap-x-0 lg:gap-x-6 xl:gap-8 2xl:gap-10">
                 {renderGrid}
             </section>
         ) : <LoadingComponent/>

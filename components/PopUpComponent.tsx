@@ -20,7 +20,7 @@ export const PopUpComponent = ({ popUpProps }: { popUpProps: PopUpProps }) => {
     }
     return (
         <div className={`bottom-[5vh] left-1/2 -translate-x-1/2 fixed h-[60px] w-fit ${color} rounded-lg z-[1000] flex justify-center items-center transition-opacity ease-in-out duration-500 ${popUpProps.duration === 0 ? "opacity-0" : "opacity-80"}`}>
-            <h1 className="text-xs font-['Epilogue'] m-4">{popUpProps.message}</h1>
+            <p className="xs-regular p-2">{popUpProps.message}</p>
         </div>
     )
 }
