@@ -57,7 +57,7 @@ const HeaderComponent = ({ isLoginPage = false, isNewPage = false }) => {
   return (
       isClient ? (
           // TODO: header shifts cuz of scrollbar
-      <header className=" w-[100vw] pr-2 h-[40px] lg:h-[70px] fixed z-10 bg-[#FBFBF1] flex flex-col justify-center shadow">
+      <header className=" w-[100vw] h-[40px] lg:h-[70px] fixed z-10 bg-[#FBFBF1] flex flex-col justify-center shadow">
           <div className="fixed left-0">
           {( loggedIn  && !isNewPage && isAdmin) && (           
             <>
@@ -103,7 +103,7 @@ const HeaderComponent = ({ isLoginPage = false, isNewPage = false }) => {
             </h1>
           </Link>
         </div>
-        <div className="fixed right-0">
+        <div className="fixed right-2">
           {
             !isLoginPage ? (!loggedIn ? (
             <Link className="place-self-center m-6 hover:cursor-pointer" href={pathname === "/" ? "/login" : `/login?redirect=${pathname}`} rel="noopener noreferrer">

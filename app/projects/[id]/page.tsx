@@ -89,7 +89,7 @@ export default function ProjectPage({
     }
     return (
         <main className="flex flex-col items-center justify-between overflow-x-clip">
-            <div className="w-screen h-[100vh] relative flex flex-col">
+            <div className="w-screen min-h-[100vh] relative flex flex-col">
                 <HeaderComponent/>
                 {
                     access ? (
@@ -100,34 +100,34 @@ export default function ProjectPage({
                                     onMouseEnter={() => setisHovered(true)}
                                     onMouseLeave={() => setisHovered(false)}
                                 >
-                                    <article className="lg:w-[25vw] flex flex-col flex-shrink-0 justify-start items-start mx-auto lg:ml-8 py-4 lg:py-0 px-20 lg:p-4 border rounded-lg lg:border-none lg:rounded-none">
-                                        <ul className="h-fit flex-col justify-start items-start inline-flex mb-4 mt-4">
-                                            <li className="text-black text-[26px] font-[600] font-['Junicode']">Love Our Hood Fund</li>
-                                            <li className="text-black text-sm font-normal font-['Epilogue'] tracking-tight">2023</li>
+                                    <article className="xs-regular lg:w-[25vw] flex flex-col flex-shrink-0 justify-start items-start mx-auto lg:ml-8 py-4 lg:py-0 px-20 lg:p-4 border rounded-lg lg:border-none lg:rounded-none">
+                                        <ul className="h-fit flex-col justify-start items-start inline-flex mb-4 mt-4 pt-2">
+                                            <h2>Love Our Hood Fund</h2>
+                                            <h4>2023</h4>
                                         </ul>
                                         <ul className="h-fit flex-col justify-start items-start inline-flex my-2">
-                                            <li className="project-list-title text-blue-500">PROJECT TYPE</li>
-                                            <li className="project-list-subtitle">Industrial/Product Design</li>
-                                            <li className="project-list-subtitle">Community grant</li>
+                                            <h4 className="text-blue-500">PROJECT TYPE</h4>
+                                            <li className="">Industrial/Product Design</li>
+                                            <li className="xs-regular">Community grant</li>
                                         </ul>
                                         <ul className="h-fit flex-col justify-start items-start inline-flex my-2">
-                                            <li className="project-list-title text-blue-500">TEAM</li>
-                                            <li className="project-list-subtitle">4 team members including myself</li>
+                                            <h4 className="text-blue-500">TEAM</h4>
+                                            <li>4 team members including myself</li>
                                         </ul>
                                         <ul className="h-fit flex-col justify-start items-start inline-flex my-2">
-                                            <li className="project-list-title text-blue-500">SKILLSET</li>
-                                            <li className="project-list-subtitle">Graphic Design</li>
-                                            <li className="project-list-subtitle">3D design and visualisation</li>
-                                            <li className="project-list-subtitle">Physical prototyping</li>
+                                            <h4 className="text-blue-500">SKILLSET</h4>
+                                            <li>Graphic Design</li>
+                                            <li>3D design and visualisation</li>
+                                            <li>Physical prototyping</li>
                                         </ul>
                                         <ul className="h-fit flex-col justify-start items-start inline-flex my-2">
-                                            <li className="project-list-title text-blue-500">APPROACH</li>
-                                            <li className="project-list-subtitle">Problem definition</li>
-                                            <li className="project-list-subtitle">Research and Ideation</li>
-                                            <li className="project-list-subtitle">Prototyping and design</li>
-                                            <li className="project-list-subtitle">Project pitch</li>
-                                            <li className="project-list-subtitle">Iteration</li>
-                                            <li className="project-list-subtitle">Manufacture and assembly</li>
+                                            <h4 className="text-blue-500">APPROACH</h4>
+                                            <li>Problem definition</li>
+                                            <li>Research and Ideation</li>
+                                            <li>Prototyping and design</li>
+                                            <li>Project pitch</li>
+                                            <li>Iteration</li>
+                                            <li>Manufacture and assembly</li>
                                         </ul>
                                     </article>
                                 </section>
@@ -152,21 +152,21 @@ export default function ProjectPage({
                             <article className={`transition-[width] ease-in-out ml-auto mr-6 ${sidebarIsOpen ? "lg:w-[70vw]" : "lg:w-[95vw]"} w-fit flex flex-col justify-center items-center`}>
                                 <section className="w-[90%] flex-col justify-center items-start flex mb-4 mt-2">
                                     <div className="w-full aspect-[8/5] bg-zinc-300 my-4" />
-                                    <h1 className="project-list-title text-gray-700">BRIEF</h1>
-                                    <p className="project-list-subtitle">
+                                    <h4>BRIEF</h4>
+                                    <p className="s-regular">
                                         This was a design challenge done as part of a youth challenge launched by the Municipal Services Office (MSO) Singapore. MSO mentors and funds youths up to $10,000 to pilot municipal-related ideas within their community. We chose to tackle the problem of neighbourhood noise in HDB blocks in Singapore.
                                     </p>
                                 </section>
                                 <section className="w-[90%] flex-col justify-center items-start flex my-4">
-                                    <h1 className="project-list-title text-gray-700">PROBLEM DEFINITION</h1>
-                                    <p className="project-list-subtitle">
+                                    <h4>PROBLEM DEFINITION</h4>
+                                    <p className="s-regular">
                                         Statistics show that noise-related feedback to the town council and police force increased sharply during the COVID-19 pandemic and remained at elevated levels. 42% of all the feedback received was regarding noise from DIY renovation.
                                     </p>
                                     <div className="w-full aspect-[8/5] bg-zinc-300 my-4" />
                                 </section>
                                 <section className="w-[90%] flex-col justify-start items-start flex gap-6 my-4">
-                                    <h1 className="project-list-title text-gray-700">RESEARCH AND IDEATION</h1>
-                                    <p className="project-list-subtitle">
+                                    <h4>RESEARCH AND IDEATION</h4>
+                                    <p className="s-regular">
                                         Our interviews revealed that neighbours want a non-confrontational, fuss-free way to address noise-related issues. Through ideation sessions, the idea of having a notification message board that promoted communication and interaction arose, inspired by the way locksmiths arrange keys.
                                     </p>
                                     <article className="w-full lg:aspect-[11/9] flex flex-col gap-4 lg:gap-6">
@@ -181,7 +181,7 @@ export default function ProjectPage({
                                     </article>
                                 </section>
                                 <section className="w-[90%] flex-col justify-start items-start flex gap-4 lg:gap-6 my-4">
-                                    <h1 className="project-list-title text-gray-700">PROTOTYPING, DESIGN AND PITCHING</h1>
+                                    <h4>PROTOTYPING, DESIGN AND PITCHING</h4>
                                     <article className="w-full lg:aspect-[11/9] flex flex-col gap-4 lg:gap-6">
                                         <div className="w-full justify-start items-stretch gap-4 lg:gap-6 inline-flex flex-col lg:flex-row">
                                             <div className="lg:w-[63%] aspect-[17/12] bg-zinc-300" />

@@ -41,6 +41,7 @@ h4 {
     font-weight: 600;
     line-height: 100%;
     letter-spacing: 0.4px;
+    color: var(--Eggplant-Purple, #37344B);
 }
 
 h5 {
@@ -53,6 +54,7 @@ h5 {
 
 .s-regular {
     font-size: 18px;
+    font-family: Epilogue;
     font-weight: normal;
     line-height: 145%;
     letter-spacing: 0.36px;
@@ -60,6 +62,7 @@ h5 {
 
 .s-light {
     font-size: 18px;
+    font-family: Epilogue;
     font-weight: 300;
     line-height: 145%;
     letter-spacing: 0.36px;
@@ -67,6 +70,7 @@ h5 {
 
 .xs-regular {
     font-size: 12px;
+    font-family: Epilogue;
     font-weight: normal;
     line-height: 145%;
     letter-spacing: 0.36px;
@@ -74,6 +78,7 @@ h5 {
 
 .xs-semibold {
     font-size: 12px;
+    font-family: Epilogue;
     font-weight: 600;
     line-height: 145%;
     letter-spacing: 0.36px;
@@ -108,26 +113,17 @@ h5 {
         font-size: 16px;
         letter-spacing: 0.32px;
     }
+    .grid-wide {
+        grid-column: span 1;
+        aspect-ratio: 1 / 1;
+    }
 }
 
-.grid-year {
-  color: var(--Warm-Grey, #AAADA3);
-  font-family: Epilogue;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-}
-
-.about-title {
-  color: #fff;
-  font-family: Junicode;
-  font-size: 32px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: -1.8px;
-  white-space: nowrap;
+@media (min-width: 1023px) {
+    .grid-wide {
+        grid-column: span 2;
+        aspect-ratio: 2.1 / 1;
+    }
 }
 
 .grid-long {
@@ -135,53 +131,7 @@ h5 {
   aspect-ratio: 1 / 2.1;
 }
 
-@media (min-width: 1024px) {
-  .grid-title {
-    font-size: 2.5vw;
-  }
-  .grid-year {
-    font-size: 1.1vw;
-  }
-  .grid-wide {
-    grid-column: span 2;
-    aspect-ratio: 2.1 / 1;
-  }
-  
-}
-
-@media (max-width: 1023px) {
-  .grid-wide {
-    grid-column: span 1;
-    aspect-ratio: 1 / 1;
-  }
-}
-
-.about {
-  font-size: 0.75rem; /* text-xs */
-  font-family: 'Epilogue', sans-serif;
-  line-height: 1.74; /* leading-[17.40px] */
-  letter-spacing: -0.025em; /* tracking-tight */
-}
-
-.project-list-title {
-  font-size: 0.875rem; /* text-sm */
-  font-weight: 600; /* font-[600] */
-  font-family: 'Epilogue';
-  line-height: 29px; /* leading-[29px] */
-  letter-spacing: -0.025em; /* tracking-tight */
-}
-
-.project-list-subtitle {
-  color: #4b5563; /* text-gray-700 */
-  font-size: 0.75rem; /* text-xs */
-  font-weight: normal; /* font-normal */
-  font-family: 'Epilogue';
-  line-height: 1.5; /* leading-normal */
-  letter-spacing: -0.025em; /* tracking-tight */
-}
-
 .fun-stuff-title {
-  width: 100%;
   text-align: start;
   transition-property: color;
   transition-duration: 300ms;

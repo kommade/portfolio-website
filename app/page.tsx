@@ -31,7 +31,7 @@ function Home() {
           </h2>
           <article className="info-container pb-16 h-fit ">
             <div className="flex flex-col lg:flex-row justify-center items-center lg:items-stretch">
-              <section className="photo-competencies flex flex-col lg:mr-6 items-start">
+              <section className=" flex flex-col lg:mr-6 items-start">
                 <div className=" w-[198px] h-[256px] overflow-hidden">
                   <img
                     className="object-cover object-bottom"
@@ -54,7 +54,7 @@ function Home() {
                   </li>
                 </ul>
               </section>
-              <section className="w-[35%] min-w-[400px] p-8 bg-white flex flex-col justify-between lg:self-stretch gap-4">
+              <section className="w-[35%] min-w-[400px] p-8 bg-[#FBFBF1] flex flex-col justify-between lg:self-stretch gap-4">
                 <p className="xs-regular"> 
                   My name is Juliette and I grew up in the sunny island of Singapore. Since I was little, I&apos;ve always been busy making things with my hands. <br /><br />
                   After graduating with a BSc (Hons) in Architecture from the University of Bath in 2023, I returned to Singapore to pursue a career in user research &

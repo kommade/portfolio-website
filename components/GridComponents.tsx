@@ -90,8 +90,8 @@ const GridComponent: React.FC<GridComponentProps> = ({ projectKey, span }) => {
                 {data.desc}
                 </p>
             </section>
-            <section className="top-[80%] absolute left-2 p-2">
-                <h3 className="text-[#AAADA3] whitespace-nowrap">{data.name}</h3>
+            <section className="top-[80%] absolute left-4">
+                <h3 className="text-[#AAADA3] whitespace-nowrap pt-[8px]">{data.name}</h3>
                 <h5 className="text-[#AAADA3]">{data.year}</h5>
             </section>
         </Link>
