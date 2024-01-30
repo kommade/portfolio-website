@@ -11,10 +11,10 @@ const Contact = () => {
     const [output, setOutput] = useState("");
     return (
         <main className="flex flex-col items-center justify-between overflow-x-clip">
-            <div className="w-screen relative flex flex-col">
+            <div className="w-screen h-[100vh] relative flex flex-col">
                 <HeaderComponent/>
                 <form
-                    className="w-full h-[68vh] relative items-center justify-center mt-28 flex flex-col"
+                    className="w-full min-h-[calc(100%_-_128px)] relative items-center justify-center mt-[60px] flex flex-col"
                     action={async (formData) => {
                         const res = await submitContactForm(formData);
                         if (res.success) {

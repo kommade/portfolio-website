@@ -31,7 +31,7 @@ const LoginComponent = ( { redirect } : { redirect : string | undefined } ) => {
                 
             }
             setOutput(out.message);
-        }} className="w-full h-[69vh] relative justify-center items-center mt-28 inline-flex flex-col">
+        }} className="w-full min-h-[calc(100vh_-_128px)] relative justify-center items-center mt-[60px] inline-flex flex-col">
             <div className="flex flex-col m-4 ">
                 <section className="flex flex-col gap-2.5">
                     <label className="text-start text-gray-700 text-sm font-semibold font-['Epilogue'] leading-[17.40px] tracking-tight">

@@ -7,6 +7,7 @@ import { getAllProjects } from "@/actions/actions";
 import { useEffect, useState } from "react";
 import ScrollToTop from "@/components/ScrollToTop";
 import Link from "next/link";
+import ScrollComponent from "@/components/ScrollComponent";
 
 function Home() {
   const [keys, setKeys] = useState<string[]>([])
@@ -19,7 +20,7 @@ function Home() {
   }, [])
   return (
     <main className="flex flex-col items-center justify-between overflow-x-clip">
-      <div className="w-screen relative flex flex-col">
+      <div className="w-screen h-fit min-h-[100vh] relative flex flex-col">
         <ScrollToTop/>
         <HeaderComponent/>
         <GridComponents keys={keys} max={12}/>
@@ -28,7 +29,7 @@ function Home() {
           <h2 className="text-center about-title py-6">
             About Me
           </h2>
-          <article className="info-container pb-32 h-fit ">
+          <article className="info-container pb-16 h-fit ">
             <div className="flex flex-col lg:flex-row justify-center items-center lg:items-stretch">
               <section className="photo-competencies flex flex-col lg:mr-6 items-start">
                 <div className=" w-[198px] h-[256px] overflow-hidden">
@@ -53,7 +54,7 @@ function Home() {
                   </li>
                 </ul>
               </section>
-              <section className="w-[35%] min-w-[400px] p-8 bg-white flex flex-col justify-between lg:self-stretch">
+              <section className="w-[35%] min-w-[400px] p-8 bg-white flex flex-col justify-between lg:self-stretch gap-4">
                 <p className="about"> 
                   My name is Juliette and I grew up in the sunny island of Singapore. Since I was little, I&apos;ve always been busy making things with my hands. <br /><br />
                   After graduating with a BSc (Hons) in Architecture from the University of Bath in 2023, I returned to Singapore to pursue a career in user research &
@@ -62,7 +63,7 @@ function Home() {
                   Current areas of interest include: Information design, data journalism, user experience design, strategic design
                 </p>
                 <Link
-                  className="w-[50%] h-[10%] mt-2 place-self-center flex justify-center items-center bg-white rounded-[15px] border border-gray-700 transform transition duration-500 ease-in-out hover:scale-110 hover:cursor-pointer"
+                  className="w-[50%] h-[10%] min-h-[40px] mt-2 place-self-center flex justify-center items-center bg-white rounded-[15px] border border-gray-700 transform transition duration-500 ease-in-out hover:scale-110 hover:cursor-pointer"
                   href="/contact"
                   rel="noopener noreferrer"
                 >
@@ -70,15 +71,20 @@ function Home() {
                     Drop me a message
                   </div>
                 </Link>
-                <a className="w-[50%] h-[10%] mb-2 place-self-center flex justify-center items-center bg-white rounded-[15px] border border-gray-700 transform transition duration-500 ease-in-out hover:scale-110 hover:cursor-pointer">
+                <Link
+                  className="w-[50%] h-[10%] min-h-[40px] mb-2 place-self-center flex justify-center items-center bg-white rounded-[15px] border border-gray-700 transform transition duration-500 ease-in-out hover:scale-110 hover:cursor-pointer"
+                  href="/fun-stuff"
+                  rel="noopener noreferrer"
+                >
                   <div className="w-full h-fit text-center text-gray-700 text-base font-light font-['Epilogue'] leading-normal tracking-tight">
                     Fun stuff I&apos;ve made 
                   </div>
-                </a>
+                </Link>
               </section>
             </div>
           </article>
         </section>
+        <ScrollComponent/>
         <FooterComponent/>
       </div>
     </main>

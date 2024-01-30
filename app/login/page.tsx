@@ -19,7 +19,7 @@ export default function Login() {
     // fix so it doesnt show before confirming
     return (
         <main className="flex flex-col items-center justify-between overflow-x-clip">
-            <div className="w-screen relative flex flex-col">
+            <div className="w-screen h-[100vh] relative flex flex-col">
                 <HeaderComponent isLoginPage={true} />
                 <LoginComponent redirect={redirect ? redirect : "/"} />
                 <FooterComponent/>

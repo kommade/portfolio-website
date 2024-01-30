@@ -3,22 +3,22 @@ import Link from "next/link"
 
 const FooterComponent = () => {
   return (
-    <footer className="w-full h-fit relative flex bg-[#FBFBF1]">
-        <section className="w-[40%] h-[40%] flex flex-col items-start my-4 ml-[10%]">
+    <footer className="w-full h-[68px] relative flex justify-between px-10 bg-[#FBFBF1]">
+        <section className="h-[40%] flex flex-col items-start my-4">
             <article>
                 <p className="text-black text-[8px] lg:text-[10px] xl:text-[12px] font-normal font-['Epilogue']">
                 ©2024 Juliette Khoo<br/>Designed and built by Juliette and Jarrell Khoo
                 </p>
             </article>
         </section>
-        <ul className="w-[90%] h-[10%] items-center inline-flex my-auto ml-[30%] mr-[10%] lg:mr-0 justify-between max-w-[145px] gap-[10%]">
+        <ul className="items-center inline-flex my-4 lg:mr-0 justify-between max-w-[145px] gap-[10%]">
             <li>
                 <a target="_blank" rel="noopener noreferrer">
                 <Image
                     src="/icons/email.svg"
                     alt="email svg"
-                    width={24}
-                    height={24}
+                    width={32}
+                    height={32}
                 />
                 </a>
             </li>
@@ -27,8 +27,8 @@ const FooterComponent = () => {
                     <Image
                         src="/icons/instagram.svg"
                         alt="insta svg"
-                        width={24}
-                        height={24}
+                        width={32}
+                        height={32}
                     />
                 </Link>
             </li>
@@ -37,8 +37,8 @@ const FooterComponent = () => {
                     <Image
                         src="/icons/linkedin.svg"
                         alt="linkedin svg"
-                        width={24}
-                        height={24}
+                        width={32}
+                        height={32}
                     />
                 </Link>
             </li>
@@ -47,8 +47,8 @@ const FooterComponent = () => {
                     <Image
                         src="/icons/m.svg"
                         alt="medium svg"
-                        width={24}
-                        height={24}
+                        width={32}
+                        height={32}
                     />
                 </Link>
             </li>

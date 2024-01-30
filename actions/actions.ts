@@ -6,6 +6,7 @@ import { kv } from "@vercel/kv";
 import bcrypt from 'bcrypt';
 import jwt, { TokenExpiredError } from "jsonwebtoken";
 import emailTemplate from "./emailTemplate";
+import sizeOf from "image-size";
 
 interface User {
     id: string,
@@ -14,19 +15,6 @@ interface User {
     last: string,
     [key: string]: unknown;
 }
-
-export async function submit(formData: FormData) {
-    const keys = await kv.keys("project:*");
-    const nextId = keys.length;
-    const image = formData.get("image") as File;
-    const imageURL = await put(image.name, image, { access: "public"})
-    await kv.hmset(`project:${nextId}`, {
-        name: formData.get("title"),
-        desc: formData.get("desc"),
-        image: imageURL.url
-    })
-    return { success: true }
-};
 
 export async function login(formdata: FormData) {
     const username = formdata.get("username") as string;
@@ -125,3 +113,57 @@ export async function submitContactForm(formData : FormData) {
     }
     return { success: true };
 }
+
+export async function getFunStuff() {
+    const sketchData = await getAllCategoryData(await kv.keys("sketchbook*"));
+    const photogData = (await getAllCategoryData(await kv.keys("photography*")));
+    const craftData = await getAllCategoryData(await kv.keys("craft*"));
+    return {
+        data: {
+            sketchbook: sketchData.data,
+            photography: photogData.data.reverse(),
+            craft: craftData.data
+        },
+        success: sketchData.success && photogData.success && craftData.success
+    };
+}
+
+export async function getAllCategoryData(ids: string[]) {
+    let success = true;
+    const data = await Promise.all(ids.map(async (id) => {
+        const res = await getFunStuffData(id);
+        if (!res.success) {
+            success = false;
+        }
+        return res.data as { name: string, url: string } | null;
+    }))
+    return { success: success, data: data }
+}
+
+export async function getFunStuffData(id: string) {
+    const data = await kv.hgetall(id);
+    if (data) {
+        return { success: true, data: data }
+    }
+    return { success: false, data: null }
+}
+
+export async function submitNewFunStuff(formData: FormData) {
+    const category = formData.get("type")!;
+    const keys = await kv.keys(`${category}:*`);
+    const nextId = keys.length;
+    const image = formData.get('image') as File;
+    const sizeof = sizeOf(new Uint8Array(await image.arrayBuffer()));
+    if (!sizeof.width || !sizeof.height) {
+        return { success: false, message: "Unable to confirm aspect ratio of image" }
+    }
+    if ((sizeof.width / sizeof.height) < (5 / 7) || (sizeof.width / sizeof.height) > (3 / 2)) {
+        return { success: false, message: "Image aspect ratio too small/large" }
+    }
+    const imageURL = await put(image.name, image, { access: "public" })
+    await kv.hmset(`${category}:${nextId}`, {
+        name: formData.get("name"),
+        url: imageURL.url
+    })
+    return { success: true }
+};

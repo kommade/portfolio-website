@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from 'react'
 import Image from "next/image"
 
@@ -12,10 +14,10 @@ const ScrollComponent = () => {
         window.addEventListener('scroll', handleScroll);
 
         return () => window.removeEventListener('scroll', handleScroll);
-    }, [window])
+    }, [])
     return (
         <button
-            className="bottom-2 right-2 w-20 h-[120px] fixed z-[1000]"
+            className="bottom-8 right-2 w-20 h-[120px] fixed z-[1000]"
             onClick={() => window.scrollTo({
                 top: 0,
                 behavior: 'smooth',

@@ -13,10 +13,12 @@
     "@vercel/kv": "^1.0.1",
     "bcrypt": "^5.1.1",
     "buffer": "^6.0.3",
+    "image-size": "^1.1.1",
     "jsonwebtoken": "^9.0.2",
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",
+    "react-dropzone": "^14.2.3",
     "resend": "^2.1.0",
     "svg-path-morph": "^1.0.5"
   },

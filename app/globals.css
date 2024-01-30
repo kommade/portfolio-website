@@ -4,33 +4,11 @@
 
 body {
   background: var(--Pale-Butter, #FBFBF1);
+  overscroll-behavior-x: none;
 }
 
 .grid-title {
   color: var(--Air-Force-Blue, #3688D5);
-  font-family: Junicode;
-  font-size: 32px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: -1.8px;
-  white-space: nowrap;
-}
-
-@media (min-width: 1024px) {
-  .grid-title {
-    font-size: 2.5vw;
-  }
-}
-
-@media (min-width: 1024px) {
-  .grid-year {
-    font-size: 1.1vw;
-  }
-}
-
-.about-title {
-  color: #fff;
   font-family: Junicode;
   font-size: 32px;
   font-style: normal;
@@ -49,22 +27,40 @@ body {
   line-height: normal;
 }
 
+.about-title {
+  color: #fff;
+  font-family: Junicode;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -1.8px;
+  white-space: nowrap;
+}
+
 .grid-long {
   grid-row: span 2;
   aspect-ratio: 1 / 2.1;
+}
+
+@media (min-width: 1024px) {
+  .grid-title {
+    font-size: 2.5vw;
+  }
+  .grid-year {
+    font-size: 1.1vw;
+  }
+  .grid-wide {
+    grid-column: span 2;
+    aspect-ratio: 2.1 / 1;
+  }
+  
 }
 
 @media (max-width: 1024px) {
   .grid-wide {
     grid-column: span 1;
     aspect-ratio: 1 / 1;
-  }
-}
-
-@media (min-width: 1024px) {
-  .grid-wide {
-    grid-column: span 2;
-    aspect-ratio: 2.1 / 1;
   }
 }
 
@@ -90,6 +86,18 @@ body {
   font-family: 'Epilogue';
   line-height: 1.5; /* leading-normal */
   letter-spacing: -0.025em; /* tracking-tight */
+}
+
+.fun-stuff-title {
+  width: 100%;
+  text-align: center;
+  transition-property: color;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in-out;
+}
+
+.fun-stuff-title:hover {
+  color: #3688D5;
 }
 
 @font-face {

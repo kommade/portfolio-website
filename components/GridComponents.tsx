@@ -63,23 +63,11 @@ const GridComponent: React.FC<GridComponentProps> = ({ projectKey, span }) => {
             if (!projectKey) {
                 return;
             }
-            let stored;
-            if (typeof localStorage !== 'undefined') {
-                stored = localStorage.getItem(projectKey);
+            const res = await getProjectData(projectKey);
+            if (!res.success) {
+                return;
             }
-            if (!stored) {
-                const res = await getProjectData(projectKey);
-                if (!res.success) {
-                    return;
-                }
-                if (typeof localStorage !== 'undefined') {
-                    localStorage.setItem('myData', JSON.stringify(data));
-                }
-                setData(res.data as ProjectData | null);
-            } else {
-                const data = JSON.parse(stored)
-                setData(data);
-            }
+            setData(res.data as ProjectData | null);
             
         };
         fetchData();
@@ -88,23 +76,25 @@ const GridComponent: React.FC<GridComponentProps> = ({ projectKey, span }) => {
         return <></>;
     }
     return (
-        <article className={`bg-white relative overflow-hidden border-[1px] border-neutral-400 ${span.row === 2 ? 'grid-long' : span.col === 2 ? 'grid-wide' : 'aspect-square'}`}>
-            <Link href={`/projects/${data.id}`} rel="noopener noreferrer">
-                <section className='absolute inset-[15px] border-[1px] border-neutral-400 bottom-[20%]'
-                    onMouseOver={() => setIsHovered(true)}
-                    onMouseOut={() => setIsHovered(false)}
-                >
-                    <img className={`object-cover object-left w-full h-full absolute transition-all ${isHovered ? ' blur-[2px]' : ''}`} src={data.image} alt={`${data.name} image`} />
-                    <p className={`popup w-full h-full absolute flex p-20 items-center justify-center text-center transition-all text-black text-sm font-normal font-['Epilogue'] leading-[0.85rem] ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
-                    {data.desc}
-                    </p>
-                </section>
-                <section className="top-[80%] absolute left-2">
-                    <h1 className="grid-title">{data.name}</h1>
-                    <h2 className="grid-year">{data.year}</h2>
-                </section>
-            </Link>
-        </article>
+        <Link
+            href={`/projects/${data.id}`}
+            rel="noopener noreferrer"
+            className={`bg-white relative overflow-hidden shadow ${span.row === 2 ? 'grid-long' : span.col === 2 ? 'grid-wide' : 'aspect-square'}`}
+        >
+            <section className='absolute inset-[15px] bottom-[20%]'
+                onMouseOver={() => setIsHovered(true)}
+                onMouseOut={() => setIsHovered(false)}
+            >
+                <img className={`object-cover object-left w-full h-full absolute mix-blend-luminosity transition-all ${isHovered ? ' blur-[2px]' : ''}`} src={data.image} alt={`${data.name} image`} />
+                <p className={`popup w-full h-full absolute flex p-20 items-center justify-center text-center transition-all text-black text-sm font-normal font-['Epilogue'] leading-[0.85rem] ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
+                {data.desc}
+                </p>
+            </section>
+            <section className="top-[80%] absolute left-2">
+                <h1 className="grid-title">{data.name}</h1>
+                <h2 className="grid-year">{data.year}</h2>
+            </section>
+        </Link>
     );
 }
 
@@ -129,7 +119,7 @@ const GridComponents = ({ keys, max }: { keys: string[], max: number }) => {
 
     return (
         isRenderingComplete ? (
-            <section className="work-display w-[85%] h-fit min-h-[70vh] left-[7.5%] relative justify-center mt-28 grid grid-cols-1 lg:grid-cols-3 grid-flow-row gap-y-6 gap-x-0 lg:gap-x-6 xl:gap-8 2xl:gap-10">
+            <section className="work-display w-[85%] h-fit min-h-[calc(100vh_-_128px)] left-[7.5%] relative justify-center mt-28 grid grid-cols-1 lg:grid-cols-3 grid-flow-row gap-y-6 gap-x-0 lg:gap-x-6 xl:gap-8 2xl:gap-10">
                 {renderGrid}
             </section>
         ) : <LoadingComponent/>
