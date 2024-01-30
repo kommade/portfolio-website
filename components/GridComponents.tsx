@@ -119,7 +119,7 @@ const GridComponents = ({ keys, max }: { keys: string[], max: number }) => {
 
     return (
         isRenderingComplete ? (
-            <section className="work-display w-[85%] h-fit min-h-[calc(100vh_-_108px)] lg:min-h-[calc(100vh_-_138px)] left-[7.5%] relative justify-center mt-[50px] lg:mt-[80px] grid grid-cols-1 lg:grid-cols-3 grid-flow-row gap-y-6 gap-x-0 lg:gap-x-6 xl:gap-8 2xl:gap-10">
+            <section className="work-display w-[95%] h-fit min-h-[calc(100vh_-_108px)] lg:min-h-[calc(100vh_-_138px)] left-[2.5%] relative justify-center mt-[50px] lg:mt-[80px] grid grid-cols-1 lg:grid-cols-3 grid-flow-row gap-y-6 gap-x-0 lg:gap-x-6">
                 {renderGrid}
             </section>
         ) : <LoadingComponent/>

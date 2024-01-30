@@ -22,6 +22,7 @@ const FunStuff = () => {
     const [prevPercentage, setPrevPercentage] = useState(-108);
     const [mousePos, setMousePos] = useState(0);
     const imageHolder = useRef(null);
+    const numberDisplay = useRef(null);
     const [transition, setTransition] = useState(false);
     const [currentFullScreen, setCurrentFullScreen] = useState(-1);
     const [category, setCategory] = useState<"sketchbook" | "photography" | "craft">("sketchbook")
@@ -118,13 +119,19 @@ const FunStuff = () => {
     const updatePosition = (duration: number = 1200, movement: number = percentage) => {
         if (imageHolder.current) {
             (imageHolder.current as HTMLElement).animate({
-                transform: `translate(${movement}vmin, calc((50% - 3.75vw) * -1))`
+                transform: `translate(${movement}vmin, calc(87px + 4vh)`
+            }, { duration: duration, fill: "forwards" });
+        }
+        if (numberDisplay.current) {
+            console.log(((movement + 20) / ((n - 1) * 44)));
+            (numberDisplay.current as HTMLElement).animate({
+                transform: `translate(0, ${((movement + 20)/ ((n - 1) * 44)) * (n - 1) * 20}px)`
             }, { duration: duration, fill: "forwards" });
         }
         // scary vanilla javascript in a react dom !!!
         Array.from(document.getElementsByClassName("image")).forEach(element => {
             element.animate({
-                objectPosition: `${(movement + 20) * 100 / ((n - 1) * 44 + 20) + 100}% 50%`
+                objectPosition: `${(movement + 20) * 100 / ((n - 1) * 44) + 100}% 50%`
             }, { duration: duration, fill: "forwards" });
         });
     }
@@ -149,7 +156,7 @@ const FunStuff = () => {
         )
     }
 
-    const categoryClicked = (e: React.MouseEvent, newCategory: "sketchbook" | "photography" | "craft") => {
+    const categoryClicked = (newCategory: "sketchbook" | "photography" | "craft") => {
         if (newCategory === category) {
             return;
         }
@@ -170,37 +177,50 @@ const FunStuff = () => {
             <div className="w-screen h-[100vh] relative flex flex-col">
                 <HeaderComponent/>
                 <section
-                    className="w-full min-h-[calc(100vh_-_108px)] lg:min-h-[calc(100vh_-_138px)] relative justify-start items-start mt-[40px] lg:mt-[70px] inline-flex flex-col"
+                    className="w-full min-h-[calc(100vh_-_108px)] lg:min-h-[calc(100vh_-_138px)] relative justify-start items-start mt-[40px] lg:mt-[70px] inline-flex flex-row"
                     onMouseDown={handleMouseDown}
                     onMouseUp={handleMouseUp}
                     onMouseMove={handleMouseMove}
                     onWheel={handleWheel}
                     onClick={handleMouseClick}
                 >
-                    <nav id="cancel" className={`w-fit h-fit my-[10px] ml-[1vmin] flex flex-col justify-between px-4 transition-opacity duration-300 ease-in-out cursor-pointer ${currentFullScreen > -1 ? "opacity-0" : ""}`}>
+                    <nav id="cancel" className={`w-fit h-[87px] my-[2vh] ml-[1vmin] flex flex-col justify-between px-4 transition-opacity duration-300 ease-in-out cursor-pointer ${currentFullScreen > -1 ? "opacity-0" : ""}`}>
                         <h5
                             className={`fun-stuff-title ${category === "sketchbook" ? "text-blue-500" : ""}`}
-                            onClick={(e) => categoryClicked(e, "sketchbook")}>
+                            onClick={() => categoryClicked("sketchbook")}>
                             Sketchbook
                         </h5>
                         <h5
                             className={`fun-stuff-title ${category === "photography" ? "text-blue-500" : ""}`}
-                            onClick={(e) => categoryClicked(e, "photography")}>
+                            onClick={() => categoryClicked("photography")}>
                             Photography
                         </h5>
                         <h5
                             className={`fun-stuff-title ${category === "craft" ? "text-blue-500" : ""}`}
-                            onClick={(e) => categoryClicked(e, "craft")}>
+                            onClick={() => categoryClicked("craft")}>
                             Craft
                         </h5>
                     </nav>
-                    <article ref={imageHolder} className={`w-full flex gap-[4vmin] absolute left-1/2 top-1/2 transform -translate-x-[108vmin] -translate-y-[calc(50%_-_3.75vw)] select-none transition-opacity duration-300 ease-in-out ${transition ? 'opacity-0': ''}`}>
+                    <div className="w-fit h-[20px] absolute px-2 left-1/2 -translate-x-1/2 translate-y-[calc((87px_+_4vh)_/_2_-100%)] text-center flex">
+                        <h4 className="overflow-hidden">
+                            <div className={`-translate-y-[40px]`} ref={numberDisplay}>
+                                {Array.from({ length: n }, (_, i) => i + 1).map((num, i) => (
+                                    <React.Fragment key={i}>
+                                        {num.toString()}&nbsp;
+                                        {num !== n ? <br/> : <></>}
+                                    </React.Fragment>
+                                ))}
+                            </div>
+                        </h4>
+                        <h4>- {n}</h4>
+                    </div>
+                    <article ref={imageHolder} className={`w-full flex gap-[4vmin] absolute left-1/2 top-0 transform -translate-x-[108vmin] translate-y-[calc(87px_+_4vh)] select-none transition-opacity duration-300 ease-in-out ${transition ? 'opacity-0': ''}`}>
                         {
                             data![category].map((image, index) => (
                                 <img
                                     key={image!.name}
                                     data-key={index}
-                                    className={`image transition-all duration-[800ms] object-cover object-[100%_center] ${currentFullScreen === index ? "w-[100vmin] h-[66.66vmin] -translate-x-[calc((100%_-_40vmin)_/_2)] opacity-100 " : "w-[40vmin] h-[56vmin] -translate-x-0 " + (currentFullScreen > -1 ? "opacity-0" : "")}`}
+                                    className={`image transition-all duration-[800ms] object-cover object-[100%_center] ${currentFullScreen === index ? "w-[100vmin] h-[66.66vmin] -translate-x-[calc((100%_-_40vmin)_/_2)] -translate-y-[calc(50%_-_(87px_+_4vh))] opacity-100 " : "w-[40vmin] h-[56vmin] -translate-x-0 " + (currentFullScreen > -1 ? "opacity-0" : "")}`}
                                     onClick={handleMouseClick}
                                     src={image!.url}
                                     draggable={false}
