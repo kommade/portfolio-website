@@ -1,15 +1,10 @@
 "use client";
 
-import GridComponents from "@/components/GridComponents";
-import HeaderComponent from "@/components/HeaderComponent";
-import FooterComponent from "@/components/FooterComponent";
 import { getAllProjects } from "@/functions/actions";
 import { useEffect, useState } from "react";
-import ScrollToTop from "@/components/ScrollToTop";
 import Link from "next/link";
-import ScrollComponent from "@/components/ScrollComponent";
 import { useSearchParams, useRouter } from "next/navigation";
-import { PopUpComponent, usePopUp } from "@/components/PopUpComponent";
+import { usePopUp, HeaderComponent, GridComponents, PopUpComponent, FooterComponent, ScrollToTop, ScrollComponent } from "@/components";
 
 function Home() {
     const router = useRouter()

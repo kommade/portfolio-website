@@ -1,6 +1,5 @@
-import UploadComponent from "@/components/UploadComponent";
-import HeaderComponent from "@/components/HeaderComponent";
-import FooterComponent from "@/components/FooterComponent";
+import { FooterComponent, HeaderComponent } from "@/components";
+
 
 export default function Projects() {
     return (

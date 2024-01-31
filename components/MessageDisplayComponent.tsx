@@ -1,6 +1,6 @@
 import React from 'react'
 
-const NoAccessComponent = (
+const MessageDisplayComponent = (
   { text = "You do not have permission to view this page." }
     : { text?: string }) => {
   return (
@@ -10,4 +10,4 @@ const NoAccessComponent = (
   )
 }
 
-export default NoAccessComponent
+export default MessageDisplayComponent

@@ -2,15 +2,10 @@
 
 import { getProjectData, getProjectKey, isAllowedToAccess } from "@/functions/actions";
 import { getToken, logout } from "@/functions/AuthContext";
-import FooterComponent from "@/components/FooterComponent";
-import { ProjectData } from "@/components/GridComponents";
-import HeaderComponent from "@/components/HeaderComponent";
-import LoadingComponent from "@/components/LoadingComponent";
-import NoAccessComponent from "@/components/MessageDisplayComponent";
-import ScrollComponent from "@/components/ScrollComponent";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { MessageDisplayComponent } from "@/components";
+import { FooterComponent, HeaderComponent, LoadingComponent, MessageDisplayComponent, ScrollComponent } from "@/components";
+import { ProjectData } from "@/components/GridComponents";
 export default function ProjectPage({
     params,
 }: {
@@ -196,7 +191,7 @@ export default function ProjectPage({
                             </article>
                             
                         </section>
-                    ) : <NoAccessComponent text="This project is private. Please login to proceed!"/>
+                    ) : <MessageDisplayComponent text="This project is private. Please login to proceed!"/>
                 }
                 <ScrollComponent/>
                 {sidebarIsOpen ? <></> : <FooterComponent/>}

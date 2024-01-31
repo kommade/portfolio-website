@@ -1,14 +1,10 @@
 "use client";
 
+import { HeaderComponent, LoadingComponent, FooterComponent, UploadComponent, MessageDisplayComponent } from "@/components";
 import { isAllowedToAccess } from "@/functions/actions";
-import UploadComponent from "@/components/UploadComponent";
-import HeaderComponent from "@/components/HeaderComponent";
 import { getToken, logout } from "@/functions/AuthContext";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import NoAccessComponent from "@/components/MessageDisplayComponent";
-import LoadingComponent from "@/components/LoadingComponent";
-import FooterComponent from "@/components/FooterComponent";
 
 export default function New() {
     const router = useRouter();
@@ -50,7 +46,7 @@ export default function New() {
 
                 <div className="w-[85%] h-fit left-[7.5%] relative justify-center">
                     {
-                        checking ? <LoadingComponent /> : access ? <UploadComponent type={type!} /> : <NoAccessComponent/>         
+                        checking ? <LoadingComponent /> : access ? <UploadComponent type={type!} /> : <MessageDisplayComponent/>         
                     }
                 </div>
                 <FooterComponent/>
