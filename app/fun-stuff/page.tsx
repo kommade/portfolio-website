@@ -1,10 +1,7 @@
 "use client";
 
-import { getAllCategoryData, getFunStuff, getFunStuffData } from "@/actions/actions";
-import FooterComponent from "@/components/FooterComponent";
-import HeaderComponent from "@/components/HeaderComponent";
-import LoadingComponent from "@/components/LoadingComponent";
-import SomethingWentWrongComponent from "@/components/SomethingWentWrongComponent";
+import { HeaderComponent, MessageDisplayComponent, LoadingComponent, FooterComponent } from "@/components";
+import { getFunStuff } from "@/functions/actions";
 import React, { useEffect, useRef, useState } from 'react';
 
 interface FunStuffData {
@@ -141,7 +138,7 @@ const FunStuff = () => {
             <main className="flex flex-col items-center justify-between overflow-x-clip">
                 <div className="w-screen relative flex flex-col">
                     <HeaderComponent/>
-                    <SomethingWentWrongComponent/>
+                    <MessageDisplayComponent text="Whoops! Something went wrong. "/>
                 </div>
             </main>
         );
@@ -184,24 +181,24 @@ const FunStuff = () => {
                     onWheel={handleWheel}
                     onClick={handleMouseClick}
                 >
-                    <nav id="cancel" className={`w-fit h-[87px] my-[2vh] ml-[1vmin] flex flex-col justify-between px-4 transition-opacity duration-300 ease-in-out cursor-pointer ${currentFullScreen > -1 ? "opacity-0" : ""}`}>
-                        <h5
+                    <nav id="cancel" className={`w-fit h-[87px] my-[2vh] ml-[1vmin] flex flex-col justify-between px-4 transition-opacity s-regular duration-300 ease-in-out cursor-pointer ${currentFullScreen > -1 ? "opacity-0" : ""}`}>
+                        <p
                             className={`fun-stuff-title ${category === "sketchbook" ? "text-blue-500" : ""}`}
                             onClick={() => categoryClicked("sketchbook")}>
                             Sketchbook
-                        </h5>
-                        <h5
+                        </p>
+                        <p
                             className={`fun-stuff-title ${category === "photography" ? "text-blue-500" : ""}`}
                             onClick={() => categoryClicked("photography")}>
                             Photography
-                        </h5>
-                        <h5
+                        </p>
+                        <p
                             className={`fun-stuff-title ${category === "craft" ? "text-blue-500" : ""}`}
                             onClick={() => categoryClicked("craft")}>
                             Craft
-                        </h5>
+                        </p>
                     </nav>
-                    <div className="w-fit h-[20px] absolute px-2 left-1/2 -translate-x-1/2 translate-y-[calc((87px_+_4vh)_/_2_-100%)] text-center flex">
+                    <div className={`w-fit h-[20px] absolute px-2 left-1/2 -translate-x-1/2 translate-y-[calc((87px_+_4vh)_/_2_-100%)] text-center flex transition-opacity duration-300 ease-in-out ${currentFullScreen > -1 ? "opacity-0" : ""}`}>
                         <h4 className="overflow-hidden">
                             <div className={`-translate-y-[40px]`} ref={numberDisplay}>
                                 {Array.from({ length: n }, (_, i) => i + 1).map((num, i) => (
@@ -220,7 +217,7 @@ const FunStuff = () => {
                                 <img
                                     key={image!.name}
                                     data-key={index}
-                                    className={`image transition-all duration-[800ms] object-cover object-[100%_center] ${currentFullScreen === index ? "w-[100vmin] h-[66.66vmin] -translate-x-[calc((100%_-_40vmin)_/_2)] -translate-y-[calc(50%_-_(87px_+_4vh))] opacity-100 " : "w-[40vmin] h-[56vmin] -translate-x-0 " + (currentFullScreen > -1 ? "opacity-0" : "")}`}
+                                    className={`image transition-all duration-[800ms] object-cover object-[100%_center] ${currentFullScreen === index ? "w-[100vmin] h-[66.66vmin] -translate-x-[calc((100%_-_40vmin)_/_2)] -translate-y-[calc((87px_+_4vh)/2)] opacity-100 " : "w-[40vmin] h-[56vmin] -translate-x-0 " + (currentFullScreen > -1 ? "opacity-0" : "")}`}
                                     onClick={handleMouseClick}
                                     src={image!.url}
                                     draggable={false}

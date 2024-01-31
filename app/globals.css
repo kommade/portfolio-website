@@ -26,21 +26,21 @@ h2 {
 }
 
 h3 {
-    font-size: 32px;
+    font-size: 28px;
     font-family: Junicode;
     font-weight: normal;
     font-style: italic;
     line-height: 100%;
-    letter-spacing: -1.6px;
+    letter-spacing: -1.4px;
     color: var(--Eggplant-Purple, #37344B);
 }
 
 h4 {
     font-size: 20px;
-    font-family: Junicode;
+    font-family: Epilogue;
     font-weight: 600;
     line-height: 100%;
-    letter-spacing: 0.4px;
+    letter-spacing: -0.4px;
     color: var(--Eggplant-Purple, #37344B);
 }
 
@@ -49,11 +49,11 @@ h5 {
     font-family: Epilogue;
     font-weight: normal;
     line-height: 145%;
-    letter-spacing: 0.48px;
+    letter-spacing: -0.4px;
 }
 
 .s-regular {
-    font-size: 18px;
+    font-size: 14px;
     font-family: Epilogue;
     font-weight: normal;
     line-height: 145%;
@@ -61,7 +61,7 @@ h5 {
 }
 
 .s-light {
-    font-size: 18px;
+    font-size: 14px;
     font-family: Epilogue;
     font-weight: 300;
     line-height: 145%;
@@ -84,14 +84,14 @@ h5 {
     letter-spacing: 0.36px;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
     h1 {
         font-size: 32px;
         letter-spacing: -1.6px;
     }
     h2 {
-        font-size: 20px;
-        letter-spacing: -1px;
+        font-size: 28px;
+        letter-spacing: -1.4px;
     }
     h3 {
         font-size: 20px;
@@ -117,12 +117,15 @@ h5 {
         grid-column: span 1;
         aspect-ratio: 1 / 1;
     }
+    .grid-long {
+        height: calc(85vw * 2 + 24px);
+    }
 }
 
-@media (min-width: 1023px) {
+@media (min-width: 1024px) {
     .grid-wide {
         grid-column: span 2;
-        height: calc((95vw - 48px) / 3);
+        height: calc((85vw - 48px) / 3);
     }
 }
 

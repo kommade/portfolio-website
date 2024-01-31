@@ -1,29 +1,32 @@
 "use client";
 
-import HeaderComponent from "@/components/HeaderComponent";
-import LoginComponent from "@/components/LoginComponent";
-import isLoggedIn from "@/components/AuthContext";
+import { FooterComponent, HeaderComponent, LoadingComponent, LoginComponent } from "@/components";
+import isLoggedIn from "@/functions/AuthContext";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
-import FooterComponent from "@/components/FooterComponent";
+import { useEffect, useState } from "react";
 
 export default function Login() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const redirect = searchParams.get("redirect")
+    const [isLoading, setIsLoading] = useState(true)
     useEffect(() => {
         if (isLoggedIn()) {
             router.push("/");
+        } else {
+            setIsLoading(false);
         }
     }, []);
-    // fix so it doesnt show before confirming
+    
     return (
-        <main className="flex flex-col items-center justify-between overflow-x-clip">
-            <div className="w-screen h-[100vh] relative flex flex-col">
-                <HeaderComponent isLoginPage={true} />
-                <LoginComponent redirect={redirect ? redirect : "/"} />
-                <FooterComponent/>
-            </div>
-        </main>
+        !isLoading ? (
+            <main className="flex flex-col items-center justify-between overflow-x-clip">
+                <div className="w-screen h-[100vh] relative flex flex-col">
+                    <HeaderComponent isLoginPage={true} />
+                    <LoginComponent redirect={redirect ? redirect : "/"} />
+                    <FooterComponent/>
+                </div>
+            </main>
+        ) : <LoadingComponent/>
     );
 }

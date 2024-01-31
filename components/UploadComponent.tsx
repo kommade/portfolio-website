@@ -1,5 +1,5 @@
-import { submitNewFunStuff } from "@/actions/actions";
-import NoAccessComponent from "./NoAccessComponent";
+import { submitNewFunStuff } from "@/functions/actions";
+import NoAccessComponent from "./MessageDisplayComponent";
 import { useEffect, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useRouter } from "next/navigation";

@@ -1,16 +1,16 @@
 "use client";
 
-import { getProjectData, getProjectKey, isAllowedToAccess } from "@/actions/actions";
-import { getToken, logout } from "@/components/AuthContext";
+import { getProjectData, getProjectKey, isAllowedToAccess } from "@/functions/actions";
+import { getToken, logout } from "@/functions/AuthContext";
 import FooterComponent from "@/components/FooterComponent";
 import { ProjectData } from "@/components/GridComponents";
 import HeaderComponent from "@/components/HeaderComponent";
 import LoadingComponent from "@/components/LoadingComponent";
-import NoAccessComponent from "@/components/NoAccessComponent";
+import NoAccessComponent from "@/components/MessageDisplayComponent";
 import ScrollComponent from "@/components/ScrollComponent";
-import SomethingWentWrongComponent from "@/components/SomethingWentWrongComponent";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import { MessageDisplayComponent } from "@/components";
 export default function ProjectPage({
     params,
 }: {
@@ -21,7 +21,7 @@ export default function ProjectPage({
     const [isLoading, setIsLoading] = useState(true);
     const [access, setAccess] = useState(false);
     const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
-    const [isHovered, setisHovered] = useState(false);
+    const [isHovered, setisHovered] = useState(false)
     useEffect(() => {
         const fetchData = async () => {
             const token = getToken();
@@ -73,7 +73,7 @@ export default function ProjectPage({
             <main className="flex flex-col items-center justify-between overflow-x-clip">
                 <div className="w-screen relative flex flex-col">
                     <HeaderComponent/>
-                    <SomethingWentWrongComponent/>
+                    <MessageDisplayComponent text="Whoops! Something went wrong. "/>
                 </div>
             </main>
         );
@@ -100,15 +100,15 @@ export default function ProjectPage({
                                     onMouseEnter={() => setisHovered(true)}
                                     onMouseLeave={() => setisHovered(false)}
                                 >
-                                    <article className="xs-regular lg:w-[25vw] flex flex-col flex-shrink-0 justify-start items-start mx-auto lg:ml-8 py-4 lg:py-0 px-20 lg:p-4 border rounded-lg lg:border-none lg:rounded-none">
+                                    <article className="s-regular lg:w-[25vw] flex flex-col flex-shrink-0 justify-start items-start mx-auto lg:ml-8 py-4 lg:py-0 px-20 lg:p-4 border rounded-lg lg:border-none lg:rounded-none">
                                         <ul className="h-fit flex-col justify-start items-start inline-flex mb-4 mt-4 pt-2">
                                             <h2>Love Our Hood Fund</h2>
                                             <h4>2023</h4>
                                         </ul>
                                         <ul className="h-fit flex-col justify-start items-start inline-flex my-2">
                                             <h4 className="text-blue-500">PROJECT TYPE</h4>
-                                            <li className="">Industrial/Product Design</li>
-                                            <li className="xs-regular">Community grant</li>
+                                            <li>Industrial/Product Design</li>
+                                            <li>Community grant</li>
                                         </ul>
                                         <ul className="h-fit flex-col justify-start items-start inline-flex my-2">
                                             <h4 className="text-blue-500">TEAM</h4>
@@ -152,7 +152,7 @@ export default function ProjectPage({
                             <article className={`transition-[width] ease-in-out ml-auto mr-6 ${sidebarIsOpen ? "lg:w-[70vw]" : "lg:w-[95vw]"} w-fit flex flex-col justify-center items-center`}>
                                 <section className="w-[90%] flex-col justify-center items-start flex mb-4 mt-2">
                                     <div className="w-full aspect-[8/5] bg-zinc-300 my-4" />
-                                    <h4>BRIEF</h4>
+                                    <h4 className="mt-4">BRIEF</h4>
                                     <p className="s-regular">
                                         This was a design challenge done as part of a youth challenge launched by the Municipal Services Office (MSO) Singapore. MSO mentors and funds youths up to $10,000 to pilot municipal-related ideas within their community. We chose to tackle the problem of neighbourhood noise in HDB blocks in Singapore.
                                     </p>
@@ -164,12 +164,12 @@ export default function ProjectPage({
                                     </p>
                                     <div className="w-full aspect-[8/5] bg-zinc-300 my-4" />
                                 </section>
-                                <section className="w-[90%] flex-col justify-start items-start flex gap-6 my-4">
-                                    <h4>RESEARCH AND IDEATION</h4>
-                                    <p className="s-regular">
+                                <section className="w-[90%] flex-col justify-start items-start flex">
+                                    <h4 className="mt-4 mb-2">RESEARCH AND IDEATION</h4>
+                                    <p className="s-regular mb-4">
                                         Our interviews revealed that neighbours want a non-confrontational, fuss-free way to address noise-related issues. Through ideation sessions, the idea of having a notification message board that promoted communication and interaction arose, inspired by the way locksmiths arrange keys.
                                     </p>
-                                    <article className="w-full lg:aspect-[11/9] flex flex-col gap-4 lg:gap-6">
+                                    <article className="w-full lg:aspect-[11/9] flex flex-col gap-4 lg:gap-6 mt-4">
                                         <div className="w-full justify-start items-stretch gap-4 lg:gap-6 inline-flex flex-col lg:flex-row">
                                             <div className="lg:w-[63%] aspect-[17/12] bg-zinc-300" />
                                             <div className="lg:w-[37%] aspect-[14/17] bg-zinc-300" />
@@ -180,9 +180,9 @@ export default function ProjectPage({
                                         </div>
                                     </article>
                                 </section>
-                                <section className="w-[90%] flex-col justify-start items-start flex gap-4 lg:gap-6 my-4">
-                                    <h4>PROTOTYPING, DESIGN AND PITCHING</h4>
-                                    <article className="w-full lg:aspect-[11/9] flex flex-col gap-4 lg:gap-6">
+                                <section className="w-[90%] flex-col justify-start items-start flex my-4">
+                                    <h4 className="my-4">PROTOTYPING, DESIGN AND PITCHING</h4>
+                                    <article className="w-full lg:aspect-[11/9] flex flex-col gap-4 lg:gap-6 mt-2">
                                         <div className="w-full justify-start items-stretch gap-4 lg:gap-6 inline-flex flex-col lg:flex-row">
                                             <div className="lg:w-[63%] aspect-[17/12] bg-zinc-300" />
                                             <div className="lg:w-[37%] aspect-[14/17] bg-zinc-300" />

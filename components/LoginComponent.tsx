@@ -1,6 +1,6 @@
 "use client";
 
-import { login } from "@/actions/actions";
+import { login } from "@/functions/actions";
 import { useRouter } from "next/navigation"
 import React, { useState } from 'react'
 

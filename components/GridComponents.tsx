@@ -1,9 +1,8 @@
 'use client';
 
-import { getProjectData } from "@/actions/actions";
+import { getProjectData } from "@/functions/actions";
 import React, { useEffect, useRef, useState } from 'react';
 import LoadingComponent from "./LoadingComponent";
-import SomethingWentWrongComponent from "./SomethingWentWrongComponent";
 import Link from "next/link";
 
 interface GridComponentProps {
@@ -81,7 +80,7 @@ const GridComponent: React.FC<GridComponentProps> = ({ projectKey, span }) => {
             rel="noopener noreferrer"
             className={`bg-white relative overflow-hidden shadow ${span.row === 2 ? 'grid-long' : span.col === 2 ? 'grid-wide' : 'aspect-square'}`}
         >
-            <section className='absolute inset-[15px] bottom-[20%]'
+            <section className='absolute inset-[15px] bottom-[25%]'
                 onMouseOver={() => setIsHovered(true)}
                 onMouseOut={() => setIsHovered(false)}
             >
@@ -90,7 +89,7 @@ const GridComponent: React.FC<GridComponentProps> = ({ projectKey, span }) => {
                 {data.desc}
                 </p>
             </section>
-            <section className="top-[80%] absolute left-4">
+            <section className="top-[75%] translate-y-[5%] absolute left-4">
                 <h3 className="text-[#AAADA3] whitespace-nowrap pt-[8px]">{data.name}</h3>
                 <h5 className="text-[#AAADA3]">{data.year}</h5>
             </section>
@@ -119,7 +118,7 @@ const GridComponents = ({ keys, max }: { keys: string[], max: number }) => {
 
     return (
         isRenderingComplete ? (
-            <section className="work-display w-[95%] h-fit min-h-[calc(100vh_-_108px)] lg:min-h-[calc(100vh_-_138px)] left-[2.5%] relative justify-center mt-[50px] lg:mt-[80px] grid grid-cols-1 lg:grid-cols-3 grid-flow-row gap-y-6 gap-x-0 lg:gap-x-6">
+            <section className="work-display w-[85%] h-fit min-h-[calc(100vh_-_108px)] lg:min-h-[calc(100vh_-_138px)] left-[7.5%] relative justify-center mt-[50px] lg:mt-[80px] grid grid-cols-1 lg:grid-cols-3 grid-flow-row gap-y-6 gap-x-0 lg:gap-x-6">
                 {renderGrid}
             </section>
         ) : <LoadingComponent/>

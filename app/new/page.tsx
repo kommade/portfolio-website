@@ -1,12 +1,12 @@
 "use client";
 
-import { isAllowedToAccess } from "@/actions/actions";
+import { isAllowedToAccess } from "@/functions/actions";
 import UploadComponent from "@/components/UploadComponent";
 import HeaderComponent from "@/components/HeaderComponent";
-import { getToken, logout } from "@/components/AuthContext";
+import { getToken, logout } from "@/functions/AuthContext";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import NoAccessComponent from "@/components/NoAccessComponent";
+import NoAccessComponent from "@/components/MessageDisplayComponent";
 import LoadingComponent from "@/components/LoadingComponent";
 import FooterComponent from "@/components/FooterComponent";
 

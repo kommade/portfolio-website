@@ -1,8 +1,7 @@
 "use client";
 
-import { submitContactForm } from "@/actions/actions";
-import FooterComponent from "@/components/FooterComponent";
-import HeaderComponent from "@/components/HeaderComponent"
+import { HeaderComponent, FooterComponent } from "@/components";
+import { submitContactForm } from "@/functions/actions";
 import { useRouter } from "next/navigation";
 import React, { useState } from 'react'
 
