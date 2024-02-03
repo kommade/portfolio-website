@@ -1,7 +1,7 @@
 'use client';
 
 import { getProjectData } from "@/functions/actions";
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LoadingComponent from "./LoadingComponent";
 import Link from "next/link";
 
@@ -90,8 +90,8 @@ const GridComponent: React.FC<GridComponentProps> = ({ projectKey, span }) => {
                 </p>
             </section>
             <section className="top-[75%] translate-y-[5%] absolute left-4">
-                <h3 className="text-[#AAADA3] whitespace-nowrap pt-[8px]">{data.name}</h3>
-                <h5 className="text-[#AAADA3]">{data.year}</h5>
+                <h3 className="text-warm-grey whitespace-nowrap pt-[8px]">{data.name}</h3>
+                <h5 className="text-warm-grey">{data.year}</h5>
             </section>
         </Link>
     );
@@ -118,9 +118,12 @@ const GridComponents = ({ keys, max }: { keys: string[], max: number }) => {
 
     return (
         isRenderingComplete ? (
-            <section className="work-display w-[85%] h-fit min-h-[calc(100vh_-_108px)] lg:min-h-[calc(100vh_-_138px)] left-[7.5%] relative justify-center mt-[50px] lg:mt-[80px] grid grid-cols-1 lg:grid-cols-3 grid-flow-row gap-y-6 gap-x-0 lg:gap-x-6">
-                {renderGrid}
-            </section>
+            <>
+                <h2 className="w-full h-[34px] mt-[80px] lg:mt-[110px] text-center">I’m a dreamer and a UX designer, currently based in Singapore. Here’s some of my work:<br/><br/></h2>
+                <section className="work-display w-[85%] h-fit min-h-[calc(100vh_-_108px)] lg:min-h-[calc(100vh_-_138px)] left-[7.5%] relative justify-center mt-[30px] grid grid-cols-1 lg:grid-cols-3 grid-flow-row gap-y-6 gap-x-0 lg:gap-x-6">
+                    {renderGrid}
+                </section>
+            </>
         ) : <LoadingComponent/>
     )
 }

@@ -16,7 +16,7 @@ export default function Login() {
         } else {
             setIsLoading(false);
         }
-    }, []);
+    }, [router]);
     
     return (
         !isLoading ? (

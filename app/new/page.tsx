@@ -13,9 +13,6 @@ export default function New() {
     const type = searchParams.get("type")
     const [access, setAccess] = useState(false);
     const [checking, setChecking] = useState(true);
-    const redirect = () => {
-      router.push("/")
-    }
     useEffect(() => {
         const fetchAccess = async () => {
             if (!token) {
@@ -27,7 +24,7 @@ export default function New() {
                 switch (res) {
                     case "expired":
                         logout();
-                        redirect();
+                        router.push("/expired=true")
                         return;
                     case "yes":
                         setAccess(true);
@@ -38,7 +35,7 @@ export default function New() {
             }
         }
         fetchAccess();
-    }, [token])
+    }, [token, router])
     return (
         <main className="flex flex-col items-center justify-between overflow-x-clip">
             <div className="w-screen relative flex flex-col">

@@ -81,24 +81,24 @@ const UploadComponent = ({ type }: { type: string | undefined }) => {
                     }>
                         <div className="flex flex-col m-4 ">
                             <section className="flex flex-col gap-2.5">
-                                <label className="xs-semibold text-start text-[#37344B]">
+                                <label className="xs-semibold text-start text-eggplant-purple">
                                     Name:
                                 </label>
-                                <input className={`w-[300px] h-[42px] bg-neutral-200 pl-2 font-['Epilogue'] text-sm focus:ring-2`} spellCheck={false} name="name" required/>
+                                <input className={`w-[300px] h-[42px] bg-neutral-200 pl-2 s-regular focus:ring-2`} spellCheck={false} name="name" required/>
                             </section>
                             <section className="flex flex-col mt-2 gap-2.5">
-                                <label className="xs-semibold text-start text-[#37344B]">
+                                <label className="xs-semibold text-start text-eggplant-purple">
                                     Type:
                                 </label>
                                 <div
                                     ref={parentDropdownRef}
                                     className={`w-[300px] h-[42px] bg-neutral-200 pl-2 rounded-lg text-start flex justify-start items-center z-[1]`}
                                     onClick={() => setDropdown(true)}>
-                                    <p className="xs-regular select-none ">{dropdown ? "..." : category}</p>
+                                    <p className="s-regular select-none ">{dropdown ? "..." : category}</p>
                                 </div>
                                 <div ref={dropdownRef} className={` absolute translate-y-1/2 w-[300px] h-[126px] bg-neutral-200 text-sm rounded-lg rounded-t-none p-2 z-0 ${dropdown ? "" : "hidden"}`}>
                                     <div
-                                        className="xs-regular w-full flex justify-start items-center gap-2 py-2 pl-2 rounded-lg hover:bg-white hover:cursor-pointer"
+                                        className="s-regular w-full flex justify-start items-center gap-2 py-2 pl-2 rounded-lg hover:bg-white hover:cursor-pointer"
                                         onClick={() => {
                                             setCategory("Sketchbook")
                                             setDropdown(false)
@@ -106,7 +106,7 @@ const UploadComponent = ({ type }: { type: string | undefined }) => {
                                         Sketchbook
                                     </div>
                                     <div
-                                        className="xs-regular w-full flex justify-start items-center gap-2 py-2 pl-2 rounded-lg hover:bg-white hover:cursor-pointer"
+                                        className="s-regular w-full flex justify-start items-center gap-2 py-2 pl-2 rounded-lg hover:bg-white hover:cursor-pointer"
                                         onClick={() => {
                                             setCategory("Photography")
                                             setDropdown(false)
@@ -114,7 +114,7 @@ const UploadComponent = ({ type }: { type: string | undefined }) => {
                                         Photography
                                     </div>
                                     <div
-                                        className="xs-regular w-full flex justify-start items-center gap-2 py-2 pl-2 rounded-lg hover:bg-white hover:cursor-pointer"
+                                        className="s-regular w-full flex justify-start items-center gap-2 py-2 pl-2 rounded-lg hover:bg-white hover:cursor-pointer"
                                         onClick={() => {
                                             setCategory("Craft")
                                             setDropdown(false)
@@ -124,17 +124,17 @@ const UploadComponent = ({ type }: { type: string | undefined }) => {
                                 </div>
                             </section>
                             <section className="flex flex-col mt-2 gap-2.5">
-                                <label className="xs-semibold text-start text-[#37344B]">
+                                <label className="xs-semibold text-start text-eggplant-purple">
                                     Image:
                                 </label>
                                 <div {...getRootProps()} className={` w-[300px] h-[84px] bg-neutral-200 pl-2 font-['Epilogue'] text-sm flex justify-center items-center text-center rounded-lg ${fileRejections.length > 0 ? "border-2 border-red-600" : ""}`}>
                                     <input {...getInputProps()}/>
-                                    <p className="xs-regular">{ acceptedFiles.length > 0 ? acceptedFiles.at(0)!.name : "Drop file here or click to upload..." }</p>
+                                    <p className="s-regular">{ acceptedFiles.length > 0 ? acceptedFiles.at(0)!.name : "Drop file here or click to upload..." }</p>
                                 </div>  
                                 <p className="h-[10px] m-2 text-red-600 xs-regular">{fileRejections.length > 0 ? fileRejections.at(-1)!.errors.at(0)!.message : ""}</p>
                             </section>
                         </div>
-                        <input className={`m-2 w-[300px] h-[54px] bg-[#37344B] rounded-xl px-6 py-1 hover:cursor-pointer text-center s-light active:bg-orange-50 active:border active:border-[#37344B] active:text-[#37344B] ${submit ? "bg-orange-50 border border-[#37344B] text-[#37344B]" : "text-white"}`} type="submit" value="Upload" disabled={submit}/>
+                        <input className={`m-2 w-[300px] h-[54px] bg-eggplant-purple rounded-xl px-6 py-1 hover:cursor-pointer text-center s-light active:bg-orange-50 active:border active:border-eggplant-purple active:text-eggplant-purple ${submit ? "bg-orange-50 border border-eggplant-purple text-eggplant-purple" : "text-white"}`} type="submit" value="Upload" disabled={submit}/>
                     </form>
                     <PopUpComponent popUpProps={popUp} />
                 </>

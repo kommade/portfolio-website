@@ -3,10 +3,10 @@ import Link from "next/link"
 
 const FooterComponent = () => {
   return (
-    <footer className="w-full h-[68px] relative flex justify-between px-10 bg-[#FBFBF1]">
+    <footer className="w-full h-[68px] relative flex justify-between px-10 bg-pale-butter">
         <section className="h-[40%] flex flex-col items-start my-4">
             <article>
-                <p className="xs-regular text-[#37344B]">
+                <p className="xs-regular text-eggplant-purple">
                 ©2024 Juliette Khoo<br/>Designed and built by Juliette and Jarrell Khoo
                 </p>
             </article>

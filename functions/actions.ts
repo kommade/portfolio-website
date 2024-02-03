@@ -135,7 +135,7 @@ export async function getAllCategoryData(ids: string[]) {
         if (!res.success) {
             success = false;
         }
-        return res.data as { name: string, url: string } | null;
+        return {id: id, ...res.data} as { id: string, name: string, url: string } | null;
     }))
     return { success: success, data: data }
 }
@@ -160,6 +160,7 @@ export async function submitNewFunStuff(formData: FormData) {
     if ((sizeof.width / sizeof.height) < (5 / 7) || (sizeof.width / sizeof.height) > (3 / 2)) {
         return { success: false, message: "Image aspect ratio too small/large" }
     }
+    // TODO: Error handling
     const imageURL = await put(image.name, image, { access: "public" })
     await kv.hmset(`${category}:${nextId}`, {
         name: formData.get("name"),
@@ -167,3 +168,12 @@ export async function submitNewFunStuff(formData: FormData) {
     })
     return { success: true }
 };
+
+export async function deleteItem(id: string) {
+    const res = await kv.del(id);
+    if (res === 0) {
+        return { success: false, message: "Key does not exist" }
+    } else {
+        return { success: true }
+    }
+}

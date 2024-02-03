@@ -17,8 +17,9 @@ const LoginComponent = ( { redirect } : { redirect : string | undefined } ) => {
                 }
                 if (redirect) {
                     router.push(redirect);
+                } else {
+                    router.push("/")
                 }
-                router.push("/")
                 return;
             } else {
                 if (out.message === "Incorrect password") {
@@ -34,21 +35,21 @@ const LoginComponent = ( { redirect } : { redirect : string | undefined } ) => {
         }} className="w-full min-h-[calc(100vh_-_108px)] lg:min-h-[calc(100vh_-_138px)] relative justify-center items-center mt-[40px] lg:mt-[70px] inline-flex flex-col">
             <div className="flex flex-col m-4 ">
                 <section className="flex flex-col gap-2.5">
-                    <label className="text-start text-gray-700 xs-semibold">
+                    <label className="text-start text-eggplant-purple xs-semibold">
                         Username:
                     </label>
-                    <input className={`w-[300px] h-[42px] bg-neutral-200 pl-2 font-['Epilogue'] text-sm focus:ring-2 focus:border-none ${response.username ? "border-b-2 border-red-600" : ""}`} spellCheck={false} name="username" />
+                    <input className={`w-[300px] h-[42px] bg-neutral-light-grey pl-2 s-regular focus:ring-2 focus:border-none ${response.username ? "border-b-2 border-red-600" : ""}`} spellCheck={false} name="username" />
                     <p className="xs-regular text-red-600">{response.username ? output : ""}</p>
                 </section>
                 <section className="flex flex-col mt-2 gap-2.5">
-                    <label className="text-start text-gray-700 xs-semibold">
+                    <label className="text-start text-eggplant-purple xs-semibold">
                         Password:
                     </label>
-                    <input className={`w-[300px] h-[42px] bg-neutral-200 pl-2 font-['Epilogue'] text-sm focus:ring-2 focus:border-none ${response.password ? "border-b-2 border-red-600" : ""}`} name="password" type="password" />
+                    <input className={`w-[300px] h-[42px] bg-neutral-light-grey pl-2 s-regular focus:ring-2 focus:border-none ${response.password ? "border-b-2 border-red-600" : ""}`} name="password" type="password" />
                     <p className="xs-regular text-red-600">{response.password ? output : ""}</p>
                 </section>
             </div>
-            <input className="m-2 w-[300px] h-[54px] bg-gray-700 rounded-xl px-6 py-1 hover:cursor-pointer s-light text-center text-white text-base font-light active:bg-orange-50 active:border border-gray-700 active:text-gray-700" type="submit" value="Login" />
+            <input className="m-2 w-[300px] h-[54px] bg-eggplant-purple rounded-xl px-6 py-1 hover:cursor-pointer s-light text-white text-center active:bg-orange-50 active:border border-eggplant-purple active:text-eggplant-purple" type="submit" value="Login" />
         </form>
   )
 }

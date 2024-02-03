@@ -24,7 +24,7 @@ const ScrollComponent = () => {
             })}
         >
             <div
-                className={`transition-opacity ${isOnTop ? 'opacity-0' : 'opacity-70'} w-[60px] h-[100px] left-0 top-0 absolute bg-white bg-opacity-70 rounded-[15px] border border-neutral-400 flex justify-center`}
+                className={`transition-opacity ${isOnTop ? 'opacity-0 cursor-default' : 'opacity-70'} w-[60px] h-[100px] left-0 top-0 absolute bg-white bg-opacity-70 rounded-[15px] border border-neutral-400 flex justify-center`}
                 onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)}
             >

@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 body {
-  background: var(--Pale-Butter, #FBFBF1);
-  overscroll-behavior-x: none;
+    background: theme('colors.[pale-butter]');
+    overscroll-behavior-x: none;
 }
 
 h1 {
@@ -13,16 +13,16 @@ h1 {
     font-weight: normal;
     line-height: 100%;
     letter-spacing: -2.4px;
-    color: var(--Air-Force-Blue, #3688D5);
+    color: theme('colors.[air-force-blue]');
 }
 
 h2 {
-    font-size: 32px;
+    font-size: 28px;
     font-family: Junicode;
     font-weight: normal;
     line-height: 100%;
-    letter-spacing: -1.6px;
-    color: var(--Eggplant-Purple, #37344B);
+    letter-spacing: -1.4px;
+    color: theme('colors.[eggplant-purple]');
 }
 
 h3 {
@@ -32,56 +32,56 @@ h3 {
     font-style: italic;
     line-height: 100%;
     letter-spacing: -1.4px;
-    color: var(--Eggplant-Purple, #37344B);
+    color: theme('colors.[eggplant-purple]');
 }
 
 h4 {
-    font-size: 20px;
+    font-size: 14px;
     font-family: Epilogue;
     font-weight: 600;
     line-height: 100%;
-    letter-spacing: -0.4px;
-    color: var(--Eggplant-Purple, #37344B);
+    letter-spacing: 0.28px;
+    color: theme('colors.[eggplant-purple]');;
 }
 
 h5 {
-    font-size: 20px;
+    font-size: 16px;
     font-family: Epilogue;
     font-weight: normal;
     line-height: 145%;
-    letter-spacing: -0.4px;
+    letter-spacing: 0.32px;
 }
 
 .s-regular {
-    font-size: 14px;
+    font-size: 12px;
     font-family: Epilogue;
     font-weight: normal;
     line-height: 145%;
-    letter-spacing: 0.36px;
+    letter-spacing: 0.24px;
 }
 
 .s-light {
-    font-size: 14px;
+    font-size: 12px;
     font-family: Epilogue;
     font-weight: 300;
     line-height: 145%;
-    letter-spacing: 0.36px;
+    letter-spacing: 0.24px;
 }
 
 .xs-regular {
-    font-size: 12px;
+    font-size: 10px;
     font-family: Epilogue;
     font-weight: normal;
     line-height: 145%;
-    letter-spacing: 0.36px;
+    letter-spacing: 0.2px;
 }
 
 .xs-semibold {
-    font-size: 12px;
+    font-size: 10px;
     font-family: Epilogue;
     font-weight: 600;
     line-height: 145%;
-    letter-spacing: 0.36px;
+    letter-spacing: 0.2px;
 }
 
 @media (max-width: 1023px) {
@@ -90,28 +90,28 @@ h5 {
         letter-spacing: -1.6px;
     }
     h2 {
-        font-size: 28px;
-        letter-spacing: -1.4px;
+        font-size: 24px;
+        letter-spacing: -1.2px;
     }
     h3 {
-        font-size: 20px;
-        letter-spacing: -1px;
+        font-size: 24px;
+        letter-spacing: -1.2px;
     }
     h4 {
-        font-size: 16px;
-        letter-spacing: 0.32px;
+        font-size: 12px;
+        letter-spacing: 0.24px;
     }
     h5 {
-        font-size: 16px;
-        letter-spacing: 0.32px;
+        font-size: 14px;
+        letter-spacing: 0.28px;
     }
     .s-regular {
-        font-size: 16px;
-        letter-spacing: 0.32px;
+        font-size: 10px;
+        letter-spacing: 0.2px;
     }
     .s-light {
-        font-size: 16px;
-        letter-spacing: 0.32px;
+        font-size: 10px;
+        letter-spacing: 0.2px;
     }
     .grid-wide {
         grid-column: span 1;
@@ -130,26 +130,47 @@ h5 {
 }
 
 .grid-long {
-  grid-row: span 2;
+    grid-row: span 2;
 }
 
 .fun-stuff-title {
-  text-align: start;
-  transition-property: color;
-  transition-duration: 300ms;
-  transition-timing-function: ease-in-out;
-}
-
-.fun-stuff-title:hover {
-  color: #3688D5;
-}
-
-@font-face {
-  font-family: 'Junicode';
-  src: url('/fonts/Junicode.ttf');
+    text-align: start;
+    transition-property: color;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
+    &:hover {
+        color: theme('colors.[air-force-blue]');;
+    }
 }
 
 @font-face {
-  font-family: 'Epilogue';
-  src: url('/fonts/Epilogue-Regular.ttf');
+    font-family: 'Junicode';
+    src: url('/fonts/Junicode.ttf');
+    font-style: normal;
 }
+
+@font-face {
+    font-family: 'Junicode';
+    src: url('/fonts/Junicode-Italic.ttf');
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Epilogue';
+    src: url('/fonts/Epilogue-Regular.ttf');
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Epilogue';
+    src: url('/fonts/Epilogue-Italic.ttf');
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Epilogue';
+    src: url('/fonts/Epilogue-Semibold.ttf');
+    font-style: normal;
+    font-weight: 600;
+}
+

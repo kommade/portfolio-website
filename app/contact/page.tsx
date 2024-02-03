@@ -33,25 +33,25 @@ const Contact = () => {
                 >
                     <div className="flex flex-col">
                         <section className="flex flex-col m-2 gap-2.5">
-                            <label className="xs-semibold text-start text-[#37344B]">
+                            <label className="xs-semibold text-start text-eggplant-purple">
                                 Name:
                             </label>
-                            <input className="w-[300px] h-[35px] bg-neutral-200 pl-2 font-['Epilogue'] text-sm" spellCheck={false} name="name" required/>
+                            <input className="w-[300px] h-[35px] bg-neutral-200 pl-2 s-regular" spellCheck={false} name="name" required/>
                         </section>
                         <section className="flex flex-col m-2 gap-2.5">
-                            <label className="xs-semibold text-start text-[#37344B]" >
+                            <label className="xs-semibold text-start text-eggplant-purple" >
                                 Email:
                             </label>
-                            <input className="w-[300px] h-[35px] bg-neutral-200 pl-2 font-['Epilogue'] text-sm focus:ring-2" spellCheck={false} name="email" type="email" required/>
+                            <input className="w-[300px] h-[35px] bg-neutral-200 pl-2 s-regular focus:ring-2" spellCheck={false} name="email" type="email" required/>
                         </section>
                         <section className="flex flex-col m-2 gap-2.5">
-                            <label className="xs-semibold text-start text-[#37344B]" >
+                            <label className="xs-semibold text-start text-eggplant-purple" >
                                 Message:
                             </label>
-                            <textarea className="w-[300px] h-[150px] bg-neutral-200 p-2 font-['Epilogue'] text-sm focus:ring-2 resize-none" name="message" required/>
+                            <textarea className="w-[300px] h-[150px] bg-neutral-200 p-2 s-regular focus:ring-2 resize-none" name="message" required/>
                         </section>
                     </div>
-                    <input className="m-3 w-[300px] h-[54px] bg-[#37344B] rounded-xl px-6 py-1 hover:cursor-pointer text-center s-light active:bg-orange-50 active:border active:border-[#37344B] text-white active:text-[#37344B]" type="submit" value="Submit" />
+                    <input className="m-3 w-[300px] h-[54px] bg-eggplant-purple rounded-xl px-6 py-1 hover:cursor-pointer text-center s-light active:bg-orange-50 active:border active:border-eggplant-purple text-white active:text-eggplant-purple" type="submit" value="Submit" />
                 </form>
                 <FooterComponent/>
             </div>
