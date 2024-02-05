@@ -4,9 +4,7 @@ This Next.js project is a portfolio website designed by my sister, Juliette, and
 
 ## About Juliette
 
-"""
-My name is Juliette and I grew up in the sunny island of Singapore. Since I was little, I've always been busy making things with my hands. After graduating with a BSc (Hons) in Architecture from the University of Bath in 2023, I returned to Singapore to pursue a career in user research & user experience design & strategy. I'm a visual storyteller interested in using technology as an interactive point of engagement with the user. My cross-disciplinary background pushes me to dream bigger, better, and beyond the digital screen. 
-"""
+"My name is Juliette and I grew up in the sunny island of Singapore. Since I was little, I've always been busy making things with my hands. After graduating with a BSc (Hons) in Architecture from the University of Bath in 2023, I returned to Singapore to pursue a career in user research & user experience design & strategy. I'm a visual storyteller interested in using technology as an interactive point of engagement with the user. My cross-disciplinary background pushes me to dream bigger, better, and beyond the digital screen. "
 This portfolio website serves as a platform to showcase her projects, skills, and achievements to potential clients, employers, and collaborators.
 
 ## Features
