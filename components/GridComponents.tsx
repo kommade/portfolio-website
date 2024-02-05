@@ -1,6 +1,6 @@
 'use client';
 
-import { getProjectData } from "@/functions/actions";
+import { getProjectThumbnail } from "@/functions/actions";
 import React, { useEffect, useState } from 'react';
 import LoadingComponent from "./LoadingComponent";
 import Link from "next/link";
@@ -13,7 +13,7 @@ interface GridComponentProps {
     };
 }
 
-export interface ProjectData {
+export interface ProjectThumbnailData {
     name: string;
     desc: string;
     image: string;
@@ -28,45 +28,45 @@ interface ComponentProperties {
 }
   
 function generateComponentProperties(k: number): ComponentProperties[] {
-const result: ComponentProperties[] = [];
-for (let i = 1; i <= k; i++) {
-    let currentRow = 1;
-    let currentCol = 1;
-    const breakpoint = k - k % 4;
-    if (i <= breakpoint) {
-    switch (i % 4) {
-        case 3:
-        currentRow = 2;
-        break;
-        case 0:
-        currentCol = 2;
-        break;
-        default:
-        break;
+    const result: ComponentProperties[] = [];
+    for (let i = 1; i <= k; i++) {
+        let currentRow = 1;
+        let currentCol = 1;
+        const breakpoint = k - k % 4;
+        if (i <= breakpoint) {
+        switch (i % 4) {
+            case 3:
+            currentRow = 2;
+            break;
+            case 0:
+            currentCol = 2;
+            break;
+            default:
+            break;
+        }
+        } else {
+        if (k % 4 === 1) {
+            result[result.length - 1].col = 1;
+        }
+        }
+        result.push({ row: currentRow, col: currentCol });
     }
-    } else {
-    if (k % 4 === 1) {
-        result[result.length - 1].col = 1;
-    }
-    }
-    result.push({ row: currentRow, col: currentCol });
-}
-return result;
+    return result;
 }
 
 const GridComponent: React.FC<GridComponentProps> = ({ projectKey, span }) => {
     const [isHovered, setIsHovered] = useState(false);
-    const [data, setData] = useState<ProjectData | null>(null);
+    const [data, setData] = useState<ProjectThumbnailData | null>(null);
     useEffect(() => {
         const fetchData = async () => {
             if (!projectKey) {
                 return;
             }
-            const res = await getProjectData(projectKey);
+            const res = await getProjectThumbnail(projectKey);
             if (!res.success) {
                 return;
             }
-            setData(res.data as ProjectData | null);
+            setData(res.data as ProjectThumbnailData | null);
             
         };
         fetchData();

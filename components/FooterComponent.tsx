@@ -13,14 +13,14 @@ const FooterComponent = () => {
         </section>
         <ul className="items-center inline-flex my-4 lg:mr-0 justify-between max-w-[145px] gap-[10%]">
             <li>
-                <a target="_blank" rel="noopener noreferrer">
+                <Link href={"/contact"} rel="noopener noreferrer">
                 <Image
                     src="/icons/email.svg"
                     alt="email svg"
                     width={32}
                     height={32}
                 />
-                </a>
+                </Link>
             </li>
             <li>
                 <Link href="https://www.instagram.com/JUEKO_/" target="_blank" rel="noopener noreferrer">

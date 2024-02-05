@@ -16,6 +16,16 @@ interface User {
     [key: string]: unknown;
 }
 
+function logger(methodName: string, kvFunction: string, key: string) {
+    const logLine = {
+        kvFunction: kvFunction,
+        arg: key,
+        initiator: methodName,
+        time: new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Singapore', timeStyle: "medium", dateStyle: "medium" }).format(new Date())
+    }
+    kv.rpush('log', JSON.stringify(logLine))
+}
+
 export async function login(formdata: FormData) {
     const username = formdata.get("username") as string;
     const password = formdata.get("password") as string;
@@ -31,25 +41,29 @@ export async function login(formdata: FormData) {
     if (!user || typeof user.hash !== "string" || !bcrypt.compareSync(password, user.hash)) {
         return { success: false, message: "Incorrect password" };
     }
+    logger('login', 'HSET', user.id)
     kv.hset(user.id, { "last": new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Singapore', timeStyle: "medium", dateStyle: "medium" }).format(new Date())})
     const token = jwt.sign({ userId: user.id, role: user.role }, process.env.SECRET_KEY as string, { expiresIn: '1h'})
     return { success: true, message: token }
 }
 
 export async function getProjectKey(id: string) {
-    if (typeof id !== "string") {
-        return { success: false, data: null }
-    }
     const projectKey = await kv.get(id);
     return { success: true, data: projectKey };
 }
 
+export async function getProjectThumbnail(projectKey: string) {
+    const data = await kv.hmget(projectKey, ...["name", "desc", "image", "year", "id"]);
+    return { success: true, data: data };
+}
+
 export async function getProjectData(projectKey: string) {
-    if (typeof projectKey !== "string") {
-        return { success: false, data: null }
+
+    const data = await kv.hmget(projectKey, ...["name", "year", "data"]);
+    if (data?.data && typeof data.data === "string") {
+        data.data = JSON.parse(data.data.replaceAll("&quot", "\""))
     }
-    const data = await kv.hgetall(projectKey);
-    return { success: true, data: data};
+    return { success: true, data: data };
 }
 
 export async function isAllowedToAccess(token: string | null, pageId: string) {
@@ -100,9 +114,13 @@ export async function submitContactForm(formData : FormData) {
     if (!response.email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g)) {
         return { success: false, message: "email invalid"}
     }
+    let fromEmail = "onboarding@resend.dev"
+    if (process.env.NODE_ENV === "production") {
+        fromEmail = "hi@juliettekhoo.com"
+    }
     try {
         await resend.emails.send({
-            from: "Contact Form <onboarding@resend.dev>",
+            from: `Contact Form <${fromEmail}>`,
             to: [process.env.CONTACT_FORM_EMAIL_ENDPOINT!],
             subject: "Message from contact form",
             react: emailTemplate(response),
@@ -162,7 +180,8 @@ export async function submitNewFunStuff(formData: FormData) {
     }
     // TODO: Error handling
     const imageURL = await put(image.name, image, { access: "public" })
-    await kv.hmset(`${category}:${nextId}`, {
+    logger('submitNewFunStuff', 'HSET', `${category}:${nextId}`);
+    await kv.hset(`${category}:${nextId}`, {
         name: formData.get("name"),
         url: imageURL.url
     })
@@ -170,6 +189,7 @@ export async function submitNewFunStuff(formData: FormData) {
 };
 
 export async function deleteItem(id: string) {
+    logger('deleteItem', 'del', id)
     const res = await kv.del(id);
     if (res === 0) {
         return { success: false, message: "Key does not exist" }

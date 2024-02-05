@@ -32,6 +32,7 @@ const FunStuff = () => {
     const [popUp, setPopUp] = usePopUp();
     const router = useRouter();
     const [access, setAccess] = useState(true);
+    const [descEditable, setDescEditable] = useState(false);
     useEffect(() => {
         const checkAcess = async () => {
             const allowed = await isAllowedToAccess(getToken(), 'admin');
@@ -250,7 +251,7 @@ const FunStuff = () => {
                         <h4>- {n}</h4>
                     </div>
                     <div className={`w-fit h-[14px] fixed px-2 left-1/2 -translate-x-1/2 translate-y-full text-center flex transition-opacity duration-300 ease-in-out ${currentFullScreen > -1 ? "" : "opacity-0"}`}>
-                        <h3 className="h-[28px]">placeholder placeholder description blah</h3>
+                        <h3 className="h-[28px]" onClick={(e) => e.stopPropagation()}>placeholder placeholder description blah</h3>
                         {
                             editMode ? (
                                 <svg

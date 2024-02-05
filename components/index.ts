@@ -1,7 +1,7 @@
 "use client";
 export { default as DeleteWarningComponent } from './DeleteWarningComponent';
 export { default as FooterComponent } from './FooterComponent';
-export { default as GridComponents, type ProjectData } from './GridComponents'
+export { default as GridComponents, type ProjectThumbnailData as ProjectData } from './GridComponents'
 export { default as HeaderComponent } from './HeaderComponent';
 export { default as LoadingComponent } from './LoadingComponent';
 export { default as LoginComponent } from './LoginComponent';
