@@ -31,3 +31,6 @@ To run the website locally:
 2. Navigate to the project directory: `cd portfolio-website`
 3. Run `npm run dev`
 
+## Disclaimer
+
+There are various unsafe practices relating to the login system within the code. It didn't matter too much for my purposes, but do keep in mind that jsonWebTokens shouldn't be stored in localStorage.
