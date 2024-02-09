@@ -84,7 +84,7 @@ const GridComponent: React.FC<GridComponentProps> = ({ projectKey, span }) => {
                 onMouseOver={() => setIsHovered(true)}
                 onMouseOut={() => setIsHovered(false)}
             >
-                <img className={`object-cover object-left w-full h-full absolute mix-blend-luminosity transition-all ${isHovered ? ' blur-[2px]' : ''}`} src={data.image} alt={`${data.name} image`} />
+                <img className={`object-cover object-left w-full h-full absolute transition-all ${isHovered ? ' blur-[2px]' : ''}`} src={data.image} alt={`${data.name} image`} />
                 <p className={`popup w-full h-full absolute flex p-20 items-center justify-center text-center transition-all text-black xs-regular ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
                 {data.desc}
                 </p>

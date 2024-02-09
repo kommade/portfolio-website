@@ -73,10 +73,33 @@ export async function getProjectData(projectKey: string) {
 export async function saveNewProjectData(projectKey: string, data: ProjectData) {
     logger('saveNewProjectData', 'HMSET', projectKey);
     if (await kv.exists(projectKey)) {
-        await kv.hmset(projectKey, { "name": data.name, "year": data.year, "data": JSON.stringify(data.data) });
+        await kv.hmset(projectKey, { "name": data.name, "year": data.year, "data": JSON.stringify(data.data).replaceAll("\"", "&quot")});
         return { success: true };
     } else {
         return { success: false, message: "Key does not exist" };
+    }
+}
+
+export async function saveNewProjectImage(formData: FormData) {
+    console.log(formData)
+    const projectKey = formData.get("key") as string;
+    const index = parseInt(formData.get("index") as string);
+    const image = formData.get('image') as File;
+    try {
+        const imageURL = await put(image.name, image, { access: "public" });
+        console.log(imageURL)
+        logger('saveNewProjectImage', 'HSET', projectKey);
+        const prevData = await kv.hget(projectKey, "data") as string;
+        if (prevData) {
+            const data = JSON.parse(prevData.replaceAll("&quot", "\""));
+            data.images[index] = imageURL.url;
+            await kv.hset(projectKey, { "data": JSON.stringify(data).replaceAll("\"", "&quot") });
+        } else {
+            return { success: false, message: "Could not get previous data" };
+        }
+        return { success: true, data: imageURL.url };
+    } catch (error) {
+        return { success: false, message: "Failed to upload image", error: (error as Error).message }
     }
 }
 

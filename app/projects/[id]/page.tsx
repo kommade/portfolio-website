@@ -1,10 +1,11 @@
 "use client";
 
-import { getProjectKey, isAllowedToAccess, getProjectData, saveNewProjectData } from "@/functions/actions";
+import { getProjectKey, isAllowedToAccess, getProjectData, saveNewProjectData, saveNewProjectImage } from "@/functions/actions";
 import { getToken, logout } from "@/functions/AuthContext";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
-import { FooterComponent, HeaderComponent, LoadingComponent, MessageDisplayComponent, ScrollComponent, usePopUp } from "@/components";
+import { useState, useEffect, useRef } from "react";
+import { FooterComponent, HeaderComponent, LoadingComponent, MessageDisplayComponent, PopUpComponent, ScrollComponent, usePopUp } from "@/components";
+import SubmitFileConfirmationComponent from "@/components/SubmitFileConfirmationComponent";
 
 export interface ProjectData {
     name: string,
@@ -39,8 +40,13 @@ export default function ProjectPage({
     const editMode = searchParams.get("edit") === "true";
     const [projectKey, setProjectKey] = useState("");
     const [popUp, setPopUp] = usePopUp();
+    const fileInputRef = useRef(null);
+    const fileSubmitRef = useRef(null);
+    const [selectedImage, setSelectedImage] = useState(-1);
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [selectedImageName, setSelectedImageName] = useState("");
     useEffect(() => {
-        const checkAcess = async () => {
+        const checkAccess = async () => {
             const allowed = await isAllowedToAccess(getToken(), 'admin');
             switch (allowed) {
                 case "expired":
@@ -69,6 +75,7 @@ export default function ProjectPage({
                     return;
             }
             let res = await getProjectKey(params.id);
+            console.log(res)
             if (!res.success) {
                 return;
             }
@@ -78,6 +85,7 @@ export default function ProjectPage({
             }
             setProjectKey(projectKey);
             res = await getProjectData(projectKey);
+            console.log(res)
             if (!res.success) {
                 return;
             }
@@ -86,7 +94,7 @@ export default function ProjectPage({
         };
         fetchData();
         if (editMode) {
-            checkAcess();
+            checkAccess();
         }
     }, [params.id, editMode, router]);
     
@@ -138,6 +146,15 @@ export default function ProjectPage({
         }
     }
 
+    const handleImageClick = (e: React.MouseEvent) => {
+        if (!editMode) return;
+        if (fileInputRef.current) {
+            const dataKey = e.currentTarget.getAttribute("data-key") as string;
+            setSelectedImage(parseInt(dataKey));
+            (fileInputRef.current as HTMLInputElement).click();
+        }
+    }
+
     if (!adminAcess && editMode && !isLoading) {
         return (
             <main className="flex flex-col items-center justify-between overflow-x-clip">
@@ -155,7 +172,6 @@ export default function ProjectPage({
             }
         })
     }
-
     if (!access && !isLoading) {
         return (
             <main className="flex flex-col items-center justify-between overflow-x-clip">
@@ -189,7 +205,55 @@ export default function ProjectPage({
     return (
         <main className="flex flex-col items-center justify-between overflow-x-clip">
             <div className="w-screen min-h-[100vh] relative flex flex-col">
-                <HeaderComponent newHidden={editMode}/>
+                <HeaderComponent newHidden={editMode} />
+                {
+                    dialogOpen &&
+                    <SubmitFileConfirmationComponent
+                        item={{ name: selectedImageName }}
+                        callback={(message) => {
+                            setDialogOpen(false);
+                            if (message === "upload") {
+                                if (fileSubmitRef.current) {
+                                    (fileSubmitRef.current as HTMLInputElement).click();
+                                }
+                            } else {
+                                setSelectedImageName("");
+                                setSelectedImage(-1);
+                            }
+                        }}
+                    />
+                }
+                <form
+                    className="hidden"
+                    action={async (formData: FormData) => {
+                        if (selectedImage === -1) return;
+                        formData.append("key", projectKey);
+                        formData.append("index", selectedImage.toString());
+                        const res = await saveNewProjectImage(formData);
+                        if (res.success) {
+                            setPopUp({ message: "Image uploaded!", type: "success", duration: 1000 });
+                            const newData = { ...data };
+                            newData.data.images[selectedImage] = res.data as string;
+                            setData(newData);
+                        } else {
+                            setPopUp({ message: "Error uploading image!", type: "warning", duration: 1000 });
+                        }
+                    }}
+                >
+                    <input
+                        ref={fileInputRef}
+                        type="file"
+                        name="image"
+                        accept="image/*"
+                        onChange={(e) => {
+                            if (e.target.files && e.target.files?.length > 0) {
+                                setSelectedImageName(e.target.files[0].name);
+                                setDialogOpen(true);
+                            }
+                        }} />
+                    <input ref={fileSubmitRef} type="submit" />
+                </form>
+                {/* Magic input element for image upload */}
                 <section className="w-[100%] min-h-[calc(100vh_-_108px)] lg:min-h-[calc(100vh_-_138px)] relative justify-between items-start mt-[40px] lg:mt-[70px] lg:mx-auto flex flex-col lg:flex-row">
                     {editMode &&
                         <div className="fixed left-10 top-[20px] z-[2002] flex justify-center items-center" >
@@ -224,7 +288,7 @@ export default function ProjectPage({
     
                     <article className={`mx-auto lg:py-[60px] lg:w-[calc(100vw_-_300px)] w-fit flex flex-col justify-center items-center`}>
                         <div className="w-[90%]">
-                            <img className="editable w-full h-full object-cover" src={data.data.images[0]}/>
+                            <img data-key={0} className="editable w-full h-full object-cover" src={data.data.images[0]} onClick={handleImageClick}/>
                         </div>
                         <section className="w-[90%] flex-col justify-center items-start flex mt-[60px]">
                             <h4>BRIEF</h4>
@@ -239,7 +303,7 @@ export default function ProjectPage({
                             </p>  
                         </section>
                         <div className="w-[90%] mt-[20px]">
-                            <img className="editable w-full object-cover" src={data.data.images[1]}/>
+                            <img data-key={1} className="editable w-full object-cover" src={data.data.images[1]} onClick={handleImageClick}/>
                         </div>
                         <section className="w-[90%] flex-col justify-start items-start flex mt-[60px]">
                             <h4>RESEARCH AND IDEATION</h4>
@@ -249,18 +313,18 @@ export default function ProjectPage({
                             <article className="w-full lg:aspect-[11/9] flex flex-col gap-4 lg:gap-6 mt-[20px]">
                                 <div className="w-full justify-start items-stretch gap-4 lg:gap-6 inline-flex flex-col lg:flex-row">
                                     <div className="lg:w-[63%] aspect-[17/12]">
-                                        <img className="editable w-full h-full object-cover" src={data.data.images[2]}/>
+                                        <img data-key={2} className="editable w-full h-full object-cover" src={data.data.images[2]} onClick={handleImageClick}/>
                                     </div>
                                     <div className="lg:w-[37%] aspect-[14/17]">
-                                        <img className="editable w-full h-full object-cover" src={data.data.images[3]}/>
+                                        <img data-key={3} className="editable w-full h-full object-cover" src={data.data.images[3]} onClick={handleImageClick}/>
                                     </div>
                                 </div>
                                 <div className="w-full justify-start items-stretch gap-4 lg:gap-6 inline-flex flex-col lg:flex-row">
                                     <div className="lg:w-[50%] aspect-[7/5]">
-                                        <img className="editable w-full h-full object-cover" src={data.data.images[4]}/>
+                                        <img data-key={4} className="editable w-full h-full object-cover" src={data.data.images[4]} onClick={handleImageClick}/>
                                     </div>
                                     <div className="lg:w-[50%] aspect-[7/5]">
-                                        <img className="editable w-full h-full object-cover" src={data.data.images[5]}/>
+                                        <img data-key={5} className="editable w-full h-full object-cover" src={data.data.images[5]} onClick={handleImageClick}/>
                                     </div>
                                 </div>
                             </article>
@@ -270,18 +334,18 @@ export default function ProjectPage({
                             <article className="w-full lg:aspect-[11/9] flex flex-col gap-4 lg:gap-6">
                                 <div className="w-full justify-start items-stretch gap-4 lg:gap-6 inline-flex flex-col lg:flex-row">
                                     <div className="lg:w-[63%] aspect-[17/12]">
-                                        <img className="editable w-full h-full object-cover" src={data.data.images[6]}/>
+                                        <img data-key={6} className="editable w-full h-full object-cover" src={data.data.images[6]} onClick={handleImageClick}/>
                                     </div>
                                     <div className="lg:w-[37%] aspect-[14/17]">
-                                        <img className="editable w-full h-full object-cover" src={data.data.images[7]}/>
+                                        <img data-key={7} className="editable w-full h-full object-cover" src={data.data.images[7]} onClick={handleImageClick}/>
                                     </div>
                                 </div>
                                 <div className="w-full justify-start items-stretch gap-4 lg:gap-6 inline-flex flex-col lg:flex-row">
                                     <div className="lg:w-[50%] aspect-[7/5]">
-                                        <img className="editable w-full h-full object-cover" src={data.data.images[8]}/>
+                                        <img data-key={8} className="editable w-full h-full object-cover" src={data.data.images[8]} onClick={handleImageClick}/>
                                     </div>
                                     <div className="lg:w-[50%] aspect-[7/5]">
-                                        <img className="editable w-full h-full object-cover" src={data.data.images[9]}/>
+                                        <img data-key={9} className="editable w-full h-full object-cover" src={data.data.images[9]} onClick={handleImageClick}/>
                                     </div>
                                 </div>
                             </article>
@@ -289,7 +353,8 @@ export default function ProjectPage({
                     </article>
                     
                 </section>
-                <ScrollComponent/>
+                <ScrollComponent />
+                <PopUpComponent popUpProps={popUp}/>
                 <FooterComponent/>
             </div>
       </main>
