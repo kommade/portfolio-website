@@ -96,7 +96,7 @@ const UploadComponent = ({ type }: { type: string | undefined }) => {
                                     onClick={() => setDropdown(true)}>
                                     <p className="s-regular select-none ">{dropdown ? "..." : category}</p>
                                 </div>
-                                <div ref={dropdownRef} className={` absolute translate-y-1/2 w-[300px] h-[126px] bg-neutral-200 text-sm rounded-lg rounded-t-none p-2 z-0 ${dropdown ? "" : "hidden"}`}>
+                                <div ref={dropdownRef} className={` absolute translate-y-1/2 w-[300px] h-[126px] bg-neutral-200 rounded-lg rounded-t-none p-2 z-0 ${dropdown ? "" : "hidden"}`}>
                                     <div
                                         className="s-regular w-full flex justify-start items-center gap-2 py-2 pl-2 rounded-lg hover:bg-white hover:cursor-pointer"
                                         onClick={() => {

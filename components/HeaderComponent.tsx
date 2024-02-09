@@ -14,6 +14,7 @@ const HeaderComponent = ({ isLoginPage = false, isNewPage = false }) => {
     const [isAdmin, setIsAdmin] = useState(false)
     const [dropdown, setDropdown] = useState(false);
     const dropdownRef = useRef(null);
+    const parentDropdownRef = useRef(null);
     const [popUp, setPopUp] = usePopUp();
     
     const handleLogOut = (expired: boolean) => {
@@ -45,7 +46,7 @@ const HeaderComponent = ({ isLoginPage = false, isNewPage = false }) => {
         setIsClient(true);
         
         const handleClickOutside = (event: MouseEvent) => {
-            if (dropdownRef.current && !(dropdownRef.current as any).contains(event.target)) {
+            if (dropdownRef.current && !(dropdownRef.current as any).contains(event.target) && !(parentDropdownRef.current as any).contains(event.target)) {
                 setDropdown(false);
             }
         };
@@ -69,13 +70,14 @@ const HeaderComponent = ({ isLoginPage = false, isNewPage = false }) => {
         } else {
             setPopUp({ message: "Go to the page you want to edit first!", type: "message", duration: 1000 })
         }
+        setDropdown(false);
     }
 
     return (
         isClient ? (
             <>
                 <header className=" w-[100vw] h-[40px] lg:h-[70px] fixed z-10 bg-pale-butter flex flex-col justify-center shadow">
-                <div className="fixed left-[60px]">
+                <div ref={parentDropdownRef} className="fixed left-[60px]">
                 {( loggedIn  && !isNewPage && isAdmin) && (           
                     <>
                     <button className="place-self-center cursor-pointer flex justify-center items-center" onClick={() => {setDropdown(!dropdown)}}>

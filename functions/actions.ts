@@ -178,15 +178,27 @@ export async function submitNewFunStuff(formData: FormData) {
     if ((sizeof.width / sizeof.height) < (5 / 7) || (sizeof.width / sizeof.height) > (3 / 2)) {
         return { success: false, message: "Image aspect ratio too small/large" }
     }
-    // TODO: Error handling
-    const imageURL = await put(image.name, image, { access: "public" })
-    logger('submitNewFunStuff', 'HSET', `${category}:${nextId}`);
-    await kv.hset(`${category}:${nextId}`, {
-        name: formData.get("name"),
-        url: imageURL.url
-    })
+    try {
+        const imageURL = await put(image.name, image, { access: "public" })
+        logger('submitNewFunStuff', 'HSET', `${category}:${nextId}`);
+        await kv.hset(`${category}:${nextId}`, {
+            name: formData.get("name"),
+            url: imageURL.url
+        })
+    } catch (error) { 
+        return { success: false, message: "Failed to upload image" }
+    }
     return { success: true }
 };
+
+export async function updateFunStuffName(id:string, desc: string) {
+    if (await kv.exists(id)) {
+        logger('updateFunStuffName', 'HSET', id);
+        await kv.hset(id, { "name": desc })
+        return { success: true }
+    }
+    return { success: false, message: "Key does not exist" }
+}
 
 export async function deleteItem(id: string) {
     logger('deleteItem', 'del', id)

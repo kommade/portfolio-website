@@ -7,7 +7,7 @@ const FooterComponent = () => {
         <section className="h-[40%] flex flex-col items-start my-4">
             <article>
                 <p className="xs-regular text-eggplant-purple">
-                ©2024 Juliette Khoo<br/>Designed and built by Juliette and Jarrell Khoo
+                ©2024 Juliette Khoo<br/>Designed and built by Juliette and <Link href="https://github.com/kommade" target="_blank" rel="noopener noreferrer"> <u>Jarrell Khoo</u> </Link>
                 </p>
             </article>
         </section>

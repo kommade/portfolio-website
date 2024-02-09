@@ -31,9 +31,9 @@ function Home() {
                 
                 <section className="w-full h-fit mt-16 relative bg-slate-400 flex justify-start">
                 
-                <article className="info-container p-16 h-fit ">
+                <article className="info-container lg:p-16 p-4 h-fit ">
                         <div className="flex flex-col lg:flex-row justify-center items-center lg:items-stretch">
-                        <h1 className="text-end self-start text-pale-butter [writing-mode:vertical-lr] rotate-180 mr-[10px]">
+                        <h1 className="text-end lg:self-start text-pale-butter lg:[writing-mode:vertical-lr] lg:rotate-180 lg:mr-[10px] mb-[10px] lg:mb-0">
                             About Me
                         </h1>
                         <section className=" flex flex-col lg:mr-6 items-start">

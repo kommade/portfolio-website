@@ -63,14 +63,15 @@ export default function ProjectPage({
             if (!res.success) {
                 return;
             }
+            console.log(res.data)
             setData(res.data as ProjectData | null);
 
             setIsLoading(false);
         };
         fetchData();
     }, [params.id]);
-    console.log(data)
-    if (!access) {
+    
+    if (!access && !isLoading) {
         return (
             <main className="flex flex-col items-center justify-between overflow-x-clip">
                 <div className="w-screen relative flex flex-col">
@@ -130,7 +131,7 @@ export default function ProjectPage({
                     </div>
     
                     <article className={`mx-auto lg:py-[60px] lg:w-[calc(100vw_-_300px)] w-fit flex flex-col justify-center items-center`}>
-                        <div className="w-[90%] aspect-[8/5]">
+                        <div className="w-[90%]">
                             <img className="w-full h-full object-cover" src={data.data.images[0]}/>
                         </div>
                         <section className="w-[90%] flex-col justify-center items-start flex mt-[60px]">
@@ -145,8 +146,8 @@ export default function ProjectPage({
                                 {data.data.main["problem-definition"]}
                             </p>  
                         </section>
-                        <div className="w-[90%] aspect-[8/5] mt-[20px]">
-                            <img className="w-full h-full object-cover" src={data.data.images[1]}/>
+                        <div className="w-[90%] mt-[20px]">
+                            <img className="w-full object-cover" src={data.data.images[1]}/>
                         </div>
                         <section className="w-[90%] flex-col justify-start items-start flex mt-[60px]">
                             <h4>RESEARCH AND IDEATION</h4>

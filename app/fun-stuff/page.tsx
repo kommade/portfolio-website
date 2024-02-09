@@ -2,9 +2,10 @@
 
 import { HeaderComponent, MessageDisplayComponent, LoadingComponent, FooterComponent, DeleteWarningComponent, PopUpComponent, usePopUp } from "@/components";
 import { getToken, logout } from "@/functions/AuthContext";
-import { getFunStuff, isAllowedToAccess } from "@/functions/actions";
+import { getFunStuff, isAllowedToAccess, updateFunStuffName } from "@/functions/actions";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from 'react';
+import Image from "next/image";
 
 interface FunStuffData {
     sketchbook: ({ id:string, name: string, url: string } | null)[];
@@ -17,7 +18,7 @@ const FunStuff = () => {
     const [data, setData] = useState<FunStuffData | null>(null);
     const [error, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const [percentage, setPercentage] = useState(-108);
+    const [percentage, setPercentage] = useState(-108); // Disclaimer: none of these are percentages
     const [prevPercentage, setPrevPercentage] = useState(-108);
     const [mousePos, setMousePos] = useState(0);
     const imageHolder = useRef(null);
@@ -32,7 +33,12 @@ const FunStuff = () => {
     const [popUp, setPopUp] = usePopUp();
     const router = useRouter();
     const [access, setAccess] = useState(true);
-    const [descEditable, setDescEditable] = useState(false);
+    const dropdownRef = useRef(null);
+    const parentDropdownRef = useRef(null);
+    const [dropdown, setDropdown] = useState(false);
+    const descRef = useRef(null);
+    const [descText, setDescText] = useState("");
+    const [descEdit, setDescEdit] = useState(false);
     useEffect(() => {
         const checkAcess = async () => {
             const allowed = await isAllowedToAccess(getToken(), 'admin');
@@ -127,27 +133,30 @@ const FunStuff = () => {
         let index = e.currentTarget.getAttribute('data-key');
         if (currentFullScreen !== -1) {
             setCurrentFullScreen(-1);
+            setDescEdit(false);
+            if (descRef.current) {
+                (descRef.current as HTMLElement).contentEditable = "false"
+            }
             return;
         } else if (index === null) {
             return;
         }
         const intIndex = parseInt(index)
         setCurrentFullScreen(intIndex);
+        data![category][intIndex]?.name && setDescText(data![category][intIndex]!.name)
         const calcPercentage = intIndex * - 44 - 20;
         setPercentage(calcPercentage);
         setPrevPercentage(calcPercentage);
         updatePosition(500, calcPercentage);
-        console.log(percentage)
     }
 
     const updatePosition = (duration: number = 1200, movement: number = percentage) => {
         if (imageHolder.current) {
             (imageHolder.current as HTMLElement).animate({
-                transform: `translate(${movement}vmin, calc(87px + 4vh)`
+                transform: `translate(${movement}vmin, calc(87px + 4vh))`
             }, { duration: duration, fill: "forwards" });
         }
         if (numberDisplay.current) {
-            console.log(((movement + 20) / ((n - 1) * 44)));
             (numberDisplay.current as HTMLElement).animate({
                 transform: `translate(0, ${((movement + 20)/ ((n - 1) * 44)) * (n - 1) * 14}px)`
             }, { duration: duration, fill: "forwards" });
@@ -220,26 +229,47 @@ const FunStuff = () => {
                     onWheel={handleWheel}
                     onClick={handleMouseClick}
                 >
-                    <nav id="cancel" className={`w-fit h-[87px] my-[2vh] ml-[1vmin] flex flex-col justify-between px-4 transition-opacity s-regular duration-300 ease-in-out cursor-pointer ${currentFullScreen > -1 ? "opacity-0" : ""}`}>
-                        <p
-                            className={`fun-stuff-title ${category === "sketchbook" ? "text-air-force-blue" : ""}`}
-                            onClick={() => categoryClicked("sketchbook")}>
+                    <div
+                        ref={parentDropdownRef}
+                        className={`w-[100px] h-[42px] pl-4 mt-2 ml-2 rounded-lg text-start flex justify-between items-center z-[2]  ${!dropdown ? "" : "hidden"}`}
+                        onClick={() => setDropdown(true)}>
+                        <p className="s-regular select-none h-[16px]">{category.charAt(0).toUpperCase() + category.slice(1)}</p>
+                        <Image
+                        src="/icons/dropdown.svg"
+                        alt="v"
+                        width={32}
+                        height={32}
+                        />
+                    </div>
+                    <div ref={dropdownRef} className={`absolute w-[150px] h-[126px] bg-pale-butter rounded-lg rounded-t-none p-4 z-[1] opacity-90 shadow-xl ${dropdown ? "" : "hidden"}`}>
+                        <div
+                            className="s-regular w-full flex justify-start items-center gap-2 py-2 pl-2 rounded-lg hover:bg-white hover:cursor-pointer"
+                            onClick={() => {
+                                categoryClicked("sketchbook")
+                                setDropdown(false)
+                            }}>
                             Sketchbook
-                        </p>
-                        <p
-                            className={`fun-stuff-title ${category === "photography" ? "text-air-force-blue" : ""}`}
-                            onClick={() => categoryClicked("photography")}>
+                        </div>
+                        <div
+                            className="s-regular w-full flex justify-start items-center gap-2 py-2 pl-2 rounded-lg hover:bg-white hover:cursor-pointer"
+                            onClick={() => {
+                                categoryClicked("photography")
+                                setDropdown(false)
+                            }}>
                             Photography
-                        </p>
-                        <p
-                            className={`fun-stuff-title ${category === "craft" ? "text-air-force-blue" : ""}`}
-                            onClick={() => categoryClicked("craft")}>
+                        </div>
+                        <div
+                            className="s-regular w-full flex justify-start items-center gap-2 py-2 pl-2 rounded-lg hover:bg-white hover:cursor-pointer"
+                            onClick={() => {
+                                categoryClicked("craft")
+                                setDropdown(false)
+                            }}>
                             Craft
-                        </p>
-                    </nav>
+                        </div>
+                    </div>
                     <div className={`w-fit h-[14px] absolute px-2 left-1/2 -translate-x-1/2 translate-y-[calc((87px_+_4vh)_/_2_-100%)] text-center flex transition-opacity duration-300 ease-in-out ${currentFullScreen > -1 ? "opacity-0" : ""}`}>
                         <h4 className="overflow-hidden">
-                            <div className={`-translate-y-[40px]`} ref={numberDisplay}>
+                            <div className={`-translate-y-[28px]`} ref={numberDisplay}>
                                 {Array.from({ length: n }, (_, i) => i + 1).map((num, i) => (
                                     <React.Fragment key={`${i}-ticker`}>
                                         {num.toString()}&nbsp;
@@ -250,20 +280,49 @@ const FunStuff = () => {
                         </h4>
                         <h4>- {n}</h4>
                     </div>
-                    <div className={`w-fit h-[14px] fixed px-2 left-1/2 -translate-x-1/2 translate-y-full text-center flex transition-opacity duration-300 ease-in-out ${currentFullScreen > -1 ? "" : "opacity-0"}`}>
-                        <h3 className="h-[28px]" onClick={(e) => e.stopPropagation()}>placeholder placeholder description blah</h3>
+                    <div className={`w-fit h-[14px] fixed px-2 left-1/2 -translate-x-1/2 translate-y-full text-center flex transition-opacity duration-300 ease-in-out opacity-0 ${currentFullScreen > -1 ? "opacity-100 delay-500" : ""}`}>
+                        <h3
+                            ref={descRef}
+                            className="h-[40px] w-fit pt-[6px] min-w-[100px]"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                            }}
+                            onKeyDown={async (e) => {
+                                if (e.key === "Enter" && descRef.current && descEdit) {
+                                    e.preventDefault();
+                                    (descRef.current as HTMLElement).contentEditable = "false"
+                                    setDescEdit(false);
+                                    const res = await updateFunStuffName(data![category][currentFullScreen]!.id, (descRef.current as HTMLElement).innerText)
+                                    if (res.success) {
+                                        setPopUp({ message: "Update successful!", type: "success", duration: 1000 })
+                                    } else {
+                                        setPopUp({ message: "Update failed!", type: "warning", duration: 1000 })
+                                    }
+                                } else if (e.key === "Escape" && descRef.current && descEdit) {
+                                    e.preventDefault();
+                                    (descRef.current as HTMLElement).contentEditable = "false"
+                                    setDescEdit(false);
+                                }
+                            }}
+                        >
+                            {descText}
+                        </h3>
                         {
                             editMode ? (
                                 <svg
-                                    className="h-[28px] ml-2 cursor-pointer"
+                                    className="h-[40px] ml-2 cursor-pointer"
                                     x="0px"
                                     y="0px"
                                     width="16"
                                     height="16"
                                     viewBox="0 0 50 50"
                                     onClick={(e) => {
-                                        e.stopPropagation()
-                                        setPopUp({ message: 'Work in progress', type: 'warning', duration: 1000 })
+                                        e.stopPropagation();
+                                        if (descRef.current) { 
+                                            (descRef.current as HTMLElement).contentEditable = "true"
+                                        }
+                                        setDescEdit(true);
+                                        setPopUp({ message: "Click on the description to edit and press enter to save", type: "message", duration: 1000 })
                                     }}
                                 >
                                     <path d="M 43.125 2 C 41.878906 2 40.636719 2.488281 39.6875 3.4375 L 38.875 4.25 L 45.75 11.125 C 45.746094 11.128906 46.5625 10.3125 46.5625 10.3125 C 48.464844 8.410156 48.460938 5.335938 46.5625 3.4375 C 45.609375 2.488281 44.371094 2 43.125 2 Z M 37.34375 6.03125 C 37.117188 6.0625 36.90625 6.175781 36.75 6.34375 L 4.3125 38.8125 C 4.183594 38.929688 4.085938 39.082031 4.03125 39.25 L 2.03125 46.75 C 1.941406 47.09375 2.042969 47.457031 2.292969 47.707031 C 2.542969 47.957031 2.90625 48.058594 3.25 47.96875 L 10.75 45.96875 C 10.917969 45.914063 11.070313 45.816406 11.1875 45.6875 L 43.65625 13.25 C 44.054688 12.863281 44.058594 12.226563 43.671875 11.828125 C 43.285156 11.429688 42.648438 11.425781 42.25 11.8125 L 9.96875 44.09375 L 5.90625 40.03125 L 38.1875 7.75 C 38.488281 7.460938 38.578125 7.011719 38.410156 6.628906 C 38.242188 6.246094 37.855469 6.007813 37.4375 6.03125 C 37.40625 6.03125 37.375 6.03125 37.34375 6.03125 Z"/>
@@ -278,7 +337,8 @@ const FunStuff = () => {
                                     <img
                                         key={image!.name}
                                         data-key={index}
-                                        className={`image transition-all duration-[800ms] ease-in-out object-cover object-[100%_center] ${currentFullScreen === index ? "h-[66.66vmin] -translate-x-[calc((100%_-_40vmin)_/_2)]" : "h-[56vmin]" }`}
+                                        className={`image transition-all duration-[800ms] ease-in-out object-cover ${currentFullScreen === index ? "h-[66.66vmin] -translate-x-[calc((100%_-_40vmin)_/_2)]" : "h-[56vmin]" }`}
+                                        style={{objectPosition: `${-108 * 100 / ((n - 1) * 44) + 100}% 50%`}}
                                         onClick={handleMouseClick}
                                         src={image!.url}
                                         draggable={false}
