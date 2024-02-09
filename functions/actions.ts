@@ -7,6 +7,7 @@ import bcrypt from 'bcrypt';
 import jwt, { TokenExpiredError } from "jsonwebtoken";
 import emailTemplate from "./emailTemplate";
 import sizeOf from "image-size";
+import { ProjectData } from "@/app/projects/[id]/page";
 
 interface User {
     id: string,
@@ -47,6 +48,10 @@ export async function login(formdata: FormData) {
     return { success: true, message: token }
 }
 
+export async function getAllProjects() {
+    return await kv.keys("project:*");
+}
+
 export async function getProjectKey(id: string) {
     const projectKey = await kv.get(id);
     return { success: true, data: projectKey };
@@ -58,12 +63,21 @@ export async function getProjectThumbnail(projectKey: string) {
 }
 
 export async function getProjectData(projectKey: string) {
-
     const data = await kv.hmget(projectKey, ...["name", "year", "data"]);
     if (data?.data && typeof data.data === "string") {
         data.data = JSON.parse(data.data.replaceAll("&quot", "\""))
     }
     return { success: true, data: data };
+}
+
+export async function saveNewProjectData(projectKey: string, data: ProjectData) {
+    logger('saveNewProjectData', 'HMSET', projectKey);
+    if (await kv.exists(projectKey)) {
+        await kv.hmset(projectKey, { "name": data.name, "year": data.year, "data": JSON.stringify(data.data) });
+        return { success: true };
+    } else {
+        return { success: false, message: "Key does not exist" };
+    }
 }
 
 export async function isAllowedToAccess(token: string | null, pageId: string) {
@@ -98,10 +112,6 @@ export async function isAllowedToAccess(token: string | null, pageId: string) {
         return "yes"
     }
     return "no";
-}
-
-export async function getAllProjects() {
-    return await kv.keys("project:*");
 }
 
 export async function submitContactForm(formData : FormData) {
