@@ -10,20 +10,21 @@ This portfolio website serves as a platform to showcase her projects, skills, an
 ## Features
 
 - **Project Gallery:** View latest projects with detailed descriptions and photos.
-- **Login System**: Block off parts of the site to the public and share a password to your friends!
+- **Login System:** Block off parts of the site to the public and share a password to your friends!
 - **Contact:** Easily get in touch through the website's contact form or social media links.
+- **Codeless Updates**: Update the website directly with new projects, or modify existing ones, or delete old ones entirely without writing a single line of code!
 
 ## Technologies Used
 
 - React
 - Next
 - Vercel
-- Vercel KV, Blob
+- Upstash, AWS S3
 - Resend
 
 ## Getting Started
 
-To view the live portfolio website, simply visit (https://portfolio-website-gules-tau.vercel.app/).
+View the live portfolio website [here](https://portfolio-website-gules-tau.vercel.app/).
 
 To run the website locally:
 
@@ -31,6 +32,3 @@ To run the website locally:
 2. Navigate to the project directory: `cd portfolio-website`
 3. Run `npm run dev`
 
-## Disclaimer
-
-There are various unsafe practices relating to the login system within the code. It didn't matter too much for my purposes, but do keep in mind that jsonWebTokens shouldn't be stored in localStorage.
