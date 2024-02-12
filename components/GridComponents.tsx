@@ -6,6 +6,7 @@ import LoadingComponent from "./LoadingComponent";
 import Link from "next/link";
 import { DeleteWarningComponent, MessageDisplayComponent, PopUpComponent, usePopUp } from ".";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export interface ProjectThumbnailData {
     name: string;
@@ -77,19 +78,6 @@ const GridComponents = ({ keys, max, showTitle = true, editMode = false }: { key
     }
     const GridComponent = ({ projectKey, data, span, editMode }: { projectKey: string, data: ProjectThumbnailData, span: Pos, editMode: boolean }) => {
         const [isHovered, setIsHovered] = useState(false);
-        // useEffect(() => {
-        //     const fetchData = async () => {
-        //         if (!projectKey) {
-        //             return;
-        //         }
-        //         const res = await getProjectThumbnail(projectKey);
-        //         if (!res.success) {
-        //             return;
-        //         }
-        //         setData(res.data as ProjectThumbnailData | null);
-        //     };
-        //     fetchData();
-        // }, [projectKey]);
         if (data === null) {
             return <></>;
         }
@@ -128,7 +116,15 @@ const GridComponents = ({ keys, max, showTitle = true, editMode = false }: { key
                     onMouseOver={() => setIsHovered(true)}
                     onMouseOut={() => setIsHovered(false)}
                 >
-                    <img className={`editable object-cover object-left w-full h-full absolute transition-all ${isHovered || editMode ? ' blur-[2px]' : ''}`} src={data.image} alt={`${data.name} image`} />
+                    <Image
+                        className={`editable object-cover object-left w-full h-full absolute transition-all ${isHovered || editMode ? ' blur-[2px]' : ''}`}
+                        src={data.image}
+                        alt={`${data.name} image`}
+                        width={0}
+                        height={0}
+                        sizes="100vw"
+                        priority
+                    />
                     <p className={`editable popup w-full h-full absolute flex p-20 items-center justify-center text-center transition-all text-black xs-regular ${isHovered || editMode ? 'opacity-100' : 'opacity-0'}`}>
                     {data.desc}
                     </p>
