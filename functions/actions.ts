@@ -1,13 +1,15 @@
 "use server";
 
 import { Resend } from "resend";
-import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
-import { kv } from "@vercel/kv";
+import { S3Client, PutObjectCommand, DeleteObjectCommand, DeleteObjectsCommand } from "@aws-sdk/client-s3";
 import bcrypt from 'bcrypt';
 import jwt, { TokenExpiredError } from "jsonwebtoken";
 import emailTemplate from "./emailTemplate";
 import sizeOf from "image-size";
 import { ProjectData } from "@/app/projects/[id]/page";
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv()
 
 interface User {
     id: string,
@@ -26,14 +28,14 @@ const s3 = new S3Client({
     }
 });
 
-function logger(methodName: string, kvFunction: string, key: string) {
+function logger(methodName: string, redisFunction: string, key: string) {
     const logLine = {
-        kvFunction: kvFunction,
+        redisFunction: redisFunction,
         arg: key,
         initiator: methodName,
         time: new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Singapore', timeStyle: "medium", dateStyle: "medium" }).format(new Date())
     }
-    kv.rpush('log', JSON.stringify(logLine))
+    redis.rpush('log', JSON.stringify(logLine))
 }
 
 export async function login(formdata: FormData) {
@@ -42,37 +44,37 @@ export async function login(formdata: FormData) {
     if (!username || !password) {
         return { success: false, message: "Please fill in the required blanks" };
     }
-    const userId = await kv.get(username);
+    const userId = await redis.get(username);
     if (!userId || typeof userId !== "string") {
         return { success: false, message: "Unknown username" };
     }
-    const user = (await kv.hgetall(userId)) as User;
+    const user = (await redis.hgetall(userId)) as User;
     user.id = userId;
     if (!user || typeof user.hash !== "string" || !bcrypt.compareSync(password, user.hash)) {
         return { success: false, message: "Incorrect password" };
     }
     logger('login', 'HSET', user.id)
-    kv.hset(user.id, { "last": new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Singapore', timeStyle: "medium", dateStyle: "medium" }).format(new Date())})
+    redis.hset(user.id, { "last": new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Singapore', timeStyle: "medium", dateStyle: "medium" }).format(new Date())})
     const token = jwt.sign({ userId: user.id, role: user.role }, process.env.SECRET_KEY as string, { expiresIn: '1h'})
     return { success: true, message: token }
 }
 
 export async function getAllProjects() {
-    return await kv.keys("project:*");
+    return await redis.keys("project:*");
 }
 
 export async function getProjectKey(id: string) {
-    const projectKey = await kv.get(id);
+    const projectKey = await redis.get(id);
     return { success: true, data: projectKey };
 }
 
 export async function getProjectThumbnail(projectKey: string) {
-    const data = await kv.hmget(projectKey, ...["name", "desc", "image", "year", "id"]);
+    const data = await redis.hmget(projectKey, ...["name", "desc", "image", "year", "id"]);
     return { success: true, data: data };
 }
 
 export async function getProjectData(projectKey: string) {
-    const data = await kv.hmget(projectKey, ...["name", "year", "data"]);
+    const data = await redis.hmget(projectKey, ...["name", "year", "data"]);
     if (data?.data && typeof data.data === "string") {
         data.data = JSON.parse(data.data.replaceAll("&quot", "\""))
     }
@@ -81,8 +83,8 @@ export async function getProjectData(projectKey: string) {
 
 export async function saveNewProjectData(projectKey: string, data: ProjectData) {
     logger('saveNewProjectData', 'HMSET', projectKey);
-    if (await kv.exists(projectKey)) {
-        await kv.hmset(projectKey, { "name": data.name, "year": data.year, "data": JSON.stringify(data.data).replaceAll("\"", "&quot")});
+    if (await redis.exists(projectKey)) {
+        await redis.hmset(projectKey, { "name": data.name, "year": data.year, "data": JSON.stringify(data.data).replaceAll("\"", "&quot")});
         return { success: true };
     } else {
         return { success: false, message: "Key does not exist" };
@@ -95,14 +97,15 @@ export async function uploadNewProjectImage(formData: FormData) {
     const imageBuffer = await image.arrayBuffer();
     const imageBody = Buffer.from(imageBuffer);
     try {
-        await s3.send(new PutObjectCommand({
+        const res = await s3.send(new PutObjectCommand({
             Bucket: Bucket,
             Key: `projects/${id}/${image.name}`,
             Body: imageBody,
             ContentType: image.type,
             ContentLength: image.size
         }));
-        return { success: true, data: `https://juliette-portfolio-website.s3.ap-southeast-2.amazonaws.com/projects/${id}/${image.name}` };
+        const versionId = res.VersionId;
+        return { success: true, data: `https://juliette-portfolio-website.s3.ap-southeast-2.amazonaws.com/projects/${id}/${image.name}?versionID=${versionId}` };
     } catch (error) {
         return { success: false, message: "Failed to upload image", error: (error as Error).message }
     }
@@ -121,7 +124,7 @@ export async function deleteUnusedImages(images: string[]) {
 }
 
 export async function createNewProject(formData: FormData) {
-    const keys = await kv.keys("project:*");
+    const keys = await redis.keys("project:*");
     const nextId = keys.length;
     const projectKey = `project:${nextId}`;
     const id = formData.get("id") as string;
@@ -157,7 +160,7 @@ export async function createNewProject(formData: FormData) {
                 approach: ["placeholder"],
             }
         }
-        await s3.send(new PutObjectCommand({
+        const res = await s3.send(new PutObjectCommand({
             Bucket: Bucket,
             Key: `projects/${id}/${image.name}`,
             Body: imageBody,
@@ -165,16 +168,16 @@ export async function createNewProject(formData: FormData) {
             ContentLength: image.size
         }));
         logger('createNewProject', 'HMSET', projectKey);
-        await kv.hmset(projectKey, {
+        await redis.hmset(projectKey, {
             "name": formData.get("name"),
             "year": formData.get("year"),
             "desc": formData.get("desc"),
             "id": id,
-            "image": `https://juliette-portfolio-website.s3.ap-southeast-2.amazonaws.com/projects/${id}/${image.name}`,
+            "image": `https://juliette-portfolio-website.s3.ap-southeast-2.amazonaws.com/projects/${id}/${image.name}?versionID=${res.VersionId}`,
             "access": formData.get("access"),
             "data": JSON.stringify(data).replaceAll("\"", "&quot")
         });
-        await kv.set(id, projectKey);
+        await redis.set(id, projectKey);
         return { success: true, message: id };
     } catch (error) {
         return { success: false, message: "Failed to create new project" };
@@ -186,11 +189,11 @@ export async function isAllowedToAccess(token: string | null, pageId: string) {
     if (pageId === "admin") {
         access = pageId;
     } else {
-        const page = await kv.get(pageId) as string;
+        const page = await redis.get(pageId) as string;
         if (!page) {
             return "no";
         }
-        access = await kv.hget(page, "access") as string;
+        access = await redis.hget(page, "access") as string;
     }
     if (access === "public") {
         return "yes";
@@ -244,9 +247,9 @@ export async function submitContactForm(formData : FormData) {
 }
 
 export async function getFunStuff() {
-    const sketchData = await getAllCategoryData(await kv.keys("sketchbook*"));
-    const photogData = (await getAllCategoryData(await kv.keys("photography*")));
-    const craftData = await getAllCategoryData(await kv.keys("craft*"));
+    const sketchData = await getAllCategoryData(await redis.keys("sketchbook*"));
+    const photogData = (await getAllCategoryData(await redis.keys("photography*")));
+    const craftData = await getAllCategoryData(await redis.keys("craft*"));
     return {
         data: {
             sketchbook: sketchData.data,
@@ -270,7 +273,7 @@ export async function getAllCategoryData(ids: string[]) {
 }
 
 export async function getFunStuffData(id: string) {
-    const data = await kv.hgetall(id);
+    const data = await redis.hgetall(id);
     if (data) {
         return { success: true, data: data }
     }
@@ -279,7 +282,7 @@ export async function getFunStuffData(id: string) {
 
 export async function submitNewFunStuff(formData: FormData) {
     const category = formData.get("type")!;
-    const keys = await kv.keys(`${category}:*`);
+    const keys = await redis.keys(`${category}:*`);
     const nextId = keys.length;
     const image = formData.get('image') as File;
     const imageBuffer = await image.arrayBuffer();
@@ -292,7 +295,7 @@ export async function submitNewFunStuff(formData: FormData) {
         return { success: false, message: "Image aspect ratio too small/large" }
     }
     try {
-        await s3.send(new PutObjectCommand({
+        const res = await s3.send(new PutObjectCommand({
             Bucket: Bucket,
             Key: `funstuff/${category}/${image.name}`,
             Body: imageBody,
@@ -300,9 +303,9 @@ export async function submitNewFunStuff(formData: FormData) {
             ContentLength: image.size
         }));
         logger('submitNewFunStuff', 'HSET', `${category}:${nextId}`);
-        await kv.hset(`${category}:${nextId}`, {
+        await redis.hset(`${category}:${nextId}`, {
             name: formData.get("name"),
-            url: `https://juliette-portfolio-website.s3.ap-southeast-2.amazonaws.com/funstuff/${category}/${image.name}`
+            url: `https://juliette-portfolio-website.s3.ap-southeast-2.amazonaws.com/funstuff/${category}/${image.name}?versionID=${res.VersionId}`
         })
     } catch (error) { 
         return { success: false, message: "Failed to upload image" }
@@ -311,41 +314,47 @@ export async function submitNewFunStuff(formData: FormData) {
 };
 
 export async function updateFunStuffName(id:string, desc: string) {
-    if (await kv.exists(id)) {
+    if (await redis.exists(id)) {
         logger('updateFunStuffName', 'HSET', id);
-        await kv.hset(id, { "name": desc })
+        await redis.hset(id, { "name": desc })
         return { success: true }
     }
     return { success: false, message: "Key does not exist" }
 }
 
-export async function deleteItem(id: string) {
-    const res = await kv.exists(id);
+export async function deleteItem(key: string) {
+    const res = await redis.exists(key);
     if (res === 0) {
         return { success: false, message: "Key does not exist" }
     } else {
-        if (id.startsWith("project:")) {
-            const projectData = await kv.hmget(id, ...["name", "data"]);
-            if (projectData && projectData.data && typeof projectData.data === "string") {
-                const data = JSON.parse(projectData.data.replaceAll("&quot", "\"")) as NonNullable<ProjectData["data"]>;
-                const images = [
-                    ...data.main.body.grid.images,
-                    ...data.main.body.normal.map((component) => component.image)
-                ].filter((url) => url.startsWith("https://juliette-portfolio-website.s3.ap-southeast-2.amazonaws.com/"));
-                for (const image of images) {
-                    const key = image.split("projects/")[1];
-                    await s3.send(new DeleteObjectCommand({ Bucket: Bucket, Key: `projects/${key}` }));
+        try {
+            if (key.startsWith("project:")) {
+                const projectId = await redis.hget(key, "id");
+                if (projectId&& typeof projectId === "string") {
+                    const folderKey = `projects/${projectId}`;
+                    await s3.send(new DeleteObjectsCommand({
+                        Bucket: Bucket,
+                        Delete: {
+                            Objects: [{ Key: folderKey }],
+                            Quiet: true
+                        }
+                    }));
+                    await redis.del(projectId);
                 }
+            } else if (key.startsWith("photography:") || key.startsWith("sketchbook:") || key.startsWith("craft:")) {
+                const funstuffData = await redis.hget(key, "url");
+                if (funstuffData && typeof funstuffData === "string" && funstuffData.startsWith("https://juliette-portfolio-website.s3.ap-southeast-2.amazonaws.com/")) {
+                    const id = funstuffData.split("funstuff/")[1];
+                    await s3.send(new DeleteObjectCommand({ Bucket: Bucket, Key: `funstuff/${id}` }));
+                }
+            } else {
+                return { success: false, message: "Cannot delete this key" }
             }
-        } else if (id.startsWith("photography:") || id.startsWith("sketchbook:") || id.startsWith("craft:")) {
-            const funstuffData = await kv.hget(id, "url");
-            const category = id.split(":")[0];
-            if (funstuffData && typeof funstuffData === "string" && funstuffData.startsWith("https://juliette-portfolio-website.s3.ap-southeast-2.amazonaws.com/")) {
-                const url = funstuffData.split("funstuff/")[1];
-                await s3.send(new DeleteObjectCommand({ Bucket: Bucket, Key: `funstuff/${category}/${url}` }));
-            }
+            logger('deleteItem', 'del', key)
+            await redis.del(key);
+        } catch (error) {
+            return { success: false, message: "Failed to delete item" }
         }
-        logger('deleteItem', 'del', id)
         return { success: true }
     }
 }

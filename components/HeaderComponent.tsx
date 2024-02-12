@@ -74,7 +74,7 @@ const Header = ({ isLoginPage = false, isNewPage = false, newHidden = false }) =
                 router.push("/fun-stuff?edit=true")
             }
         } else {
-            setPopUp({ message: "Go to the page you want to edit first!", type: "message", duration: 1000 })
+            setPopUp({ message: "Go to the page you want to edit first! To edit project thumbnails or delete projects, go to /projects!", type: "message", duration: 2000 })
         }
     }
 
@@ -89,7 +89,7 @@ const Header = ({ isLoginPage = false, isNewPage = false, newHidden = false }) =
     return (
         isClient ? (
             <>
-                <header className=" w-[100vw] h-[40px] lg:h-[70px] fixed z-10 bg-pale-butter flex flex-col justify-center shadow">
+                <header className=" w-[100vw] h-[40px] lg:h-[70px] fixed z-[2024] bg-pale-butter flex flex-col justify-center shadow">
                     <div ref={parentDropdownRef} className="fixed lg:left-[60px] left-[20px]">
                         {(loggedIn && !isNewPage && isAdmin && !newHidden) && (
                             <>
@@ -155,7 +155,7 @@ const Header = ({ isLoginPage = false, isNewPage = false, newHidden = false }) =
             </>
         ) : (
             <>
-                <header className=" w-[100vw] pr-2 h-[40px] lg:h-[70px] fixed z-10 bg-pale-butter flex flex-col justify-center shadow">
+                <header className=" w-[100vw] pr-2 h-[40px] lg:h-[70px] fixed z-[2024] bg-pale-butter flex flex-col justify-center shadow">
                     <div className="fixed left-[50%] transform -translate-x-1/2">
                         <Link href="/" rel="noopener noreferrer">
                             <h1 className="p-1 hover:cursor-pointer">

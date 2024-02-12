@@ -114,7 +114,7 @@ const UploadComponent = ({ type }: { type: string | undefined }) => {
                                         spellCheck={false}
                                         type="text"
                                         name="id"
-                                        pattern="^(?!-)[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$"
+                                        pattern="^(?!-)[a-z0-9]+(?:-[a-z0-9]+)*$"
                                         required
                                         onInput={(event) => {
                                             const input = event.target as HTMLInputElement;
@@ -124,7 +124,7 @@ const UploadComponent = ({ type }: { type: string | undefined }) => {
                                                 Start with any alphabet or number.
                                                 Not start with a dash.
                                                 Have one dash at a time, surrounded by other characters.
-                                                Not consist of characters other than alphabets, numbers, and dashes.
+                                                Not consist of characters other than lowercase alphabets, numbers, and dashes.
                                                 e.g. a-b-c` : ""
                                             );
                                         }}

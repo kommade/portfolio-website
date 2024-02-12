@@ -75,7 +75,6 @@ function ProjectPage({
         const fetchData = async () => {
             const token = getToken();
             const allowed = await isAllowedToAccess(token, params.id)
-            console.log(allowed)
             switch (allowed) {
                 case "expired":
                     logout();
@@ -88,7 +87,6 @@ function ProjectPage({
                     setIsLoading(false);
                     return;
             }
-            console.log(params.id)
             let res = await getProjectKey(params.id);
             if (!res.success) {
                 return;
@@ -105,10 +103,10 @@ function ProjectPage({
             setData(res.data as ProjectData | null);
             setIsLoading(false);
         };
-        fetchData();
         if (editMode) {
             checkAccess();
         }
+        fetchData();
     }, [params.id, editMode, router]);
     
     const handleSave = async () => {
@@ -175,7 +173,6 @@ function ProjectPage({
         });
         const finalImages = [newData.data!.main.cover.image, ...newData.data!.main.body.normal.map((item) => item.image), ...newData.data!.main.body.grid.images];
         const unusedImages = uploadedImages.filter((image) => !finalImages.includes(image));
-        console.log(unusedImages)
         if (unusedImages.length > 0) {
             const res = await deleteUnusedImages(unusedImages);
             if (!res.success) {
@@ -208,7 +205,7 @@ function ProjectPage({
             <main className="flex flex-col items-center justify-between overflow-x-clip">
                 <div className="w-screen relative flex flex-col">
                     <HeaderComponent />
-                    <MessageDisplayComponent text="e" />
+                    <MessageDisplayComponent/>
                 </div>
             </main>
         )
@@ -282,7 +279,6 @@ function ProjectPage({
                             setData(newData);
                             setUploadedImages([...uploadedImages, res.data!]);
                         } else {
-                            console.log(res.error)
                             setPopUp({ message: "Error uploading image!", type: "warning", duration: 1000 });
                         }
                     }}
@@ -302,7 +298,7 @@ function ProjectPage({
                 </form>
                 <section className="w-[100%] min-h-[calc(100vh_-_108px)] lg:min-h-[calc(100vh_-_138px)] relative justify-between items-start mt-[40px] lg:mt-[70px] lg:mx-auto flex flex-col lg:flex-row">
                     {editMode &&
-                        <div className="fixed left-10 top-[20px] z-[2002] flex justify-center items-center" >
+                        <div className="fixed left-10 top-[20px] z-[2025] flex justify-center items-center" >
                             <h4 className="w-[100px]">Edit mode</h4>
                             <button className="s-regular rounded-2xl border-2 py-2 px-4 hover:bg-white" onClick={handleSave}>Save</button>
                         </div>

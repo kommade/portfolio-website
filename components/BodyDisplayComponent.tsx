@@ -57,7 +57,7 @@ import Image from "next/image";
                                 </p>
                             </div>
                         )}
-                        <div className="w-[90%] lg:min-h-[400px] lg:aspect-[11/9] flex flex-col gap-4 lg:gap-6">
+                        <div className="lg:min-h-[400px] lg:aspect-[11/9] flex flex-col gap-4 lg:gap-6">
                             <div className="w-full justify-start items-stretch gap-4 lg:gap-6 inline-flex flex-col lg:flex-row">
                                 <div className="lg:w-[63%] aspect-[17/12]">
                                     <Image

@@ -5,7 +5,7 @@ const DeleteWarningComponent =
     ({ item, callback }:
         {
             item: { id: string, name: string },
-            callback: (message: string) => void
+            callback: (message: 'cancel' | 'success' | 'error') => void
         }
     ) => {
     
@@ -22,7 +22,7 @@ const DeleteWarningComponent =
         <div className="fixed w-screen h-screen bg-[rgba(0,0,0,0.4)] z-[1001]">
             <div className="fixed w-[350px] h-[150px] rounded-lg top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-pale-butter opacity-100 flex flex-col items-center justify-evenly">
                 <div className="flex flex-col justify-center items-center gap-4">
-                    <h4 className="">Are you sure you want to delete {item.name}?</h4>
+                    <h4 className="w-[250px] text-center">Are you sure you want to delete {item.name}?</h4>
                     <h4 className="text-red-500">This action is not reversible.</h4>
                 </div>
                 <div className="s-regular w-full flex justify-evenly">
