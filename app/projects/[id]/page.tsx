@@ -148,13 +148,14 @@ function ProjectPage({
                                 ...el.innerText.split("\n")
                             ];
                         } else if (key.startsWith("main.cover")) {
-                            newData.data!.main.cover.text = el.innerText;
+                            newData.data!.main.cover.text = el.innerText.replaceAll("\n", "<br>");
+                            console.log(el.innerText)
                         } else if (key.startsWith("main.body")) {
                             const index = parseInt(getIndex(key));
                             if (key.endsWith("header")) {
                                 newData.data!.main.body.normal[index].header = el.innerText;
                             } else if (key.endsWith("text")) {
-                                newData.data!.main.body.normal[index].text = el.innerText;
+                                newData.data!.main.body.normal[index].text = el.innerText.replaceAll("\n", "<br>");
                             }
                         }
                     } else {
@@ -184,7 +185,7 @@ function ProjectPage({
         if (res.success) {
             setPopUp({ message: "Project saved!", type: "success", duration: 1000 });
             setTimeout(() => {
-                router.push(`/projects/${params.id}`);
+                window.location.href = window.location.href.split("?")[0];
             }, 1000)
         } else {
             setPopUp({ message: "Error saving project!", type: "warning", duration: 1000 });
@@ -345,7 +346,7 @@ function ProjectPage({
                             <div className="my-[24px] flex flex-col">
                                 <h4>BRIEF</h4>
                                 <p data-key={`main.cover.text`} className={`editable s-regular ${editMode ? "border" : ""}`}>
-                                    {data.data.main.cover.text}
+                                    {data.data.main.cover.text.replaceAll("<br>", "\n")}
                                 </p>
                             </div>
                         </section>

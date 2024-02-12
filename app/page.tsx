@@ -42,7 +42,7 @@ function Home() {
                                 <div className=" w-[198px] h-[256px] overflow-hidden">
                                 <img
                                     className="object-cover object-bottom"
-                                    src="https://cdn.myportfolio.com/e5eed4ea-cfaa-4dbb-a47a-b4cea49e8024/d6503de0-057b-4fc3-9556-4d8fcf7cedfb_rw_1200.jpg?h=912b99a49b81440a1d427d7fe18629af"
+                                    src="/images/about-me.jpg"
                                     alt="profile photo"
                                 />
                                 </div>

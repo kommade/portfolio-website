@@ -56,7 +56,7 @@ function Projects() {
         <main className="flex flex-col items-center justify-between overflow-x-clip">
             <div className="w-screen h-fit min-h-[100vh] relative flex flex-col">
                 <ScrollToTop />
-                <HeaderComponent/>
+                <HeaderComponent newHidden={editMode} />
                 <GridComponents keys={keys} max={0} showTitle={false} editMode={editMode} />
                 <ScrollComponent />
                 <FooterComponent/>

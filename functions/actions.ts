@@ -73,6 +73,46 @@ export async function getProjectThumbnail(projectKey: string) {
     return { success: true, data: data };
 }
 
+export async function uploadNewProjectThumbnail(formData: FormData) {
+    const id = formData.get("id") as string;
+    const image = formData.get('image') as File;
+    const imageBuffer = await image.arrayBuffer();
+    const imageBody = Buffer.from(imageBuffer);
+    try {
+        const res = await s3.send(new PutObjectCommand({
+            Bucket: Bucket,
+            Key: `projects/${id}/${image.name}`,
+            Body: imageBody,
+            ContentType: image.type,
+            ContentLength: image.size
+        }));
+        const versionId = res.VersionId;
+        return { success: true, data: `https://juliette-portfolio-website.s3.ap-southeast-2.amazonaws.com/projects/${id}/${image.name}?versionID=${versionId}` };
+    } catch (error) {
+        return { success: false, message: "Failed to upload image", error: (error as Error).message }
+    }
+}
+
+export async function changeProjectDesc(projectKey: string, desc: string) {
+    if (await redis.exists(projectKey)) {
+        logger('changeProjectDesc', 'HSET', projectKey);
+        await redis.hset(projectKey, { "desc": desc });
+        return { success: true };
+    } else {
+        return { success: false, message: "Key does not exist" };
+    }
+}
+
+export async function changeProjectThumnail(projectKey: string, url: string) {
+    if (await redis.exists(projectKey)) {
+        logger('changeProjectThumnail', 'HSET', projectKey);
+        await redis.hset(projectKey, { "image": url });
+        return { success: true };
+    } else {
+        return { success: false, message: "Key does not exist" };
+    }
+}
+
 export async function getProjectData(projectKey: string) {
     const data = await redis.hmget(projectKey, ...["name", "year", "data"]);
     if (data?.data && typeof data.data === "string") {

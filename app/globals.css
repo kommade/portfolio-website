@@ -143,6 +143,10 @@ h5 {
     }
 }
 
+p {
+    white-space: pre-line;
+}
+
 @font-face {
     font-family: 'Junicode';
     src: url('/fonts/Junicode.ttf');

@@ -5,7 +5,35 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Portfolio Website',
+    title: 'Juliette Khoo',
+    themeColor: '#FBFBF1',
+    keywords: 'architecture,illustration,design,portfolio',
+    twitter: {
+        card: 'summary_large_image',
+        images: [
+            {
+                url: '/images/about-me.jpg',
+                width: 800,
+                height: 600,
+            },
+        
+        ],
+        title: 'Juliette Khoo - architecture student and illustration enthusiast',
+        description: 'I’m a dreamer and a UX designer, currently based in Singapore. Here’s some of my work!',
+    },
+    openGraph: {
+        url: 'https://juliettekhoo.com/',
+        title: 'Juliette Khoo - architecture student and illustration enthusiast',
+        description: 'I’m a dreamer and a UX designer, currently based in Singapore. Here’s some of my work!',
+        images: [
+            {
+                url: '/images/about-me.jpg',
+                width: 800,
+                height: 600,
+            },
+        ],
+    },
+    manifest: "manifest.json",
 }
 
 export default function RootLayout({
@@ -17,9 +45,6 @@ export default function RootLayout({
         <html lang="en">
             <head>
                 <link rel="preconnect" fetchPriority="high" href="juliette-portfolio-website.s3.ap-southeast-2.amazonaws.com" crossOrigin="use-credentials" />
-                <link rel="manifest" fetchPriority="low" href="/manifest.json"/>
-                <meta name="theme-color" content="#FBFBF1" />
-                <meta name="description" content="This is a portfolio website designed by Juliette Khoo. This website showcases her work and accomplishments in a visually appealing and user-friendly manner."/>
             </head>
             <body className={inter.className}>{children}</body>
         </html>
