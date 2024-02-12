@@ -33,7 +33,7 @@ const ScrollComponent = () => {
                     src="/icons/scroll-up-icon.png"
                     alt="scroll-up-icon"
                     width={30}
-                    height={0}
+                    height={60}
                 />
             </div>
         </button>   

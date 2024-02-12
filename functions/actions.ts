@@ -1,7 +1,7 @@
 "use server";
 
 import { Resend } from "resend";
-import { put } from "@vercel/blob";
+import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { kv } from "@vercel/kv";
 import bcrypt from 'bcrypt';
 import jwt, { TokenExpiredError } from "jsonwebtoken";
@@ -16,6 +16,15 @@ interface User {
     last: string,
     [key: string]: unknown;
 }
+
+const Bucket = process.env.AMPLIFY_BUCKET as string;
+const s3 = new S3Client({
+    region: process.env.AWS_REGION as string,
+    credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID as string,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY as string
+    }
+});
 
 function logger(methodName: string, kvFunction: string, key: string) {
     const logLine = {
@@ -80,26 +89,95 @@ export async function saveNewProjectData(projectKey: string, data: ProjectData) 
     }
 }
 
-export async function saveNewProjectImage(formData: FormData) {
-    console.log(formData)
-    const projectKey = formData.get("key") as string;
-    const index = parseInt(formData.get("index") as string);
+export async function uploadNewProjectImage(formData: FormData) {
+    const id = formData.get("id") as string;
     const image = formData.get('image') as File;
+    const imageBuffer = await image.arrayBuffer();
+    const imageBody = Buffer.from(imageBuffer);
     try {
-        const imageURL = await put(image.name, image, { access: "public" });
-        console.log(imageURL)
-        logger('saveNewProjectImage', 'HSET', projectKey);
-        const prevData = await kv.hget(projectKey, "data") as string;
-        if (prevData) {
-            const data = JSON.parse(prevData.replaceAll("&quot", "\""));
-            data.images[index] = imageURL.url;
-            await kv.hset(projectKey, { "data": JSON.stringify(data).replaceAll("\"", "&quot") });
-        } else {
-            return { success: false, message: "Could not get previous data" };
-        }
-        return { success: true, data: imageURL.url };
+        await s3.send(new PutObjectCommand({
+            Bucket: Bucket,
+            Key: `projects/${id}/${image.name}`,
+            Body: imageBody,
+            ContentType: image.type,
+            ContentLength: image.size
+        }));
+        return { success: true, data: `https://juliette-portfolio-website.s3.ap-southeast-2.amazonaws.com/projects/${id}/${image.name}` };
     } catch (error) {
         return { success: false, message: "Failed to upload image", error: (error as Error).message }
+    }
+}
+
+export async function deleteUnusedImages(images: string[]) {
+    try {
+        for (const image of images) {
+            const key = image.split("projects/")[1];
+            await s3.send(new DeleteObjectCommand({ Bucket: Bucket, Key: `projects/${key}` }));
+        }
+        return { success: true };
+    } catch (error) {
+        return { success: false, message: "Failed to delete images" };
+    }
+}
+
+export async function createNewProject(formData: FormData) {
+    const keys = await kv.keys("project:*");
+    const nextId = keys.length;
+    const projectKey = `project:${nextId}`;
+    const id = formData.get("id") as string;
+    const image = formData.get('image') as File;
+    const imageBuffer = await image.arrayBuffer();
+    const imageBody = Buffer.from(imageBuffer);
+    const grid = formData.get("grid") as string === "true" ? true : false;
+    try {
+        const data: ProjectData['data'] = {
+            main: {
+                cover: {
+                    image: "https://via.placeholder.com/800x800",
+                    text: ""
+                },
+                body: {
+                    grid: {
+                        use: grid,
+                        header: "",
+                        text: "",
+                        images: Array(4).fill(grid ? "https://via.placeholder.com/800x800": ""),
+                    },
+                    normal: Array(parseInt(formData.get("normal") as string)).fill({
+                        header: "",
+                        text: "",
+                        image: "https://via.placeholder.com/800x800"
+                    })
+                }
+            },
+            sidebar: {
+                "project-type": ["placeholder"],
+                team: ["placeholder"],
+                skillset: ["placeholder"],
+                approach: ["placeholder"],
+            }
+        }
+        await s3.send(new PutObjectCommand({
+            Bucket: Bucket,
+            Key: `projects/${id}/${image.name}`,
+            Body: imageBody,
+            ContentType: image.type,
+            ContentLength: image.size
+        }));
+        logger('createNewProject', 'HMSET', projectKey);
+        await kv.hmset(projectKey, {
+            "name": formData.get("name"),
+            "year": formData.get("year"),
+            "desc": formData.get("desc"),
+            "id": id,
+            "image": `https://juliette-portfolio-website.s3.ap-southeast-2.amazonaws.com/projects/${id}/${image.name}`,
+            "access": formData.get("access"),
+            "data": JSON.stringify(data).replaceAll("\"", "&quot")
+        });
+        await kv.set(id, projectKey);
+        return { success: true, message: id };
+    } catch (error) {
+        return { success: false, message: "Failed to create new project" };
     }
 }
 
@@ -204,7 +282,9 @@ export async function submitNewFunStuff(formData: FormData) {
     const keys = await kv.keys(`${category}:*`);
     const nextId = keys.length;
     const image = formData.get('image') as File;
-    const sizeof = sizeOf(new Uint8Array(await image.arrayBuffer()));
+    const imageBuffer = await image.arrayBuffer();
+    const sizeof = sizeOf(new Uint8Array(imageBuffer));
+    const imageBody = Buffer.from(imageBuffer);
     if (!sizeof.width || !sizeof.height) {
         return { success: false, message: "Unable to confirm aspect ratio of image" }
     }
@@ -212,11 +292,17 @@ export async function submitNewFunStuff(formData: FormData) {
         return { success: false, message: "Image aspect ratio too small/large" }
     }
     try {
-        const imageURL = await put(image.name, image, { access: "public" })
+        await s3.send(new PutObjectCommand({
+            Bucket: Bucket,
+            Key: `funstuff/${category}/${image.name}`,
+            Body: imageBody,
+            ContentType: image.type,
+            ContentLength: image.size
+        }));
         logger('submitNewFunStuff', 'HSET', `${category}:${nextId}`);
         await kv.hset(`${category}:${nextId}`, {
             name: formData.get("name"),
-            url: imageURL.url
+            url: `https://juliette-portfolio-website.s3.ap-southeast-2.amazonaws.com/funstuff/${category}/${image.name}`
         })
     } catch (error) { 
         return { success: false, message: "Failed to upload image" }
@@ -234,11 +320,32 @@ export async function updateFunStuffName(id:string, desc: string) {
 }
 
 export async function deleteItem(id: string) {
-    logger('deleteItem', 'del', id)
-    const res = await kv.del(id);
+    const res = await kv.exists(id);
     if (res === 0) {
         return { success: false, message: "Key does not exist" }
     } else {
+        if (id.startsWith("project:")) {
+            const projectData = await kv.hmget(id, ...["name", "data"]);
+            if (projectData && projectData.data && typeof projectData.data === "string") {
+                const data = JSON.parse(projectData.data.replaceAll("&quot", "\"")) as NonNullable<ProjectData["data"]>;
+                const images = [
+                    ...data.main.body.grid.images,
+                    ...data.main.body.normal.map((component) => component.image)
+                ].filter((url) => url.startsWith("https://juliette-portfolio-website.s3.ap-southeast-2.amazonaws.com/"));
+                for (const image of images) {
+                    const key = image.split("projects/")[1];
+                    await s3.send(new DeleteObjectCommand({ Bucket: Bucket, Key: `projects/${key}` }));
+                }
+            }
+        } else if (id.startsWith("photography:") || id.startsWith("sketchbook:") || id.startsWith("craft:")) {
+            const funstuffData = await kv.hget(id, "url");
+            const category = id.split(":")[0];
+            if (funstuffData && typeof funstuffData === "string" && funstuffData.startsWith("https://juliette-portfolio-website.s3.ap-southeast-2.amazonaws.com/")) {
+                const url = funstuffData.split("funstuff/")[1];
+                await s3.send(new DeleteObjectCommand({ Bucket: Bucket, Key: `funstuff/${category}/${url}` }));
+            }
+        }
+        logger('deleteItem', 'del', id)
         return { success: true }
     }
 }

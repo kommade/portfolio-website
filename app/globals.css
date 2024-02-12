@@ -90,12 +90,12 @@ h5 {
         letter-spacing: -1.6px;
     }
     h2 {
-        font-size: 24px;
-        letter-spacing: -1.2px;
+        font-size: 22px;
+        letter-spacing: -1.1px;
     }
     h3 {
-        font-size: 24px;
-        letter-spacing: -1.2px;
+        font-size: 22px;
+        letter-spacing: -1.1px;
     }
     h4 {
         font-size: 12px;
@@ -174,3 +174,11 @@ h5 {
     font-weight: 600;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    display: none;
+}
+
+input[type=number]{
+    -moz-appearance: textfield;
+}

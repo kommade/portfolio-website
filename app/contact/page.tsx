@@ -36,7 +36,7 @@ const Contact = () => {
                             <label className="xs-semibold text-start text-eggplant-purple">
                                 Name:
                             </label>
-                            <input className="w-[300px] h-[35px] bg-neutral-200 pl-2 s-regular" spellCheck={false} name="name" required/>
+                            <input className="w-[300px] h-[35px] bg-neutral-200 pl-2 s-regular" spellCheck={false} name="name" required autoComplete="name"/>
                         </section>
                         <section className="flex flex-col m-2 gap-2.5">
                             <label className="xs-semibold text-start text-eggplant-purple" >

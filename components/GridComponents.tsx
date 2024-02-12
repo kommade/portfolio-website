@@ -97,15 +97,17 @@ const GridComponent: React.FC<GridComponentProps> = ({ projectKey, span }) => {
     );
 }
 
-const GridComponents = ({ keys, max }: { keys: string[], max: number }) => {
+const GridComponents = ({ keys, max, showTitle = true }: { keys: string[], max: number, showTitle?: boolean }) => {
     let spanMap = generateComponentProperties(keys.length);
-
     const [isRenderingComplete, setIsRenderingComplete] = useState(false);
-
     useEffect(() => {
         setIsRenderingComplete(true);
     }, []);
     
+    if (max === 0) {
+        max = keys.length + 1;
+    }
+
     const renderGrid = keys.slice(0, max - 1).map((key, index) => {
         return (
             <GridComponent
@@ -115,12 +117,14 @@ const GridComponents = ({ keys, max }: { keys: string[], max: number }) => {
             />
         )
     })
-
     return (
         isRenderingComplete ? (
             <>
-                <h2 className="w-full h-[34px] mt-[80px] lg:mt-[110px] text-center">I’m a dreamer and a UX designer, currently based in Singapore. Here’s some of my work:<br/><br/></h2>
-                <section className="work-display w-[85%] h-fit min-h-[calc(100vh_-_108px)] lg:min-h-[calc(100vh_-_138px)] left-[7.5%] relative justify-center mt-[30px] grid grid-cols-1 lg:grid-cols-3 grid-flow-row gap-y-6 gap-x-0 lg:gap-x-6">
+                { showTitle ?
+                    <h2 className="w-full h-[34px] mt-[80px] lg:mt-[110px] text-center">I’m a dreamer and a UX designer, currently based in Singapore. Here’s some of my work:</h2>
+                    : <div className="h-0 mt-[40px] lg:mt-[70px]"></div>
+                }
+                <section className={`work-display w-[85%] h-fit min-h-[calc(100vh_-_108px)] lg:min-h-[calc(100vh_-_138px)] left-[7.5%] relative justify-center mt-[30px] grid grid-cols-1 lg:grid-cols-3 grid-flow-row gap-y-6 gap-x-0 lg:gap-x-6 ${showTitle ? "" : "mb-[40px]"}`}>
                     {renderGrid}
                 </section>
             </>

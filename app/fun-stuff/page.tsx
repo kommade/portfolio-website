@@ -4,7 +4,7 @@ import { HeaderComponent, MessageDisplayComponent, LoadingComponent, FooterCompo
 import { getToken, logout } from "@/functions/AuthContext";
 import { getFunStuff, isAllowedToAccess, updateFunStuffName } from "@/functions/actions";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Suspense, useEffect, useRef, useState } from 'react';
 import Image from "next/image";
 
 interface FunStuffData {
@@ -40,7 +40,7 @@ const FunStuff = () => {
     const [descText, setDescText] = useState("");
     const [descEdit, setDescEdit] = useState(false);
     useEffect(() => {
-        const checkAcess = async () => {
+        const checkAccess = async () => {
             const allowed = await isAllowedToAccess(getToken(), 'admin');
             switch (allowed) {
                 case "expired":
@@ -65,9 +65,18 @@ const FunStuff = () => {
             setIsLoading(false);
         };
         if (editMode) {
-            checkAcess()
+            checkAccess()
         }
         fetchData();
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !(dropdownRef.current as any).contains(event.target) && !(parentDropdownRef.current as any).contains(event.target)) {
+                setDropdown(false);
+            }
+        };
+            document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
     }, [editMode, router]);
 
     const handleMouseDown = (e: React.MouseEvent) => {
@@ -196,12 +205,7 @@ const FunStuff = () => {
         );
     } else if (isLoading) {
         return (
-            <main className="flex flex-col items-center justify-between overflow-x-clip">
-                <div className="w-screen relative flex flex-col">
-                    <HeaderComponent/>
-                    <LoadingComponent/>
-                </div>
-            </main>
+            <LoadingComponent/>
         )
     }
 
@@ -233,12 +237,14 @@ const FunStuff = () => {
                         ref={parentDropdownRef}
                         className={`w-[100px] h-[42px] pl-4 mt-2 ml-2 rounded-lg text-start flex justify-between items-center z-[2]  ${!dropdown ? "" : "hidden"}`}
                         onClick={() => setDropdown(true)}>
-                        <p className="s-regular select-none h-[16px]">{category.charAt(0).toUpperCase() + category.slice(1)}</p>
+                        <div className="h-[24px] flex justify-center items-center">
+                            <p className="s-regular select-none h-fit">{category.charAt(0).toUpperCase() + category.slice(1)}</p>
+                        </div>
                         <Image
                         src="/icons/dropdown.svg"
                         alt="v"
-                        width={32}
-                        height={32}
+                        width={24}
+                        height={24}
                         />
                     </div>
                     <div ref={dropdownRef} className={`absolute w-[150px] h-[126px] bg-pale-butter rounded-lg rounded-t-none p-4 z-[1] opacity-90 shadow-xl ${dropdown ? "" : "hidden"}`}>
@@ -394,4 +400,12 @@ const FunStuff = () => {
     )
 }
 
-export default FunStuff
+const FunStuffWrapper = () => {
+    return (
+        <Suspense fallback={<LoadingComponent/>}>
+            <FunStuff/>
+        </Suspense>
+    )
+}
+
+export default FunStuffWrapper

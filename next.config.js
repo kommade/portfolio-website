@@ -8,7 +8,11 @@ const nextConfig = {
             },
             {
                 protocol: "https",
-                hostname: "**.public.blob.vercel-storage.com"
+                hostname: "juliette-portfolio-website.s3.ap-southeast-2.amazonaws.com"
+            },
+            {
+                protocol: "https",
+                hostname: "via.placeholder.com"
             }
         ]
     }

@@ -1,20 +1,32 @@
-import { FooterComponent, HeaderComponent } from "@/components";
+"use client";
+
+import { FooterComponent, GridComponents, HeaderComponent, PopUpComponent, ScrollComponent, ScrollToTop, usePopUp } from "@/components";
+import { getAllProjects } from "@/functions/actions";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 
 
 export default function Projects() {
+    const router = useRouter();
+    const [popUp, setPopUp] = usePopUp();
+    const [keys, setKeys] = useState<string[]>([])
+    useEffect(() => {
+        const fetchKeys = async () => {
+            const res = await getAllProjects();
+        setKeys(res);
+        }
+        fetchKeys();
+    }, [setPopUp])
     return (
-      <main className="flex flex-col items-center justify-between overflow-x-clip">
-        <div className="w-screen relative flex flex-col">
-          <HeaderComponent/>
-
-          <div className="w-[85%] h-fit left-[7.5%] relative justify-center mt-28">
-            <h1>
-              Future see all page
-            </h1>
-          </div>
-          <FooterComponent/>
-        </div>
-      </main>
+        <main className="flex flex-col items-center justify-between overflow-x-clip">
+            <div className="w-screen h-fit min-h-[100vh] relative flex flex-col">
+                <ScrollToTop />
+                <HeaderComponent/>
+                <GridComponents keys={keys} max={0} showTitle={false} />
+                <ScrollComponent />
+                <FooterComponent/>
+            </div>
+        </main>
     )
-  }
-  
+}
+    

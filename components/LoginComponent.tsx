@@ -38,14 +38,14 @@ const LoginComponent = ( { redirect } : { redirect : string | undefined } ) => {
                     <label className="text-start text-eggplant-purple xs-semibold">
                         Username:
                     </label>
-                    <input className={`w-[300px] h-[42px] bg-neutral-light-grey pl-2 s-regular focus:ring-2 focus:border-none ${response.username ? "border-b-2 border-red-600" : ""}`} spellCheck={false} name="username" />
+                    <input className={`w-[300px] h-[42px] bg-neutral-light-grey pl-2 s-regular focus:ring-2 focus:border-none ${response.username ? "border-b-2 border-red-600" : ""}`} spellCheck={false} name="username" autoComplete="off"/>
                     <p className="xs-regular text-red-600">{response.username ? output : ""}</p>
                 </section>
                 <section className="flex flex-col mt-2 gap-2.5">
                     <label className="text-start text-eggplant-purple xs-semibold">
                         Password:
                     </label>
-                    <input className={`w-[300px] h-[42px] bg-neutral-light-grey pl-2 s-regular focus:ring-2 focus:border-none ${response.password ? "border-b-2 border-red-600" : ""}`} name="password" type="password" />
+                    <input className={`w-[300px] h-[42px] bg-neutral-light-grey pl-2 s-regular focus:ring-2 focus:border-none ${response.password ? "border-b-2 border-red-600" : ""}`} name="password" type="password" autoComplete="off"/>
                     <p className="xs-regular text-red-600">{response.password ? output : ""}</p>
                 </section>
             </div>

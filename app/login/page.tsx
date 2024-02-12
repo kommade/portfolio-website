@@ -3,9 +3,9 @@
 import { FooterComponent, HeaderComponent, LoadingComponent, LoginComponent } from "@/components";
 import isLoggedIn from "@/functions/AuthContext";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
-export default function Login() {
+function Login() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const redirect = searchParams.get("redirect")
@@ -27,6 +27,14 @@ export default function Login() {
                     <FooterComponent/>
                 </div>
             </main>
-        ) : <LoadingComponent/>
+        ) : <LoadingComponent />
     );
+}
+
+export default function LoginWrapper() {
+    return (
+        <Suspense fallback={<LoadingComponent/>}>
+            <Login />
+        </Suspense>
+    )
 }

@@ -1,11 +1,13 @@
 "use client";
 
-import { getProjectKey, isAllowedToAccess, getProjectData, saveNewProjectData, saveNewProjectImage } from "@/functions/actions";
+import { getProjectKey, isAllowedToAccess, getProjectData, saveNewProjectData, uploadNewProjectImage, deleteUnusedImages } from "@/functions/actions";
 import { getToken, logout } from "@/functions/AuthContext";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { FooterComponent, HeaderComponent, LoadingComponent, MessageDisplayComponent, PopUpComponent, ScrollComponent, usePopUp } from "@/components";
 import SubmitFileConfirmationComponent from "@/components/SubmitFileConfirmationComponent";
+import BodyDisplayComponent from "@/components/BodyDisplayComponent";
+import Image from "next/image";
 
 export interface ProjectData {
     name: string,
@@ -18,15 +20,24 @@ export interface ProjectData {
             "approach": string[]
         },
         main: {
-            "brief": string,
-            "problem-definition": string,
-            "research-and-ideation": string
-        },
-        images: string[]
+            cover: {
+                image: string,
+                text: string
+            },
+            body: {
+                normal: { image: string, header: string, text: string }[],
+                grid: {
+                    use: boolean,
+                    images: string[],
+                    header: string,
+                    text: string
+                }
+            }
+        }
     }
 }
 
-export default function ProjectPage({
+function ProjectPage({
     params,
 }: {
     params: { id: string };
@@ -42,9 +53,10 @@ export default function ProjectPage({
     const [popUp, setPopUp] = usePopUp();
     const fileInputRef = useRef(null);
     const fileSubmitRef = useRef(null);
-    const [selectedImage, setSelectedImage] = useState(-1);
+    const [selectedImage, setSelectedImage] = useState("");
     const [dialogOpen, setDialogOpen] = useState(false);
     const [selectedImageName, setSelectedImageName] = useState("");
+    const [uploadedImages, setUploadedImages] = useState<string[]>([]);
     useEffect(() => {
         const checkAccess = async () => {
             const allowed = await isAllowedToAccess(getToken(), 'admin');
@@ -63,6 +75,7 @@ export default function ProjectPage({
         const fetchData = async () => {
             const token = getToken();
             const allowed = await isAllowedToAccess(token, params.id)
+            console.log(allowed)
             switch (allowed) {
                 case "expired":
                     logout();
@@ -72,10 +85,11 @@ export default function ProjectPage({
                     setAccess(true);
                     break;
                 default:
+                    setIsLoading(false);
                     return;
             }
+            console.log(params.id)
             let res = await getProjectKey(params.id);
-            console.log(res)
             if (!res.success) {
                 return;
             }
@@ -85,7 +99,6 @@ export default function ProjectPage({
             }
             setProjectKey(projectKey);
             res = await getProjectData(projectKey);
-            console.log(res)
             if (!res.success) {
                 return;
             }
@@ -98,9 +111,23 @@ export default function ProjectPage({
         }
     }, [params.id, editMode, router]);
     
-    const handleSave = async () => { 
-        type possibleKeys = 'sidebar' | 'main' | 'project-type' | "team" | 'skillset' | 'approach' | 'brief' | 'problem-definition' | 'research-and-ideation';
-        const newData = { ...data };
+    const handleSave = async () => {
+        const getIndex = (key: string) => key.split("[")[1].split("]")[0];
+        const parseUrl = (url: string) => {
+            if (url.includes("url=")) {
+                const regex = /url=(.*?)&/;
+                const match = url.match(regex);
+                const originalUrl = match ? decodeURIComponent(match[1]) : null;
+                if (originalUrl) {
+                    return originalUrl;
+                } else {
+                    throw new Error("Error parsing url! Please tell Jarrell!");
+                }
+            } else {
+                return url;
+            }
+        }
+        const newData = { ...data! };
         newData.data!.sidebar = {
             "project-type": [],
             "team": [],
@@ -108,33 +135,54 @@ export default function ProjectPage({
             "approach": []
         }
         document.querySelectorAll(".editable").forEach((el) => {
-            if (el instanceof HTMLElement && el.tagName !== "IMG") {
+            if (el instanceof HTMLElement) {
                 const key = el.getAttribute("data-key");
                 if (key) {
-                    if (key === "name") {
-                        (newData as any)[key] = el.innerText;
-                    } else if (key === "year") {
-                        (newData as any)[key] = parseInt(el.innerText);
-                    } else {
-                        // FORGIVE ME TYPESCRIPT GODS
-                        const keys = key.split("['").map((str) => str.replace("']", "") as possibleKeys);
-                        let current = newData.data;
-                        for (let i = 0; i < keys.length - 1; i++) {
-                            //@ts-ignore
-                            current = current[keys[i]];
+                    if (!(el instanceof HTMLImageElement)) {
+                        if (key === "name") {
+                            newData[key] = el.innerText;
+                        } else if (key === "year") {
+                            newData[key] = el.innerText;
+                        } else if (key.startsWith("sidebar")) {
+                            const sidebarKey = key.split(".")[1] as keyof typeof newData.data.sidebar;
+                            newData.data.sidebar[sidebarKey] = [
+                                ...newData.data.sidebar[sidebarKey],
+                                ...el.innerText.split("\n")
+                            ];
+                        } else if (key.startsWith("main.cover")) {
+                            newData.data!.main.cover.text = el.innerText;
+                        } else if (key.startsWith("main.body")) {
+                            const index = parseInt(getIndex(key));
+                            if (key.endsWith("header")) {
+                                newData.data!.main.body.normal[index].header = el.innerText;
+                            } else if (key.endsWith("text")) {
+                                newData.data!.main.body.normal[index].text = el.innerText;
+                            }
                         }
-                        if (key.startsWith("sidebar")) {
-                            //@ts-ignore
-                            current[keys[keys.length - 1]].push(el.textContent || "");
+                    } else {
+                        if (key.startsWith("main.body.grid")) {
+                            const index = parseInt(getIndex(key));
+                            (newData.data!.main.body.grid as any).images[index] = parseUrl(el.src);
+                        } else if (key === "main.cover.image") {
+                            newData.data!.main.cover.image = parseUrl(el.src);
                         } else {
-                            //@ts-ignore
-                            current[keys[keys.length - 1]] = el.textContent || "";
+                            const index = parseInt(getIndex(key));
+                            (newData.data!.main.body.normal[index] as any).image = parseUrl(el.src);
                         }
                     }
                 }
             }
         });
-        console.log(newData)
+        const finalImages = [newData.data!.main.cover.image, ...newData.data!.main.body.normal.map((item) => item.image), ...newData.data!.main.body.grid.images];
+        const unusedImages = uploadedImages.filter((image) => !finalImages.includes(image));
+        console.log(unusedImages)
+        if (unusedImages.length > 0) {
+            const res = await deleteUnusedImages(unusedImages);
+            if (!res.success) {
+                setPopUp({ message: "Error deleting unused images! This is a serious error, please tell Jarrell!", type: "warning", duration: 5000 });
+                return;
+            }
+        }
         const res = await saveNewProjectData(projectKey, newData as ProjectData);
         if (res.success) {
             setPopUp({ message: "Project saved!", type: "success", duration: 1000 });
@@ -150,7 +198,7 @@ export default function ProjectPage({
         if (!editMode) return;
         if (fileInputRef.current) {
             const dataKey = e.currentTarget.getAttribute("data-key") as string;
-            setSelectedImage(parseInt(dataKey));
+            setSelectedImage(dataKey);
             (fileInputRef.current as HTMLInputElement).click();
         }
     }
@@ -183,14 +231,7 @@ export default function ProjectPage({
         )
     }
     if (isLoading) {
-        return (
-            <main className="flex flex-col items-center justify-between overflow-x-clip">
-                <div className="w-screen relative flex flex-col">
-                    <HeaderComponent/>
-                    <LoadingComponent/>
-                </div>
-            </main>
-        )
+        return <LoadingComponent />
     } else if (data === null) {
         return (
             <main className="flex flex-col items-center justify-between overflow-x-clip">
@@ -201,7 +242,6 @@ export default function ProjectPage({
             </main>
         );
     }
-
     return (
         <main className="flex flex-col items-center justify-between overflow-x-clip">
             <div className="w-screen min-h-[100vh] relative flex flex-col">
@@ -218,24 +258,31 @@ export default function ProjectPage({
                                 }
                             } else {
                                 setSelectedImageName("");
-                                setSelectedImage(-1);
+                                setSelectedImage("");
                             }
                         }}
                     />
                 }
+                {/* Magic input element for image upload */}
                 <form
                     className="hidden"
                     action={async (formData: FormData) => {
-                        if (selectedImage === -1) return;
-                        formData.append("key", projectKey);
-                        formData.append("index", selectedImage.toString());
-                        const res = await saveNewProjectImage(formData);
+                        if (selectedImage === "") return;
+                        formData.append("id", params.id)
+                        const res = await uploadNewProjectImage(formData);
                         if (res.success) {
                             setPopUp({ message: "Image uploaded!", type: "success", duration: 1000 });
                             const newData = { ...data };
-                            newData.data.images[selectedImage] = res.data as string;
+                            if (selectedImage === "main.cover.image") {
+                                newData.data.main.cover.image = res.data!;
+                            } else {
+                                const index = parseInt(selectedImage.split("[")[1].split("]")[0]);
+                                newData.data.main.body.normal[index].image = res.data!;
+                            }
                             setData(newData);
+                            setUploadedImages([...uploadedImages, res.data!]);
                         } else {
+                            console.log(res.error)
                             setPopUp({ message: "Error uploading image!", type: "warning", duration: 1000 });
                         }
                     }}
@@ -253,7 +300,6 @@ export default function ProjectPage({
                         }} />
                     <input ref={fileSubmitRef} type="submit" />
                 </form>
-                {/* Magic input element for image upload */}
                 <section className="w-[100%] min-h-[calc(100vh_-_108px)] lg:min-h-[calc(100vh_-_138px)] relative justify-between items-start mt-[40px] lg:mt-[70px] lg:mx-auto flex flex-col lg:flex-row">
                     {editMode &&
                         <div className="fixed left-10 top-[20px] z-[2002] flex justify-center items-center" >
@@ -262,94 +308,52 @@ export default function ProjectPage({
                         </div>
                     }
                     <div className={`flex w-full my-4 lg:mt-0 lg:w-[300px] border-y lg:border-none`}>
-                        <article className={`h-fit s-regular flex flex-col justify-start items-start mx-auto py-4 lg:py-[60px] px-20 lg:px-0 `}>
+                        <article className={`h-fit s-regular flex flex-col justify-start items-start ml-[5vw] lg:ml-[30px] py-4 lg:py-[24px]`}>
                             <ul className="flex-col justify-start items-start inline-flex">
-                                <h2 data-key="name" className="editable mb-[15px]">{data.name}</h2>
-                                <h5 data-key="year" className="editable">{data.year}</h5>
+                                <h2 data-key="name" className={`editable mb-[10px] lg:mb-[15px] ${editMode ? "border" : ""}`}>{data.name}</h2>
+                                <h5 data-key="year" className={`editable ${editMode ? "border" : ""}`}>{data.year}</h5>
                             </ul>
-                            <ul className="flex-col justify-start items-start inline-flex mt-[30px]">
+                            <ul className="flex-col justify-start items-start inline-flex mt-[20px] lg:mt-[30px]">
                                 <h4 className="text-air-force-blue text-[14px] mb-[5px]">PROJECT TYPE</h4>
-                                {data.data.sidebar["project-type"].map((string, index) => <li data-key="sidebar['project-type']" className="editable" key={`pt-${index}`}>{string}</li>)}
+                                {data.data.sidebar["project-type"].map((string, index) => <li data-key="sidebar.project-type" className={`editable ${editMode ? "border" : ""}`} key={`pt-${index}`}>{string}</li>)}
                             </ul>
-                            <ul className="flex-col justify-start items-start inline-flex mt-[35px]">
+                            <ul className="flex-col justify-start items-start inline-flex mt-[22px] lg:mt-[35px]">
                                 <h4 className=" text-air-force-blue text-[14px] mb-[5px]">TEAM</h4>
-                                {data.data.sidebar["team"].map((string, index) => <li data-key="sidebar['team']" className="editable" key={`t-${index}`}>{string}</li>)}
+                                {data.data.sidebar["team"].map((string, index) => <li data-key="sidebar.team" className={`editable ${editMode ? "border" : ""}`} key={`t-${index}`}>{string}</li>)}
                             </ul>
-                            <ul className="flex-col justify-start items-start inline-flex mt-[35px]">
+                            <ul className="flex-col justify-start items-start inline-flex mt-[22px] lg:mt-[35px]">
                                 <h4 className=" text-air-force-blue text-[14px] mb-[5px]">SKILLSET</h4>
-                                {data.data.sidebar["skillset"].map((string, index) => <li data-key="sidebar['skillset']" className="editable" key={`s-${index}`}>{string}</li>)}
+                                {data.data.sidebar["skillset"].map((string, index) => <li data-key="sidebar.skillset" className={`editable ${editMode ? "border" : ""}`} key={`s-${index}`}>{string}</li>)}
                             </ul>
-                            <ul className="flex-col justify-start items-start inline-flex mt-[35px]">
+                            <ul className="flex-col justify-start items-start inline-flex mt-[22px] lg:mt-[35px]">
                                 <h4 className="editable text-air-force-blue text-[14px] mb-[5px]">APPROACH</h4>
-                                {data.data.sidebar["approach"].map((string, index) => <li data-key="sidebar['approach']" className="editable" key={`a-${index}`}>{string}</li>)}
+                                {data.data.sidebar["approach"].map((string, index) => <li data-key="sidebar.approach" className={`editable ${editMode ? "border" : ""}`} key={`a-${index}`}>{string}</li>)}
                             </ul>
                         </article>
                     </div>
-    
-                    <article className={`mx-auto lg:py-[60px] lg:w-[calc(100vw_-_300px)] w-fit flex flex-col justify-center items-center`}>
-                        <div className="w-[90%]">
-                            <img data-key={0} className="editable w-full h-full object-cover" src={data.data.images[0]} onClick={handleImageClick}/>
-                        </div>
-                        <section className="w-[90%] flex-col justify-center items-start flex mt-[60px]">
-                            <h4>BRIEF</h4>
-                            <p data-key="main['brief']" className="editable s-regular my-[10px]">
-                                {data.data.main["brief"]}
-                            </p>
-                        </section>
-                        <section className="w-[90%] flex-col justify-center items-start flex mt-[60px]">
-                            <h4>PROBLEM DEFINITION</h4>
-                            <p data-key="main['problem-definition']" className="editable s-regular my-[10px]">
-                                {data.data.main["problem-definition"]}
-                            </p>  
-                        </section>
+                    <article className={`mx-auto lg:py-[24px] lg:w-[calc(100vw_-_300px)] w-fit flex flex-col justify-center items-center`}>
                         <div className="w-[90%] mt-[20px]">
-                            <img data-key={1} className="editable w-full object-cover" src={data.data.images[1]} onClick={handleImageClick}/>
+                            <Image
+                                width={0}
+                                height={0}
+                                sizes="100vw"
+                                alt="main.cover.image"
+                                data-key="main.cover.image"
+                                className="editable w-full h-full lg:min-h-[400px] object-cover"
+                                src={data.data.main.cover.image}
+                                onClick={handleImageClick}
+                                priority={true}
+                            />
                         </div>
-                        <section className="w-[90%] flex-col justify-start items-start flex mt-[60px]">
-                            <h4>RESEARCH AND IDEATION</h4>
-                            <p data-key="main['research-and-ideation']" className="editable s-regular my-[10px]">
-                                {data.data.main["research-and-ideation"]}
-                            </p>
-                            <article className="w-full lg:aspect-[11/9] flex flex-col gap-4 lg:gap-6 mt-[20px]">
-                                <div className="w-full justify-start items-stretch gap-4 lg:gap-6 inline-flex flex-col lg:flex-row">
-                                    <div className="lg:w-[63%] aspect-[17/12]">
-                                        <img data-key={2} className="editable w-full h-full object-cover" src={data.data.images[2]} onClick={handleImageClick}/>
-                                    </div>
-                                    <div className="lg:w-[37%] aspect-[14/17]">
-                                        <img data-key={3} className="editable w-full h-full object-cover" src={data.data.images[3]} onClick={handleImageClick}/>
-                                    </div>
-                                </div>
-                                <div className="w-full justify-start items-stretch gap-4 lg:gap-6 inline-flex flex-col lg:flex-row">
-                                    <div className="lg:w-[50%] aspect-[7/5]">
-                                        <img data-key={4} className="editable w-full h-full object-cover" src={data.data.images[4]} onClick={handleImageClick}/>
-                                    </div>
-                                    <div className="lg:w-[50%] aspect-[7/5]">
-                                        <img data-key={5} className="editable w-full h-full object-cover" src={data.data.images[5]} onClick={handleImageClick}/>
-                                    </div>
-                                </div>
-                            </article>
+                        <section className="w-[90%] flex-col justify-center items-start flex">
+                            <div className="my-[24px] flex flex-col">
+                                <h4>BRIEF</h4>
+                                <p data-key={`main.cover.text`} className={`editable s-regular ${editMode ? "border" : ""}`}>
+                                    {data.data.main.cover.text}
+                                </p>
+                            </div>
                         </section>
-                        <section className="w-[90%] flex-col justify-start items-start flex">
-                            <h4 className="my-[60px]">PROTOTYPING, DESIGN AND PITCHING</h4>
-                            <article className="w-full lg:aspect-[11/9] flex flex-col gap-4 lg:gap-6">
-                                <div className="w-full justify-start items-stretch gap-4 lg:gap-6 inline-flex flex-col lg:flex-row">
-                                    <div className="lg:w-[63%] aspect-[17/12]">
-                                        <img data-key={6} className="editable w-full h-full object-cover" src={data.data.images[6]} onClick={handleImageClick}/>
-                                    </div>
-                                    <div className="lg:w-[37%] aspect-[14/17]">
-                                        <img data-key={7} className="editable w-full h-full object-cover" src={data.data.images[7]} onClick={handleImageClick}/>
-                                    </div>
-                                </div>
-                                <div className="w-full justify-start items-stretch gap-4 lg:gap-6 inline-flex flex-col lg:flex-row">
-                                    <div className="lg:w-[50%] aspect-[7/5]">
-                                        <img data-key={8} className="editable w-full h-full object-cover" src={data.data.images[8]} onClick={handleImageClick}/>
-                                    </div>
-                                    <div className="lg:w-[50%] aspect-[7/5]">
-                                        <img data-key={9} className="editable w-full h-full object-cover" src={data.data.images[9]} onClick={handleImageClick}/>
-                                    </div>
-                                </div>
-                            </article>
-                        </section>
+                        <BodyDisplayComponent body={data.data.main.body} handleImageClick={handleImageClick} editMode={editMode} />
                     </article>
                     
                 </section>
@@ -357,6 +361,14 @@ export default function ProjectPage({
                 <PopUpComponent popUpProps={popUp}/>
                 <FooterComponent/>
             </div>
-      </main>
+        </main>
+    )
+}
+
+export default function ProjectPageWrapper({ params }: { params: { id: string } }) {
+    return (
+        <Suspense fallback={<LoadingComponent />}>
+            <ProjectPage params={params} />
+        </Suspense>
     )
 }
