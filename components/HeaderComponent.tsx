@@ -56,7 +56,7 @@ const Header = ({ isLoginPage = false, isNewPage = false, newHidden = false }) =
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, [handleLogOut])
+    })
     const router = useRouter();
     const loggedIn = isLoggedIn();
 

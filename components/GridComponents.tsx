@@ -142,13 +142,14 @@ const GridComponents = ({ keys, max, showTitle = true, editMode = false }: { key
     }
 
     const renderGrid = useCallback((editMode: boolean, data: ProjectThumbnailData[], spanMap: Pos[]) => data.slice(0, max - 1).map((d, index) =>
-            <GridComponent
+        <GridComponent
+                key={`project:${index}`}
                 data={d}
                 projectKey={keys[index]}
                 span={spanMap[index]}
                 editMode={editMode}
             />
-        ), [editMode, keys, spanMap])
+        ), [editMode, keys, spanMap, max])
 
     const handleCallback = (message: string) => {
         setDialogOpen(false);
