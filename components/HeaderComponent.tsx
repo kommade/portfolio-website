@@ -22,8 +22,8 @@ const Header = ({ isLoginPage = false, isNewPage = false, newHidden = false }) =
             router.push("/?expired=true")
         } else {
             router.push("/")
-            router.refresh()
         }
+        setRole("none")
     }
 
     useEffect(() => {

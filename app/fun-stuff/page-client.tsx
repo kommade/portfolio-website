@@ -13,7 +13,7 @@ export interface FunStuffData {
 }
 
 export const FunStuff = ({ data, access }: { data: FunStuffData, access: string}) => {
-    const [n, setN] = useState(0);
+    const [n, setN] = useState(data["sketchbook"].length);
     const [percentage, setPercentage] = useState(-108); // Disclaimer: none of these are percentages
     const [prevPercentage, setPrevPercentage] = useState(-108);
     const [mousePos, setMousePos] = useState(0);
@@ -46,7 +46,7 @@ export const FunStuff = ({ data, access }: { data: FunStuffData, access: string}
                 setDropdown(false);
             }
         };
-            document.addEventListener("mousedown", handleClickOutside);
+        document.addEventListener("mousedown", handleClickOutside);
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
@@ -59,6 +59,13 @@ export const FunStuff = ({ data, access }: { data: FunStuffData, access: string}
         setMousePos(e.clientX);
     }
 
+    const handleTouchStart = (e: React.TouchEvent) => {
+        if (currentFullScreen > -1) {
+            return;
+        }
+        setMousePos(e.touches[0].clientX);
+    }
+
     const handleMouseUp = (e: React.MouseEvent) => {
         if (currentFullScreen > -1) {
             return;
@@ -67,6 +74,15 @@ export const FunStuff = ({ data, access }: { data: FunStuffData, access: string}
         setMousePos(0);
         setPrevPercentage(percentage);
     };
+
+    const handleTouchEnd = (e: React.TouchEvent) => {
+        if (currentFullScreen > -1) {
+            return;
+        }
+        e.preventDefault();
+        setMousePos(0);
+        setPrevPercentage(percentage);
+    }
 
     const handleMouseMove = (e: React.MouseEvent) => {
         if (currentFullScreen > -1) {
@@ -79,6 +95,21 @@ export const FunStuff = ({ data, access }: { data: FunStuffData, access: string}
         const mouseDelta = mousePos - e.clientX;
         const maxDelta = window.innerWidth / 2;
         const calcPercentage = (mouseDelta / maxDelta) * -100;
+        const nextPercentage = Math.max(Math.min(prevPercentage + calcPercentage, -20), (n - 1) * - 44 - 20);
+        setPercentage(nextPercentage);
+        updatePosition();
+    };
+
+    const handleTouchMove = (e: React.TouchEvent) => {
+        if (currentFullScreen > -1) {
+            return;
+        }
+        if (mousePos === 0) {
+            return;
+        }
+        const mouseDelta = mousePos - e.touches[0].clientX;
+        const maxDelta = window.innerWidth / 2;
+        const calcPercentage = (mouseDelta / maxDelta) * -100 / 2;
         const nextPercentage = Math.max(Math.min(prevPercentage + calcPercentage, -20), (n - 1) * - 44 - 20);
         setPercentage(nextPercentage);
         updatePosition();
@@ -107,7 +138,6 @@ export const FunStuff = ({ data, access }: { data: FunStuffData, access: string}
     };
 
     const handleMouseClick = (e: React.MouseEvent) => {
-        
         if (e.currentTarget.id === "cancel") {
             return;
         }
@@ -133,9 +163,21 @@ export const FunStuff = ({ data, access }: { data: FunStuffData, access: string}
 
     const updatePosition = (duration: number = 1200, movement: number = percentage) => {
         if (imageHolder.current) {
-            (imageHolder.current as HTMLElement).animate({
-                transform: `translate(${movement}vmin, calc(87px + 4vh))`
-            }, { duration: duration, fill: "forwards" });
+            console.log(window.innerWidth)
+            if (window.innerWidth <= 1024) {
+                if (imageHolder.current) {
+                    (imageHolder.current as HTMLElement).animate({
+                        transform: `translate(${movement}vmin, -50%`
+                    }, { duration: duration, fill: "forwards" });
+                }
+            } else {
+    
+                if (imageHolder.current) {
+                    (imageHolder.current as HTMLElement).animate({
+                        transform: `translate(${movement}vmin, calc(87px + 4vh))`
+                    }, { duration: duration, fill: "forwards" });
+                }
+            }
         }
         if (numberDisplay.current) {
             (numberDisplay.current as HTMLElement).animate({
@@ -175,6 +217,9 @@ export const FunStuff = ({ data, access }: { data: FunStuffData, access: string}
                     onMouseDown={handleMouseDown}
                     onMouseUp={handleMouseUp}
                     onMouseMove={handleMouseMove}
+                    onTouchStart={handleTouchStart}
+                    onTouchEnd={handleTouchEnd}
+                    onTouchMove={handleTouchMove}
                     onWheel={handleWheel}
                     onClick={handleMouseClick}
                 >
@@ -186,12 +231,12 @@ export const FunStuff = ({ data, access }: { data: FunStuffData, access: string}
                             <p className="s-regular select-none h-fit">{category.charAt(0).toUpperCase() + category.slice(1)}</p>
                         </div>
                         <Image
+                            className="-translate-y-[6.25%]"
                             src="/icons/dropdown.svg"
                             alt="v"
                             width={24}
                             height={24}
                             draggable={false}
-                            onContextMenu={(e) => e.preventDefault()}
                         />
                     </div>
                     <div ref={dropdownRef} className={`absolute w-[150px] h-[126px] bg-pale-butter rounded-lg rounded-t-none p-4 z-[1] opacity-90 shadow-xl ${dropdown ? "" : "hidden"}`}>
@@ -233,10 +278,10 @@ export const FunStuff = ({ data, access }: { data: FunStuffData, access: string}
                         </h4>
                         <h4>- {n}</h4>
                     </div>
-                    <div className={`w-fit h-[14px] fixed px-2 left-1/2 -translate-x-1/2 translate-y-full text-center flex transition-opacity duration-300 ease-in-out opacity-0 ${currentFullScreen > -1 ? "opacity-100 delay-500" : ""}`}>
-                        <h3
+                    <div className={`z-[100] w-fit h-[20px] fixed px-2 bottom-[40vmin] lg:bottom-[15vmin] left-1/2 -translate-x-1/2 text-center flex transition-opacity duration-300 ease-in-out opacity-0 ${currentFullScreen > -1 ? "opacity-100 delay-500" : ""}`}>
+                        <p
                             ref={descRef}
-                            className="h-[40px] w-fit pt-[6px] min-w-[100px]"
+                            className="h-[1px] w-fit mt-[10px] min-w-[100px] s-regular z-[100]"
                             onClick={(e) => {
                                 e.stopPropagation();
                             }}
@@ -259,15 +304,15 @@ export const FunStuff = ({ data, access }: { data: FunStuffData, access: string}
                             }}
                         >
                             {descText}
-                        </h3>
+                        </p>
                         {
                             editMode ? (
                                 <svg
-                                    className="h-[40px] ml-2 cursor-pointer"
+                                    className="h-[10px] mt-[12px] cursor-pointer"
                                     x="0px"
                                     y="0px"
-                                    width="16"
-                                    height="16"
+                                    width="10"
+                                    height="10"
                                     viewBox="0 0 50 50"
                                     onClick={(e) => {
                                         e.stopPropagation();
@@ -283,10 +328,10 @@ export const FunStuff = ({ data, access }: { data: FunStuffData, access: string}
                             ) : <></>
                         }
                     </div>
-                    <article ref={imageHolder} className={`w-fit flex gap-[4vmin] absolute left-1/2 top-0 transform -translate-x-[108vmin] translate-y-[calc(87px_+_4vh)] select-none transition-opacity duration-300 ease-in-out ${transition ? 'opacity-0': ''}`}>
+                    <article ref={imageHolder} className={`w-fit flex gap-[4vmin] absolute left-1/2 top-1/2 lg:top-0 transform -translate-x-[108vmin] -translate-y-1/2 lg:translate-y-[calc(87px_+_4vh)] select-none transition-opacity duration-300 ease-in-out ${transition ? 'opacity-0': ''}`}>
                         {
                             data![category].map((image, index) => (
-                                <div key={`${image!.name}-div`} className={`relative transition-all duration-[800ms] ease-in-out ${currentFullScreen === index ? "w-[100vmin] h-[66.66vmin] -translate-y-[calc((87px_+_4vh)/2)] opacity-100 min-w-[40vmin] " : "w-[40vmin] min-w-[40vmin] h-[56vmin] -translate-x-0 " + (currentFullScreen > -1 ? "opacity-0" : "")}`}>
+                                <div key={`${image!.name}-div`} className={`relative transition-all duration-[800ms] ease-in-out ${currentFullScreen === index ? "w-[100vmin] h-[66.66vmin] lg:-translate-y-[87px] opacity-100 min-w-[40vmin] " : "w-[40vmin] min-w-[40vmin] h-[56vmin] -translate-x-0 " + (currentFullScreen > -1 ? "opacity-0" : "")}`}>
                                     <Image
                                         key={image!.name}
                                         data-key={index}

@@ -149,7 +149,7 @@ export function ProjectPage({ projectKey, serverData, access, id }:
         }
     }
 
-    if (access !== "admin" && editMode) { 
+    if (access === "admin" && editMode) { 
         document.querySelectorAll(".editable").forEach((el) => {
             if (el instanceof HTMLElement && el.tagName !== "IMG") {
                 el.contentEditable = "true";
