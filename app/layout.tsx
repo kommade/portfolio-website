@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 
@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
     title: 'Juliette Khoo',
-    themeColor: '#FBFBF1',
+    description: 'I’m a dreamer and a UX designer, currently based in Singapore. Here’s some of my work!',
     keywords: 'architecture,illustration,design,portfolio',
     twitter: {
         card: 'summary_large_image',
@@ -33,7 +33,11 @@ export const metadata: Metadata = {
             },
         ],
     },
-    manifest: "manifest.json",
+    metadataBase: new URL("https://juliettekhoo.com/"),
+}
+
+export const viewport: Viewport = {
+    themeColor: 'FBFBF1',
 }
 
 export default function RootLayout({

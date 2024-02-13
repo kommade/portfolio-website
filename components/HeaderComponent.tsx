@@ -1,18 +1,17 @@
 "use client";
 
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import isLoggedIn, { getToken, logout } from "../functions/AuthContext";
 import { useState, useEffect, useRef, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { isAllowedToAccess } from "@/functions/actions";
+import { getRole, logout } from "@/functions/actions";
 import { PopUpComponent, usePopUp } from "./PopUpComponent";
 
 const Header = ({ isLoginPage = false, isNewPage = false, newHidden = false }) => {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const [isClient, setIsClient] = useState(false)
-    const [isAdmin, setIsAdmin] = useState(false)
+    const [role, setRole] = useState<"none" | "member" | "admin" | "expired">("none")
     const [dropdown, setDropdown] = useState(false);
     const dropdownRef = useRef(null);
     const parentDropdownRef = useRef(null);
@@ -30,19 +29,9 @@ const Header = ({ isLoginPage = false, isNewPage = false, newHidden = false }) =
 
     useEffect(() => {
         const getAccess = async () => {
-            const admin = await isAllowedToAccess(getToken(), "admin");
-            switch (admin) {
-                case "yes":
-                    setIsAdmin(true)
-                    break
-                case "expired":
-                    handleLogOut(true)
-                    break
-                default:
-                    break
-            }
+            setRole(await getRole())
         }
-        
+
         getAccess();
         setIsClient(true);
         
@@ -58,7 +47,6 @@ const Header = ({ isLoginPage = false, isNewPage = false, newHidden = false }) =
         };
     })
     const router = useRouter();
-    const loggedIn = isLoggedIn();
 
     const handleEdit = () => {
         setDropdown(false);
@@ -91,7 +79,7 @@ const Header = ({ isLoginPage = false, isNewPage = false, newHidden = false }) =
             <>
                 <header className=" w-[100vw] h-[40px] lg:h-[70px] fixed z-[2024] bg-pale-butter flex flex-col justify-center shadow">
                     <div ref={parentDropdownRef} className="fixed lg:left-[60px] left-[20px]">
-                        {(loggedIn && !isNewPage && isAdmin && !newHidden) && (
+                        {(!isNewPage && role === "admin" && !newHidden) && (
                             <>
                                 <button className="place-self-center cursor-pointer flex justify-center items-center" onClick={() => { openDropdown() }}>
                                     <h5 className="h-[16px]">NEW</h5>
@@ -138,7 +126,7 @@ const Header = ({ isLoginPage = false, isNewPage = false, newHidden = false }) =
                     </div>
                     <div className="fixed lg:right-[60px] right-[20px]">
                         {
-                            !isLoginPage ? (!loggedIn ? (
+                            !isLoginPage ? (role === "none" ? (
                                 <Link className="place-self-center hover:cursor-pointer" href={pathname === "/" ? "/login" : `/login?redirect=${pathname}`} rel="noopener noreferrer">
                                     <h5>LOGIN</h5>
                                 </Link>

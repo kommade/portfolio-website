@@ -6,10 +6,13 @@ import bcrypt from 'bcrypt';
 import jwt, { TokenExpiredError } from "jsonwebtoken";
 import emailTemplate from "./emailTemplate";
 import sizeOf from "image-size";
-import { ProjectData } from "@/app/projects/[id]/page";
+import { ProjectData } from "@/app/projects/[id]/page-client";
 import { Redis } from "@upstash/redis";
+import { unstable_cache as cache } from "next/cache";
+import { cookies } from "next/headers";
 
 const redis = Redis.fromEnv()
+const revalidate = 60;
 
 interface User {
     id: string,
@@ -38,7 +41,7 @@ function logger(methodName: string, redisFunction: string, key: string) {
     redis.rpush('log', JSON.stringify(logLine))
 }
 
-export async function login(formdata: FormData) {
+export const login = async (formdata: FormData) => {
     const username = formdata.get("username") as string;
     const password = formdata.get("password") as string;
     if (!username || !password) {
@@ -56,24 +59,41 @@ export async function login(formdata: FormData) {
     logger('login', 'HSET', user.id)
     redis.hset(user.id, { "last": new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Singapore', timeStyle: "medium", dateStyle: "medium" }).format(new Date())})
     const token = jwt.sign({ userId: user.id, role: user.role }, process.env.SECRET_KEY as string, { expiresIn: '1h'})
-    return { success: true, message: token }
+    cookies().set('token', token, {
+        maxAge: 3600,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict"
+    })
+    return { success: true }
 }
 
-export async function getAllProjects() {
-    return await redis.keys("project:*");
+export const logout = async () => {
+    cookies().delete('token');
+    return { success: true }
 }
 
-export async function getProjectKey(id: string) {
-    const projectKey = await redis.get(id);
-    return { success: true, data: projectKey };
-}
+export const getAllProjects = cache(
+    async () => {
+        return await redis.keys("project:*");
+    }, undefined, { revalidate: revalidate }
+)
 
-export async function getProjectThumbnail(projectKey: string) {
-    const data = await redis.hmget(projectKey, ...["name", "desc", "image", "year", "id"]);
-    return { success: true, data: data };
-}
+export const getProjectKey = cache(
+    async (id: string) => {
+        const projectKey = await redis.get(id) as string;
+        return { success: true, data: projectKey };
+    }, undefined, { revalidate: revalidate }
+)
 
-export async function uploadNewProjectThumbnail(formData: FormData) {
+export const getProjectThumbnail = cache(
+    async (projectKey: string) => {
+        const data = await redis.hmget(projectKey, ...["name", "desc", "image", "year", "id"]);
+        return { success: true, data: data };
+    }, undefined, { revalidate: revalidate }
+)
+
+export const uploadNewProjectThumbnail = async (formData: FormData) => {
     const id = formData.get("id") as string;
     const image = formData.get('image') as File;
     const imageBuffer = await image.arrayBuffer();
@@ -93,7 +113,7 @@ export async function uploadNewProjectThumbnail(formData: FormData) {
     }
 }
 
-export async function changeProjectDesc(projectKey: string, desc: string) {
+export const changeProjectDesc = async (projectKey: string, desc: string) => {
     if (await redis.exists(projectKey)) {
         logger('changeProjectDesc', 'HSET', projectKey);
         await redis.hset(projectKey, { "desc": desc });
@@ -103,7 +123,7 @@ export async function changeProjectDesc(projectKey: string, desc: string) {
     }
 }
 
-export async function changeProjectThumnail(projectKey: string, url: string) {
+export const changeProjectThumnail = async (projectKey: string, url: string) => {
     if (await redis.exists(projectKey)) {
         logger('changeProjectThumnail', 'HSET', projectKey);
         await redis.hset(projectKey, { "image": url });
@@ -113,15 +133,17 @@ export async function changeProjectThumnail(projectKey: string, url: string) {
     }
 }
 
-export async function getProjectData(projectKey: string) {
-    const data = await redis.hmget(projectKey, ...["name", "year", "data"]);
-    if (data?.data && typeof data.data === "string") {
-        data.data = JSON.parse(data.data.replaceAll("&quot", "\""))
-    }
-    return { success: true, data: data };
-}
+export const getProjectData = cache(
+    async (projectKey: string) => {
+        const data = await redis.hmget(projectKey, ...["name", "year", "data", "access"]);
+        if (data && data.data && typeof data.data === "string") {
+            data.data = JSON.parse(data.data.replaceAll("&quot", "\""))
+        }
+        return { success: true, data: data as unknown as ProjectData };
+    }, undefined, { revalidate: revalidate }
+)
 
-export async function saveNewProjectData(projectKey: string, data: ProjectData) {
+export const saveNewProjectData = async (projectKey: string, data: ProjectData) => {
     logger('saveNewProjectData', 'HMSET', projectKey);
     if (await redis.exists(projectKey)) {
         await redis.hmset(projectKey, { "name": data.name, "year": data.year, "data": JSON.stringify(data.data).replaceAll("\"", "&quot")});
@@ -131,7 +153,7 @@ export async function saveNewProjectData(projectKey: string, data: ProjectData) 
     }
 }
 
-export async function uploadNewProjectImage(formData: FormData) {
+export const uploadNewProjectImage = async (formData: FormData) => {
     const id = formData.get("id") as string;
     const image = formData.get('image') as File;
     const imageBuffer = await image.arrayBuffer();
@@ -151,7 +173,7 @@ export async function uploadNewProjectImage(formData: FormData) {
     }
 }
 
-export async function deleteUnusedImages(images: string[]) {
+export const deleteUnusedImages = async (images: string[]) => {
     try {
         for (const image of images) {
             const key = image.split("projects/")[1];
@@ -163,7 +185,7 @@ export async function deleteUnusedImages(images: string[]) {
     }
 }
 
-export async function createNewProject(formData: FormData) {
+export const createNewProject = async (formData: FormData) => {
     const keys = await redis.keys("project:*");
     const nextId = keys.length;
     const projectKey = `project:${nextId}`;
@@ -224,41 +246,23 @@ export async function createNewProject(formData: FormData) {
     }
 }
 
-export async function isAllowedToAccess(token: string | null, pageId: string) {
-    let access;
-    if (pageId === "admin") {
-        access = pageId;
-    } else {
-        const page = await redis.get(pageId) as string;
-        if (!page) {
-            return "no";
-        }
-        access = await redis.hget(page, "access") as string;
+export const getRole = async () => {
+    const token = cookies().get('token');
+    if (!token) {
+        return "none";
     }
-    if (access === "public") {
-        return "yes";
-    } else if (token === null) {
-        return "no";
-    }
-    let decoded;
     try {
-        decoded = jwt.verify(token, process.env.SECRET_KEY as string) as { userId: string, role: string}
+        const decoded = jwt.verify(token.value, process.env.SECRET_KEY as string) as { userId: string, role: string };
+        return decoded.role as "member" | "admin";
     } catch (error) {
         if (error instanceof TokenExpiredError) {
             return "expired";
-        } else {
-            return "no";
         }
+        return "none";
     }
-    if (decoded.role === "admin") {
-        return "yes";
-    } else if (decoded.role === "member" && access !== "admin") {
-        return "yes"
-    }
-    return "no";
 }
 
-export async function submitContactForm(formData : FormData) {
+export const submitContactForm = async (formData : FormData) => {
     const resend = new Resend(process.env.RESEND_API_KEY)
     const response = {
         name: formData.get("name") as string,
@@ -286,41 +290,47 @@ export async function submitContactForm(formData : FormData) {
     return { success: true };
 }
 
-export async function getFunStuff() {
-    const sketchData = await getAllCategoryData(await redis.keys("sketchbook*"));
-    const photogData = (await getAllCategoryData(await redis.keys("photography*")));
-    const craftData = await getAllCategoryData(await redis.keys("craft*"));
-    return {
-        data: {
-            sketchbook: sketchData.data,
-            photography: photogData.data.reverse(),
-            craft: craftData.data
-        },
-        success: sketchData.success && photogData.success && craftData.success
-    };
-}
+export const getFunStuff = cache(
+    async () => {
+        const sketchData = await getAllCategoryData(await redis.keys("sketchbook*"));
+        const photogData = (await getAllCategoryData(await redis.keys("photography*")));
+        const craftData = await getAllCategoryData(await redis.keys("craft*"));
+        return {
+            data: {
+                sketchbook: sketchData.data,
+                photography: photogData.data.reverse(),
+                craft: craftData.data
+            },
+            success: sketchData.success && photogData.success && craftData.success
+        };
+    }, undefined, { revalidate: revalidate }
+)
 
-export async function getAllCategoryData(ids: string[]) {
-    let success = true;
-    const data = await Promise.all(ids.map(async (id) => {
-        const res = await getFunStuffData(id);
-        if (!res.success) {
-            success = false;
+export const getAllCategoryData = cache(
+    async (ids: string[]) => {
+        let success = true;
+        const data = await Promise.all(ids.map(async (id) => {
+            const res = await getFunStuffData(id);
+            if (!res.success) {
+                success = false;
+            }
+            return {id: id, ...res.data} as { id: string, name: string, url: string } | null;
+        }))
+        return { success: success, data: data }
+    }, undefined, { revalidate: revalidate }
+)
+
+export const getFunStuffData = cache(
+    async (id: string) => {
+        const data = await redis.hgetall(id);
+        if (data) {
+            return { success: true, data: data }
         }
-        return {id: id, ...res.data} as { id: string, name: string, url: string } | null;
-    }))
-    return { success: success, data: data }
-}
+        return { success: false, data: null }
+    }, undefined, { revalidate: revalidate }
+)
 
-export async function getFunStuffData(id: string) {
-    const data = await redis.hgetall(id);
-    if (data) {
-        return { success: true, data: data }
-    }
-    return { success: false, data: null }
-}
-
-export async function submitNewFunStuff(formData: FormData) {
+export const submitNewFunStuff = async (formData: FormData) => {
     const category = formData.get("type")!;
     const keys = await redis.keys(`${category}:*`);
     const nextId = keys.length;
@@ -353,7 +363,7 @@ export async function submitNewFunStuff(formData: FormData) {
     return { success: true }
 };
 
-export async function updateFunStuffName(id:string, desc: string) {
+export const updateFunStuffName = async (id:string, desc: string) => {
     if (await redis.exists(id)) {
         logger('updateFunStuffName', 'HSET', id);
         await redis.hset(id, { "name": desc })
@@ -362,7 +372,7 @@ export async function updateFunStuffName(id:string, desc: string) {
     return { success: false, message: "Key does not exist" }
 }
 
-export async function deleteItem(key: string) {
+export const deleteItem = async (key: string) => {
     const res = await redis.exists(key);
     if (res === 0) {
         return { success: false, message: "Key does not exist" }

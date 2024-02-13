@@ -12,9 +12,6 @@ const LoginComponent = ( { redirect } : { redirect : string | undefined } ) => {
         <form action={async formData => {
             const out = await login(formData);
             if (out.success) {
-                if (typeof localStorage !== 'undefined') {
-                    localStorage.setItem("token", out.message)
-                }
                 if (redirect) {
                     router.push(redirect);
                 } else {
