@@ -1,5 +1,3 @@
-"use client";
-
 import { HeaderComponent, MessageDisplayComponent, LoadingComponent, FooterComponent } from "@/components";
 import { getFunStuff, getRole } from "@/functions/actions";
 import React, { Suspense } from 'react';
