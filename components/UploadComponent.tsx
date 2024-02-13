@@ -5,7 +5,6 @@ import { useDropzone } from "react-dropzone";
 import { useRouter } from "next/navigation";
 import {PopUpComponent, usePopUp} from "./PopUpComponent";
 import ReactSwitch from "react-switch";
-import { create } from "domain";
 
 const UploadComponent = ({ type }: { type: string | undefined }) => {
     const [dropdown, setDropdown] = useState(false);
@@ -197,7 +196,7 @@ const UploadComponent = ({ type }: { type: string | undefined }) => {
                                         name="normal"
                                         pattern="[0-9]{1,2}"
                                         min="1"
-                                        max={`${gridEnabled ? 10 : 14}`}
+                                        max="30"
                                         required
                                         autoComplete="off"
                                     />

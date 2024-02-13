@@ -1,63 +1,9 @@
-"use client";
+import { LoadingComponent } from "@/components";
+import { getRole } from "@/functions/actions";
+import { Suspense } from "react";
+import { New } from "./page-client";
 
-import { HeaderComponent, LoadingComponent, FooterComponent, UploadComponent, MessageDisplayComponent } from "@/components";
-import { isAllowedToAccess } from "@/functions/actions";
-import { getToken, logout } from "@/functions/AuthContext";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
-
-function New() {
-    const router = useRouter();
-    const token = getToken();
-    const searchParams = useSearchParams();
-    const type = searchParams.get("type")
-    const [access, setAccess] = useState(false);
-    const [checking, setChecking] = useState(true);
-    useEffect(() => {
-        const fetchAccess = async () => {
-            if (!token) {
-                setChecking(false);
-                setAccess(false);
-            } else {
-                const res = await isAllowedToAccess(token, "admin")
-                setChecking(false);
-                switch (res) {
-                    case "expired":
-                        logout();
-                        router.push("/expired=true")
-                        return;
-                    case "yes":
-                        setAccess(true);
-                        return;
-                    default:
-                        return;
-                }
-            }
-        }
-        fetchAccess();
-    }, [token, router])
-
-    if (checking) {
-        return <LoadingComponent/>
-    }
-    
-    return (
-        <main className="flex flex-col items-center justify-between overflow-x-clip">
-            <div className="w-screen relative flex flex-col">
-                <HeaderComponent isNewPage={true}/>
-        
-                <div className="w-[85%] h-fit left-[7.5%] relative justify-center">
-                    {
-                        access ? <UploadComponent type={type!} /> : <MessageDisplayComponent/>         
-                    }
-                </div>
-                <FooterComponent/>
-            </div>
-        </main>
-        )
-}
-
-export default function NewWrapper() {
+export default async function NewWrapper() {
     return (
         <Suspense fallback={<LoadingComponent/>}>
             <New />

@@ -79,6 +79,7 @@ const GridComponents = ({ keys, max, showTitle = true, editMode = false }: { key
             setData(allData)
             setOldData(allData)
             setIsLoading(false);
+            
         };
         fetchData();
     }, [keys]);
@@ -148,6 +149,8 @@ const GridComponents = ({ keys, max, showTitle = true, editMode = false }: { key
                                 }
                             }
                         }}
+                        draggable={false}
+                        onContextMenu={(e) => e.preventDefault()}
                     />
                     <div className="w-full h-full flex justify-center items-center">
                         <p
@@ -174,7 +177,7 @@ const GridComponents = ({ keys, max, showTitle = true, editMode = false }: { key
                 span={spanMap[index]}
                 editMode={editMode}
             />
-        ), [editMode, keys, spanMap, max])
+        ), [keys, max])
 
     const handleCallback = (message: string) => {
         setDeleteDialogOpen(false);
@@ -187,6 +190,7 @@ const GridComponents = ({ keys, max, showTitle = true, editMode = false }: { key
             setPopUp({ message: "Error deleting project", type: "warning", duration: 1000 });
         }
     }
+    
     const grid = renderGrid(editMode, data, spanMap);
 
     const handleSave = async () => {

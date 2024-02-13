@@ -1,27 +1,28 @@
 import React from 'react'
-import { ProjectData } from "@/app/projects/[id]/page"
+import { ProjectData } from "@/app/projects/[id]/page-client";
 import Image from "next/image";
 
 const textThatBecomesLinks = {
     "5 things I wish I knew before I conducted my first usability test":
-        <a className="underline" href="https://bootcamp.uxdesign.cc/5-things-i-wish-i-knew-before-conducting-my-first-usability-test-8f0d1540f5bf"> 5 things I wish I knew before I conducted my first usability test</a>,
+        <a key="usabilitytest" className="underline" href="https://bootcamp.uxdesign.cc/5-things-i-wish-i-knew-before-conducting-my-first-usability-test-8f0d1540f5bf" target="_blank" rel="noopener noreferrer"> 5 things I wish I knew before I conducted my first usability test</a>,
 }
 const checkForLinks = (text: string) => {
     for (const key in textThatBecomesLinks) {
         if (text.includes(key)) {
             return [
-                text.replace(key, ""),
+                <React.Fragment key="link-text">{text.replace(key, "")}</React.Fragment>,
                 textThatBecomesLinks[key as keyof typeof textThatBecomesLinks]!
-            ] as [string, React.ReactNode];
+            ];
         }
     }
-    return [text, <></>] as [string, React.ReactNode];
+    return text;
 }
 
 const renderMainBody = (component: any, index: number, editMode: boolean,  handleImageClick: (e: React.MouseEvent) => void) => {
     let state = component.text === "" ? (component.header === "" ? "none" : "header only") : "header and text";
     if (editMode) state = "header and text";
     return (
+        
         <section key={`body-${index}`} className="w-[90%] flex-col justify-center items-start flex">
             {state === "none" ? (
                 <div className="h-[24px]"></div>
@@ -45,6 +46,8 @@ const renderMainBody = (component: any, index: number, editMode: boolean,  handl
                 className="editable w-full h-full lg:min-h-[400px] object-cover"
                 src={component.image}
                 onClick={handleImageClick}
+                draggable={false}
+                onContextMenu={(e) => e.preventDefault()}
             />
         </section>
     );
@@ -53,9 +56,6 @@ const renderMainBody = (component: any, index: number, editMode: boolean,  handl
 const BodyDisplayComponent = ({ body, handleImageClick, editMode }: { body: ProjectData["data"]["main"]["body"]; handleImageClick: (e: React.MouseEvent) => void; editMode: boolean }) => {
     
     if (body.grid.use) {
-        if (body.normal.length > 11) {
-            throw new Error("Too many components in the body");
-        }
         let gridState = body.grid.text === "" ? (body.grid.header === "" ? "none" : "header only") : "header and text";
         if (editMode) gridState = "header and text";
         return (
@@ -87,6 +87,8 @@ const BodyDisplayComponent = ({ body, handleImageClick, editMode }: { body: Proj
                                     className="editable w-full h-full object-cover"
                                     src={body.grid.images[0]}
                                     onClick={handleImageClick}
+                                    draggable={false}
+                                    onContextMenu={(e) => e.preventDefault()}
                                 />
                             </div>
                             <div className="lg:w-[37%] aspect-[14/17]">
@@ -100,6 +102,8 @@ const BodyDisplayComponent = ({ body, handleImageClick, editMode }: { body: Proj
                                     className="editable w-full h-full object-cover"
                                     src={body.grid.images[1]}
                                     onClick={handleImageClick}
+                                    draggable={false}
+                                    onContextMenu={(e) => e.preventDefault()}
                                 />
                             </div>
                         </div>
@@ -115,6 +119,8 @@ const BodyDisplayComponent = ({ body, handleImageClick, editMode }: { body: Proj
                                     className="editable w-full h-full object-cover"
                                     src={body.grid.images[2]}
                                     onClick={handleImageClick}
+                                    draggable={false}
+                                    onContextMenu={(e) => e.preventDefault()}
                                 />
                             </div>
                             <div className="lg:w-[50%] aspect-[7/5]">
@@ -128,6 +134,8 @@ const BodyDisplayComponent = ({ body, handleImageClick, editMode }: { body: Proj
                                     className="editable w-full h-full object-cover"
                                     src={body.grid.images[3]}
                                     onClick={handleImageClick}
+                                    draggable={false}
+                                    onContextMenu={(e) => e.preventDefault()}
                                 />
                             </div>
                         </div>
@@ -136,9 +144,6 @@ const BodyDisplayComponent = ({ body, handleImageClick, editMode }: { body: Proj
             </>
         );
     } else {
-        if (body.normal.length > 14) {
-            throw new Error("Too many components in the body");
-        }
         return <>{body.normal.map((component, index) => renderMainBody(component, index, editMode, handleImageClick))}</>;
     }
 };
