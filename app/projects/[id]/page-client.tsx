@@ -293,8 +293,8 @@ export function ProjectPage({ projectKey, serverData, access, id }:
                         </div>
                         <section className="w-[90%] flex-col justify-center items-start flex">
                             <div className="my-[24px] flex flex-col">
-                                <h4 className="animate-hidden main ">BRIEF</h4>
-                                <p data-key={`main.cover.text`} className={`animate-hidden main editable s-regular ${editMode ? "border" : ""}`}>
+                                <h4>BRIEF</h4>
+                                <p data-key={`main.cover.text`} className={`editable s-regular ${editMode ? "border" : ""}`}>
                                     {data.data.main.cover.text.replaceAll("<br>", "\n")}
                                 </p>
                             </div>

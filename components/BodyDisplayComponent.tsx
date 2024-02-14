@@ -28,10 +28,10 @@ const renderMainBody = (component: any, index: number, editMode: boolean,  handl
                 <div className="h-[24px]"></div>
             ) : (
                 <div className={`my-[24px] flex flex-col ${state === "header only" ? "" : "gap-[10px]"} w-[100%]`}>
-                    <h4 data-key={`main.body.normal[${index}].header`} className={`animate-hidden main editable ${editMode ? "border min-w-[20px]" : ""}`}>
+                    <h4 data-key={`main.body.normal[${index}].header`} className={`editable ${editMode ? "border min-w-[20px]" : ""}`}>
                         {component.header}
                     </h4>
-                    <p data-key={`main.body.normal[${index}].text`} className={`animate-hidden main editable s-regular ${editMode ? "border min-w-[20px]" : ""}`}>
+                    <p data-key={`main.body.normal[${index}].text`} className={`editable s-regular ${editMode ? "border min-w-[20px]" : ""}`}>
                         {checkForLinks(component.text.replaceAll("<br>", "\n"))}
                     </p>
                 </div>
@@ -43,7 +43,7 @@ const renderMainBody = (component: any, index: number, editMode: boolean,  handl
                 loading="lazy"
                 alt=""
                 data-key={`main.body.normal[${index}].image`}
-                className="editable w-full h-full lg:min-h-[400px] object-cover main animate-hidden"
+                className="editable w-full h-full lg:min-h-[400px] object-cover"
                 src={component.image}
                 onClick={handleImageClick}
                 draggable={false}
@@ -66,10 +66,10 @@ const BodyDisplayComponent = ({ body, handleImageClick, editMode }: { body: Proj
                         <div className="h-0 my-[12px]"></div>
                     ) : (
                         <div className={`my-[24px] flex flex-col ${gridState === "header only" ? "" : "gap-[10px]"} w-[100%]`}>
-                            <h4 data-key={`main.body.grid.header`} className={`animate-hidden main editable ${editMode ? "border" : ""}`}>
+                            <h4 data-key={`main.body.grid.header`} className={`editable ${editMode ? "border" : ""}`}>
                                 {body.grid.header}
                             </h4>
-                            <p data-key={`main.body.grid.text`} className={`animate-hidden main editable s-regular ${editMode ? "border" : ""}`}>
+                            <p data-key={`main.body.grid.text`} className={`editable s-regular ${editMode ? "border" : ""}`}>
                                 {checkForLinks(body.grid.text.replaceAll("<br>", "\n"))}
                             </p>
                         </div>
