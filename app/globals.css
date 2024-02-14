@@ -163,6 +163,10 @@ img.animate-hidden.right {
     transform: translateX(-100%);
 }
 
+.animate-hidden.left.rotate {
+    transform: translateX(-100%) rotate(180deg);
+}
+
 .animate-shown.right,
 .animate-shown.left {
     opacity: 1;
@@ -171,6 +175,10 @@ img.animate-hidden.right {
     transition-duration: 1s;
     transition-property: transform, opacity, filter;
     transition-timing-function: ease-in-out;
+}
+
+.animate-shown.left.rotate {
+    transform: translateX(0) rotate(180deg);
 }
 
 @font-face {
