@@ -47,12 +47,12 @@ export const login = async (formdata: FormData) => {
     if (!username || !password) {
         return { success: false, message: "Please fill in the required blanks" };
     }
-    const userId = await redis.get(username);
-    if (!userId || typeof userId !== "string") {
+    const users = await redis.lrange("users", 0, -1);
+    if (!users.includes(username)) {
         return { success: false, message: "Unknown username" };
     }
-    const user = (await redis.hgetall(userId)) as User;
-    user.id = userId;
+    const user = (await redis.hgetall(username)) as User;
+    user.id = username;
     if (!user || typeof user.hash !== "string" || !bcrypt.compareSync(password, user.hash)) {
         return { success: false, message: "Incorrect password" };
     }
