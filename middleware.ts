@@ -4,6 +4,11 @@ import { jwtVerify } from "jose";
 import { JWTExpired } from "jose/errors";
 
 export async function middleware(request: NextRequest) {
+
+    if (request.nextUrl.pathname === "/about") {
+        return NextResponse.redirect(new URL("/", request.url), { status: 301 });
+    }
+
     const token = request.cookies.get("token")
     if (request.nextUrl.pathname === "/new" || request.nextUrl.searchParams.get("edit") === "true") {
         if (!token) {

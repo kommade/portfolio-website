@@ -79,6 +79,13 @@ export const getAllProjects = cache(
     }, undefined, { revalidate: revalidate }
 )
 
+export const getProjectId = cache(
+    async (key: string) => {
+        const id = await redis.hget(key, "id") as string;
+        return { success: true, data: id };
+    }, undefined, { revalidate: revalidate }
+)
+
 export const getProjectKey = cache(
     async (id: string) => {
         const projectKey = await redis.get(id) as string;
