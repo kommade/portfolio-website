@@ -2,7 +2,7 @@
 
 import { saveNewProjectData, uploadNewProjectImage, deleteUnusedImages, logout } from "@/functions/actions";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { FooterComponent, HeaderComponent, MessageDisplayComponent, PopUpComponent, ScrollComponent, usePopUp } from "@/components";
 import SubmitFileConfirmationComponent from "@/components/SubmitFileConfirmationComponent";
 import BodyDisplayComponent from "@/components/BodyDisplayComponent";
@@ -52,6 +52,25 @@ export function ProjectPage({ projectKey, serverData, access, id }:
     const [selectedImageName, setSelectedImageName] = useState("");
     const [uploadedImages, setUploadedImages] = useState<string[]>([]);
     
+    useEffect(() => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                entry.target.classList.toggle("animate-shown", entry.isIntersecting);
+            });
+        });
+        
+        const hiddenElements = document.querySelectorAll(".animate-hidden");
+        hiddenElements.forEach((el) => {
+            observer.observe(el);
+        });
+
+        return () => {
+            hiddenElements.forEach((el) => {
+                observer.unobserve(el);
+            });
+        }
+    }, []);
+
     if (access === "expired") {
         logout();
         router.push("/?expired=true");
@@ -232,25 +251,25 @@ export function ProjectPage({ projectKey, serverData, access, id }:
                             <button className="s-regular rounded-2xl border-2 py-2 px-4 hover:bg-white" onClick={handleSave}>Save</button>
                         </div>
                     }
-                    <div className={`flex w-full my-4 lg:mt-0 lg:w-[300px] border-y lg:border-none`}>
-                        <article className={`h-fit s-regular flex flex-col justify-start items-start ml-[5vw] lg:ml-[30px] py-4 lg:py-[24px]`}>
-                            <ul className="flex-col justify-start items-start inline-flex">
+                    <div className="flex w-full my-4 lg:mt-0 lg:w-[300px] border-y lg:border-none">
+                        <article className="h-fit s-regular flex flex-col items-stretch justify-start items-start ml-[5vw] lg:ml-[30px] py-4 lg:py-[24px]">
+                            <ul className="animate-hidden sidebar flex-col justify-start items-start inline-flex">
                                 <h2 data-key="name" className={`editable mb-[10px] lg:mb-[15px] ${editMode ? "border" : ""}`}>{data.name}</h2>
                                 <h5 data-key="year" className={`editable ${editMode ? "border" : ""}`}>{data.year}</h5>
                             </ul>
-                            <ul className="flex-col justify-start items-start inline-flex mt-[20px] lg:mt-[30px]">
+                            <ul className="animate-hidden sidebar flex-col justify-start items-start inline-flex mt-[20px] lg:mt-[30px]">
                                 <h4 className="text-air-force-blue text-[14px] mb-[5px]">PROJECT TYPE</h4>
                                 {data.data.sidebar["project-type"].map((string, index) => <li data-key="sidebar.project-type" className={`editable ${editMode ? "border" : ""}`} key={`pt-${index}`}>{string}</li>)}
                             </ul>
-                            <ul className="flex-col justify-start items-start inline-flex mt-[22px] lg:mt-[35px]">
+                            <ul className="animate-hidden sidebar flex-col justify-start items-start inline-flex mt-[22px] lg:mt-[35px]">
                                 <h4 className=" text-air-force-blue text-[14px] mb-[5px]">TEAM</h4>
                                 {data.data.sidebar["team"].map((string, index) => <li data-key="sidebar.team" className={`editable ${editMode ? "border" : ""}`} key={`t-${index}`}>{string}</li>)}
                             </ul>
-                            <ul className="flex-col justify-start items-start inline-flex mt-[22px] lg:mt-[35px]">
+                            <ul className="animate-hidden sidebar flex-col justify-start items-start inline-flex mt-[22px] lg:mt-[35px]">
                                 <h4 className=" text-air-force-blue text-[14px] mb-[5px]">SKILLSET</h4>
                                 {data.data.sidebar["skillset"].map((string, index) => <li data-key="sidebar.skillset" className={`editable ${editMode ? "border" : ""}`} key={`s-${index}`}>{string}</li>)}
                             </ul>
-                            <ul className="flex-col justify-start items-start inline-flex mt-[22px] lg:mt-[35px]">
+                            <ul className="animate-hidden sidebar flex-col justify-start items-start inline-flex mt-[22px] lg:mt-[35px]">
                                 <h4 className="editable text-air-force-blue text-[14px] mb-[5px]">APPROACH</h4>
                                 {data.data.sidebar["approach"].map((string, index) => <li data-key="sidebar.approach" className={`editable ${editMode ? "border" : ""}`} key={`a-${index}`}>{string}</li>)}
                             </ul>
@@ -264,7 +283,7 @@ export function ProjectPage({ projectKey, serverData, access, id }:
                                 sizes="100vw"
                                 alt="main.cover.image"
                                 data-key="main.cover.image"
-                                className="editable w-full h-full lg:min-h-[400px] object-cover"
+                                className="editable w-full h-full lg:min-h-[400px] object-cover animate-hidden main"
                                 src={data.data.main.cover.image}
                                 onClick={handleImageClick}
                                 priority={true}
@@ -274,8 +293,8 @@ export function ProjectPage({ projectKey, serverData, access, id }:
                         </div>
                         <section className="w-[90%] flex-col justify-center items-start flex">
                             <div className="my-[24px] flex flex-col">
-                                <h4>BRIEF</h4>
-                                <p data-key={`main.cover.text`} className={`editable s-regular ${editMode ? "border" : ""}`}>
+                                <h4 className="animate-hidden main ">BRIEF</h4>
+                                <p data-key={`main.cover.text`} className={`animate-hidden main editable s-regular ${editMode ? "border" : ""}`}>
                                     {data.data.main.cover.text.replaceAll("<br>", "\n")}
                                 </p>
                             </div>
