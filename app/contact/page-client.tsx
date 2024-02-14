@@ -15,7 +15,7 @@ const Contact = () => {
                 <HeaderComponent/>
                 <section className="w-full min-h-[calc(100%_-_128px)] lg:min-h-[calc(100vh_-_138px)] relative flex justify-center items-center mt-[40px] lg:mt-[70px]">
                     <Image
-                        className="mr-[20px]"
+                        className="absolute -translate-x-[300px]"
                         src="/images/contact-page-cat.png"
                         alt="contact"
                         width={250}
@@ -25,7 +25,7 @@ const Contact = () => {
                         onContextMenu={(e) => e.preventDefault()}
                     />
                     <form
-                        className=" relative items-center justify-center flex flex-col"
+                        className="relative items-center justify-center flex flex-col"
                         action={async (formData) => {
                             const res = await submitContactForm(formData);
                             if (res.success) {
