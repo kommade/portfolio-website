@@ -151,7 +151,7 @@ const GridComponents = ({ keys, max, showTitle = true, editMode = false }: { key
                     onMouseOut={() => setIsHovered(false)}
                 >
                     <Image
-                        className={`object-cover object-left w-full h-full absolute transition-all ${isHovered || editMode ? ' blur-[2px] bg-blend-luminosity' : ''}`}
+                        className={`object-cover object-center w-full h-full absolute transition-all ${isHovered || editMode ? ' blur-[2px] bg-blend-luminosity' : ''}`}
                         src={data.image}
                         alt={`${data.name} image`}
                         width={0}

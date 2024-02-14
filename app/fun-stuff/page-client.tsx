@@ -163,7 +163,6 @@ export const FunStuff = ({ data, access }: { data: FunStuffData, access: string}
 
     const updatePosition = (duration: number = 1200, movement: number = percentage) => {
         if (imageHolder.current) {
-            console.log(window.innerWidth)
             if (window.innerWidth <= 1024) {
                 if (imageHolder.current) {
                     (imageHolder.current as HTMLElement).animate({

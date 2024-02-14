@@ -118,7 +118,6 @@ export function ProjectPage({ projectKey, serverData, access, id }:
                             ].filter((item) => item !== "");
                         } else if (key.startsWith("main.cover")) {
                             newData.data!.main.cover.text = el.innerText.replaceAll("\n", "<br>");
-                            console.log(el.innerText)
                         } else if (key.startsWith("main.body")) {
                             const index = parseInt(getIndex(key));
                             if (key.endsWith("header")) {
@@ -191,7 +190,7 @@ export function ProjectPage({ projectKey, serverData, access, id }:
 
     const textThatBecomesLinks = {
         "Click here to view the full thesis book.":
-            <React.Fragment>Click <Link key="thesisbook" className="underline" href="https://www.yumpu.com/en/document/view/68308775/window-to-another-world-spreads" target="_blank" rel="noopener noreferrer">here</Link> to view the full thesis book.</React.Fragment>
+            <React.Fragment key="link-replace">Click <Link key="thesisbook" className="underline" href="https://www.yumpu.com/en/document/view/68308775/window-to-another-world-spreads" target="_blank" rel="noopener noreferrer">here</Link> to view the full thesis book.</React.Fragment>
     }
     const checkForLinks = (text: string) => {
         for (const key in textThatBecomesLinks) {
