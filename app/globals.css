@@ -147,52 +147,30 @@ p {
     white-space: pre-line;
 }
 
-.animate-hidden.main {
+.animate-hidden.right {
     opacity: 0;
     filter: blur(5px);
     transform: translateX(100%);
 }
 
-p.animate-hidden.main {
-    transition-delay: 100ms;
-}
-
-img.animate-hidden.main {
+img.animate-hidden.right {
     transition-delay: 200ms;
 }
 
-.animate-hidden.sidebar {
+.animate-hidden.left {
     opacity: 0;
     filter: blur(5px);
     transform: translateX(-100%);
 }
 
-.animate-shown.sidebar:nth-child(1) {
-    transition-delay: 100ms;
-}
-
-.animate-shown.sidebar:nth-child(2) {
-    transition-delay: 200ms;
-}
-
-.animate-shown.sidebar:nth-child(3) {
-    transition-delay: 300ms;
-}
-
-.animate-shown.sidebar:nth-child(4) {
-    transition-delay: 400ms;
-}
-
-.animate-shown.sidebar:nth-child(5) {
-    transition-delay: 500ms;
-}
-
-.animate-shown.main,
-.animate-shown.sidebar {
+.animate-shown.right,
+.animate-shown.left {
     opacity: 1;
     filter: blur(0);
     transform: translateX(0);
-    transition: all 1s ease-in-out;
+    transition-duration: 1s;
+    transition-property: transform, opacity, filter;
+    transition-timing-function: ease-in-out;
 }
 
 @font-face {

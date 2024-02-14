@@ -4,7 +4,6 @@ import { FooterComponent, GridComponents, HeaderComponent, ScrollComponent, Scro
 import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Projects({ keys }: { keys: string[] }) {
-    const router = useRouter();
     const searchParams = useSearchParams();
     const editMode = searchParams.get("edit") === "true";
 

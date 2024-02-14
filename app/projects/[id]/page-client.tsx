@@ -113,7 +113,7 @@ export function ProjectPage({ projectKey, serverData, access, id }:
                             newData.data.sidebar[sidebarKey] = [
                                 ...newData.data.sidebar[sidebarKey],
                                 ...el.innerText.split("\n")
-                            ];
+                            ].filter((item) => item !== "");
                         } else if (key.startsWith("main.cover")) {
                             newData.data!.main.cover.text = el.innerText.replaceAll("\n", "<br>");
                             console.log(el.innerText)
@@ -252,24 +252,24 @@ export function ProjectPage({ projectKey, serverData, access, id }:
                         </div>
                     }
                     <div className="flex w-full my-4 lg:mt-0 lg:w-[300px] border-y lg:border-none">
-                        <article className="h-fit s-regular flex flex-col items-stretch justify-start items-start ml-[5vw] lg:ml-[30px] py-4 lg:py-[24px]">
-                            <ul className="animate-hidden sidebar flex-col justify-start items-start inline-flex">
+                        <article className="h-fit s-regular flex flex-col items-stretch justify-start ml-[5vw] lg:ml-[30px] py-4 lg:py-[24px]">
+                            <ul className="animate-hidden left flex-col justify-start items-start inline-flex">
                                 <h2 data-key="name" className={`editable mb-[10px] lg:mb-[15px] ${editMode ? "border" : ""}`}>{data.name}</h2>
                                 <h5 data-key="year" className={`editable ${editMode ? "border" : ""}`}>{data.year}</h5>
                             </ul>
-                            <ul className="animate-hidden sidebar flex-col justify-start items-start inline-flex mt-[20px] lg:mt-[30px]">
+                            <ul className="animate-hidden left delay-100 flex-col justify-start items-start inline-flex mt-[20px] lg:mt-[30px]">
                                 <h4 className="text-air-force-blue text-[14px] mb-[5px]">PROJECT TYPE</h4>
                                 {data.data.sidebar["project-type"].map((string, index) => <li data-key="sidebar.project-type" className={`editable ${editMode ? "border" : ""}`} key={`pt-${index}`}>{string}</li>)}
                             </ul>
-                            <ul className="animate-hidden sidebar flex-col justify-start items-start inline-flex mt-[22px] lg:mt-[35px]">
+                            <ul className="animate-hidden left delay-200 flex-col justify-start items-start inline-flex mt-[22px] lg:mt-[35px]">
                                 <h4 className=" text-air-force-blue text-[14px] mb-[5px]">TEAM</h4>
                                 {data.data.sidebar["team"].map((string, index) => <li data-key="sidebar.team" className={`editable ${editMode ? "border" : ""}`} key={`t-${index}`}>{string}</li>)}
                             </ul>
-                            <ul className="animate-hidden sidebar flex-col justify-start items-start inline-flex mt-[22px] lg:mt-[35px]">
+                            <ul className="animate-hidden left delay-300 flex-col justify-start items-start inline-flex mt-[22px] lg:mt-[35px]">
                                 <h4 className=" text-air-force-blue text-[14px] mb-[5px]">SKILLSET</h4>
                                 {data.data.sidebar["skillset"].map((string, index) => <li data-key="sidebar.skillset" className={`editable ${editMode ? "border" : ""}`} key={`s-${index}`}>{string}</li>)}
                             </ul>
-                            <ul className="animate-hidden sidebar flex-col justify-start items-start inline-flex mt-[22px] lg:mt-[35px]">
+                            <ul className="animate-hidden left delay-[400ms] flex-col justify-start items-start inline-flex mt-[22px] lg:mt-[35px]">
                                 <h4 className="editable text-air-force-blue text-[14px] mb-[5px]">APPROACH</h4>
                                 {data.data.sidebar["approach"].map((string, index) => <li data-key="sidebar.approach" className={`editable ${editMode ? "border" : ""}`} key={`a-${index}`}>{string}</li>)}
                             </ul>
@@ -283,7 +283,7 @@ export function ProjectPage({ projectKey, serverData, access, id }:
                                 sizes="100vw"
                                 alt="main.cover.image"
                                 data-key="main.cover.image"
-                                className="editable w-full h-full lg:min-h-[400px] object-cover animate-hidden main"
+                                className="editable w-full h-full lg:min-h-[400px] object-cover animate-hidden right"
                                 src={data.data.main.cover.image}
                                 onClick={handleImageClick}
                                 priority={true}

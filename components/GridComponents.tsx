@@ -58,7 +58,6 @@ const GridComponents = ({ keys, max, showTitle = true, editMode = false }: { key
     const router = useRouter();
     const [popUp, setPopUp] = usePopUp();
     const [data, setData] = useState<ProjectThumbnailData[]>([]);
-    const [oldData, setOldData] = useState<ProjectThumbnailData[]>([]);
     const [error, setError] = useState(false);
     const fileInputRef = useRef(null);
     const fileSubmitRef = useRef(null);
@@ -77,7 +76,6 @@ const GridComponents = ({ keys, max, showTitle = true, editMode = false }: { key
                 allData.push(res.data as ProjectThumbnailData)
             }
             setData(allData)
-            setOldData(allData)
             setIsLoading(false);
             
         };
@@ -88,6 +86,25 @@ const GridComponents = ({ keys, max, showTitle = true, editMode = false }: { key
     }
     const GridComponent = ({ projectKey, data, span, editMode }: { projectKey: string, data: ProjectThumbnailData, span: Pos, editMode: boolean }) => {
         const [isHovered, setIsHovered] = useState(false);
+        useEffect(() => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    entry.target.classList.toggle("animate-shown", entry.isIntersecting);
+                });
+            });
+            
+            const hiddenElements = document.querySelectorAll(".animate-hidden");
+            hiddenElements.forEach((el) => {
+                observer.observe(el);
+            });
+    
+            return () => {
+                hiddenElements.forEach((el) => {
+                    observer.unobserve(el);
+                });
+            }
+        }, []);
+
         if (data === null) {
             return <></>;
         }
@@ -102,7 +119,7 @@ const GridComponents = ({ keys, max, showTitle = true, editMode = false }: { key
             <Link
                 href={`/projects/${data.id}`}
                 rel="noopener noreferrer"
-                className={`bg-white relative overflow-hidden shadow ${span.row === 2 ? 'grid-long' : span.col === 2 ? 'grid-wide' : 'aspect-square'} ${editMode ? " cursor-default" : ""}`}
+                className={`animate-hidden left bg-white relative overflow-hidden shadow ${span.row === 2 ? 'grid-long' : span.col === 2 ? 'grid-wide' : 'aspect-square'} ${editMode ? " cursor-default" : ""}`}
                 onClick={(e) => {
                     if (editMode) {
                         e.preventDefault();
@@ -202,20 +219,14 @@ const GridComponents = ({ keys, max, showTitle = true, editMode = false }: { key
                 newDesc.push(element.innerText);
             }
         });
-        console.log(newDesc,data, oldData)
         for (let i = 0; i < newDesc.length; i++) {
-            if (newDesc[i] !== oldData[i].desc) {
-                const res = await changeProjectDesc(keys[i], newDesc[i]);
-                successes.push(res.success);
-            }
-            if (data[i].image !== oldData[i].image) {
-                const res = await changeProjectThumbnail(keys[i], data[i].image);
-                successes.push(res.success);
-            }
+            let res = await changeProjectDesc(keys[i], newDesc[i]);
+            successes.push(res.success);
+            res = await changeProjectThumbnail(keys[i], data[i].image);
+            successes.push(res.success);
         }
         if (successes.every((s) => s)) {
             setPopUp({ message: "Changes saved successfully", type: "success", duration: 1000 });
-            setOldData(data);
             setTimeout(() => {
                 router.push("/projects");
             }, 1000);

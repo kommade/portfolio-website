@@ -1,9 +1,9 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { usePopUp, HeaderComponent, GridComponents, PopUpComponent, FooterComponent, ScrollToTop, ScrollComponent, LoadingComponent } from "@/components";
+import { usePopUp, HeaderComponent, GridComponents, PopUpComponent, FooterComponent, ScrollToTop, ScrollComponent } from "@/components";
 import Image from "next/image";
 import { logout } from "@/functions/actions";
 
@@ -15,6 +15,7 @@ export default function Home({ keys }: { keys: string[] }) {
         logout();
         setPopUp({ message: "Please log in again", type: "warning", duration: 1000 })
     }
+
     return (
         <main className="flex flex-col items-center justify-between overflow-x-clip">
             <div className="w-screen h-fit min-h-[100vh] relative flex flex-col">
