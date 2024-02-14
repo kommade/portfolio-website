@@ -7,6 +7,8 @@ import { FooterComponent, HeaderComponent, MessageDisplayComponent, PopUpCompone
 import SubmitFileConfirmationComponent from "@/components/SubmitFileConfirmationComponent";
 import BodyDisplayComponent from "@/components/BodyDisplayComponent";
 import Image from "next/image";
+import Link from "next/link";
+import React from "react";
 
 export interface ProjectData {
     name: string,
@@ -187,6 +189,24 @@ export function ProjectPage({ projectKey, serverData, access, id }:
         )
     }
 
+    const textThatBecomesLinks = {
+        "Click here to view the full thesis book.":
+            <React.Fragment>Click <Link key="thesisbook" className="underline" href="https://www.yumpu.com/en/document/view/68308775/window-to-another-world-spreads" target="_blank" rel="noopener noreferrer">here</Link> to view the full thesis book.</React.Fragment>
+    }
+    const checkForLinks = (text: string) => {
+        for (const key in textThatBecomesLinks) {
+            if (text.includes(key)) {
+                const split = text.split(key);
+                return [
+                    <React.Fragment key="link-text-f">{split[0]}</React.Fragment>,
+                    textThatBecomesLinks[key as keyof typeof textThatBecomesLinks]!,
+                    <React.Fragment key="link-text-b">{split[1]}</React.Fragment>,
+                ];
+            }
+        }
+        return text;
+    }
+
     return (
         <main className="flex flex-col items-center justify-between overflow-x-clip">
             <div className="w-screen min-h-[100vh] relative flex flex-col">
@@ -295,7 +315,7 @@ export function ProjectPage({ projectKey, serverData, access, id }:
                             <div className="my-[24px] flex flex-col">
                                 <h4>BRIEF</h4>
                                 <p data-key={`main.cover.text`} className={`editable s-regular ${editMode ? "border" : ""}`}>
-                                    {data.data.main.cover.text.replaceAll("<br>", "\n")}
+                                    {checkForLinks(data.data.main.cover.text.replaceAll("<br>", "\n"))}
                                 </p>
                             </div>
                         </section>

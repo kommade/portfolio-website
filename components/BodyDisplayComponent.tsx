@@ -1,17 +1,23 @@
 import React from 'react'
 import { ProjectData } from "@/app/projects/[id]/page-client";
 import Image from "next/image";
+import Link from "next/link";
 
 const textThatBecomesLinks = {
     "5 things I wish I knew before I conducted my first usability test":
-        <a key="usabilitytest" className="underline" href="https://bootcamp.uxdesign.cc/5-things-i-wish-i-knew-before-conducting-my-first-usability-test-8f0d1540f5bf" target="_blank" rel="noopener noreferrer"> 5 things I wish I knew before I conducted my first usability test</a>,
+        <Link key="usabilitytest" className="underline" href="https://bootcamp.uxdesign.cc/5-things-i-wish-i-knew-before-conducting-my-first-usability-test-8f0d1540f5bf" target="_blank" rel="noopener noreferrer"> 5 things I wish I knew before I conducted my first usability test</Link>,
+    "Click here to view the full thesis book. ":
+        <>Click <Link key="thesisbook" className="underline" href="https://www.yumpu.com/en/document/view/68308775/window-to-another-world-spreads" target="_blank" rel="noopener noreferrer">here</Link> to view the full thesis book.</>
+    
 }
 const checkForLinks = (text: string) => {
     for (const key in textThatBecomesLinks) {
         if (text.includes(key)) {
+            const split = text.split(key);
             return [
-                <React.Fragment key="link-text">{text.replace(key, "")}</React.Fragment>,
-                textThatBecomesLinks[key as keyof typeof textThatBecomesLinks]!
+                <React.Fragment key="link-text-f">{split[0]}</React.Fragment>,
+                textThatBecomesLinks[key as keyof typeof textThatBecomesLinks]!,
+                <React.Fragment key="link-text-b">{split[1]}</React.Fragment>,
             ];
         }
     }

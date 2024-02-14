@@ -30,20 +30,20 @@ function generateComponentProperties(k: number): Pos[] {
         let currentCol = 1;
         const breakpoint = k - k % 4;
         if (i <= breakpoint) {
-        switch (i % 4) {
-            case 3:
-            currentRow = 2;
-            break;
-            case 0:
-            currentCol = 2;
-            break;
-            default:
-            break;
-        }
+            switch (i % 4) {
+                case 3:
+                    currentRow = 2;
+                    break;
+                case 0:
+                    currentCol = 2;
+                    break;
+                default:
+                    break;
+            }
         } else {
-        if (k % 4 === 1) {
-            result[result.length - 1].col = 1;
-        }
+            if (k % 4 === 1) {
+                result[result.length - 1].col = 1;
+            }
         }
         result.push({ row: currentRow, col: currentCol });
     }
