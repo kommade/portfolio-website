@@ -5,18 +5,21 @@ import { ProjectPage } from "./page-client";
 
 
 export default async function ProjectPageWrapper({ params }: { params: { id: string } }) {
-    let error = false;
-    const keyRes = await getProjectKey(params.id);
-    if (!keyRes.success) {
-        error = true;
+    async function fetchData(id: string) {
+        const keyRes = await getProjectKey(id);
+        if (keyRes.success === false) {
+            return { success: false };
+        }
+        const dataRes = await getProjectData(keyRes.data!);
+        if (dataRes.success === false) {
+            return { success: false };
+        }
+        return { success: true, key: keyRes.data!, data: dataRes.data! };
     }
-    const dataRes = await getProjectData(keyRes.data);
-    if (!dataRes.success) {
-        error = true;
-    }
-    const access = await getRole();
 
-    if (error) {
+    const { success, key, data } = await fetchData(params.id);
+
+    if (!success) {
         return (
             <main className="flex flex-col items-center justify-between overflow-x-clip">
                 <div className="w-screen relative flex flex-col">
@@ -25,12 +28,14 @@ export default async function ProjectPageWrapper({ params }: { params: { id: str
                     <FooterComponent/>
                 </div>
             </main>
-        )
+        );
     }
+
+    const access = await getRole();
 
     return (
         <Suspense fallback={<LoadingComponent/>}>
-            <ProjectPage projectKey={keyRes.data} serverData={dataRes.data} access={access} id={params.id} />
+            <ProjectPage projectKey={key!} serverData={data!} access={access} id={params.id} />
         </Suspense>
     )
 }

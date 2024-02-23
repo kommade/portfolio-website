@@ -9,6 +9,7 @@ import BodyDisplayComponent from "@/components/BodyDisplayComponent";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import ProjectSettingsComponent from "@/components/ProjectSettingsComponent";
 
 export interface ProjectData {
     name: string,
@@ -36,7 +37,7 @@ export interface ProjectData {
             }
         }
     },
-    access: "member" | "admin"
+    access: "member" | "public"
 }
 
 export function ProjectPage({ projectKey, serverData, access, id }:
@@ -53,6 +54,7 @@ export function ProjectPage({ projectKey, serverData, access, id }:
     const [dialogOpen, setDialogOpen] = useState(false);
     const [selectedImageName, setSelectedImageName] = useState("");
     const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+    const [settingsOpen, setSettingsOpen] = useState(false);
     
     useEffect(() => {
         const observer = new IntersectionObserver((entries) => {
@@ -101,45 +103,47 @@ export function ProjectPage({ projectKey, serverData, access, id }:
             "skillset": [],
             "approach": []
         }
-        document.querySelectorAll(".editable").forEach((el) => {
-            if (el instanceof HTMLElement) {
-                const key = el.getAttribute("data-key");
-                if (key) {
-                    if (!(el instanceof HTMLImageElement)) {
-                        if (key === "name") {
-                            newData[key] = el.innerText;
-                        } else if (key === "year") {
-                            newData[key] = el.innerText;
-                        } else if (key.startsWith("sidebar")) {
-                            const sidebarKey = key.split(".")[1] as keyof typeof newData.data.sidebar;
-                            newData.data.sidebar[sidebarKey] = [
-                                ...newData.data.sidebar[sidebarKey],
-                                ...el.innerText.split("\n")
-                            ].filter((item) => item !== "");
-                        } else if (key.startsWith("main.cover")) {
-                            newData.data!.main.cover.text = el.innerText.replaceAll("\n", "<br>");
-                        } else if (key.startsWith("main.body")) {
-                            const index = parseInt(getIndex(key));
-                            if (key.endsWith("header")) {
-                                newData.data!.main.body.normal[index].header = el.innerText;
-                            } else if (key.endsWith("text")) {
-                                newData.data!.main.body.normal[index].text = el.innerText.replaceAll("\n", "<br>");
+        if (typeof document !== "undefined") {
+            document.querySelectorAll(".editable").forEach((el) => {
+                if (el instanceof HTMLElement) {
+                    const key = el.getAttribute("data-key");
+                    if (key) {
+                        if (!(el instanceof HTMLImageElement)) {
+                            if (key === "name") {
+                                newData[key] = el.innerText;
+                            } else if (key === "year") {
+                                newData[key] = el.innerText;
+                            } else if (key.startsWith("sidebar")) {
+                                const sidebarKey = key.split(".")[1] as keyof typeof newData.data.sidebar;
+                                newData.data.sidebar[sidebarKey] = [
+                                    ...newData.data.sidebar[sidebarKey],
+                                    ...el.innerText.split("\n")
+                                ].filter((item) => item !== "");
+                            } else if (key.startsWith("main.cover")) {
+                                newData.data!.main.cover.text = el.innerText.replaceAll("\n", "<br>");
+                            } else if (key.startsWith("main.body")) {
+                                const index = parseInt(getIndex(key));
+                                if (key.endsWith("header")) {
+                                    newData.data!.main.body.normal[index].header = el.innerText;
+                                } else if (key.endsWith("text")) {
+                                    newData.data!.main.body.normal[index].text = el.innerText.replaceAll("\n", "<br>");
+                                }
                             }
-                        }
-                    } else {
-                        if (key.startsWith("main.body.grid")) {
-                            const index = parseInt(getIndex(key));
-                            (newData.data!.main.body.grid as any).images[index] = parseUrl(el.src);
-                        } else if (key === "main.cover.image") {
-                            newData.data!.main.cover.image = parseUrl(el.src);
                         } else {
-                            const index = parseInt(getIndex(key));
-                            (newData.data!.main.body.normal[index] as any).image = parseUrl(el.src);
+                            if (key.startsWith("main.body.grid")) {
+                                const index = parseInt(getIndex(key));
+                                (newData.data!.main.body.grid as any).images[index] = parseUrl(el.src);
+                            } else if (key === "main.cover.image") {
+                                newData.data!.main.cover.image = parseUrl(el.src);
+                            } else {
+                                const index = parseInt(getIndex(key));
+                                (newData.data!.main.body.normal[index] as any).image = parseUrl(el.src);
+                            }
                         }
                     }
                 }
-            }
-        });
+            });
+        }
         const finalImages = [newData.data!.main.cover.image, ...newData.data!.main.body.normal.map((item) => item.image), ...newData.data!.main.body.grid.images];
         const unusedImages = uploadedImages.filter((image) => !finalImages.includes(image));
         if (unusedImages.length > 0) {
@@ -160,6 +164,21 @@ export function ProjectPage({ projectKey, serverData, access, id }:
         }
     }
 
+    const handleSettingsChange = (message: string) => {
+        if (message === "cancel") {
+            setSettingsOpen(false);
+        } else if (message === "success") {
+            setSettingsOpen(false);
+            setPopUp({ message: "Project settings saved!", type: "success", duration: 1000 });
+            setTimeout(() => {
+                window.location.href = window.location.href.split("?")[0];
+            })
+        } else {
+            setSettingsOpen(false);
+            setPopUp({ message: "Error saving project settings!", type: "warning", duration: 1000 });
+        }
+    }
+
     const handleImageClick = (e: React.MouseEvent) => {
         if (!editMode) return;
         if (fileInputRef.current) {
@@ -169,13 +188,16 @@ export function ProjectPage({ projectKey, serverData, access, id }:
         }
     }
 
-    if (access === "admin" && editMode) { 
-        document.querySelectorAll(".editable").forEach((el) => {
-            if (el instanceof HTMLElement && el.tagName !== "IMG") {
-                el.contentEditable = "true";
-                el.spellcheck = false;
-            }
-        })
+    if (access === "admin" && editMode) {
+        if (typeof document !== "undefined") {
+            document.querySelectorAll(".editable").forEach((el) => {
+                if (el instanceof HTMLElement && el.tagName !== "IMG") {
+                    el.contentEditable = "true";
+                    el.spellcheck = false;
+                }
+            })
+        }
+        
     }
     if (access === "none" && data.access === "member") {
         return (
@@ -264,11 +286,22 @@ export function ProjectPage({ projectKey, serverData, access, id }:
                     <input ref={fileSubmitRef} type="submit" />
                 </form>
                 <section className="w-[100%] min-h-[calc(100vh_-_108px)] lg:min-h-[calc(100vh_-_138px)] relative justify-between items-start mt-[40px] lg:mt-[70px] lg:mx-auto flex flex-col lg:flex-row">
-                    {editMode &&
-                        <div className="fixed left-10 top-[20px] z-[2025] flex justify-center items-center" >
-                            <h4 className="w-[100px]">Edit mode</h4>
-                            <button className="s-regular rounded-2xl border-2 py-2 px-4 hover:bg-white" onClick={handleSave}>Save</button>
-                        </div>
+                    {
+                        editMode &&
+                        <>
+                            <div className="fixed left-10 top-[20px] z-[2025] gap-4 flex justify-center items-center" >
+                                <h4 className="w-fit">Edit mode</h4>
+                                <button className="s-regular rounded-2xl border-2 py-2 px-4 hover:bg-white" onClick={() => setSettingsOpen(!settingsOpen)}>Settings</button>
+                                <button className="s-regular rounded-2xl border-2 py-2 px-4 hover:bg-white" onClick={handleSave}>Save</button>
+                            </div>
+                            {settingsOpen &&
+                                <ProjectSettingsComponent
+                                    data={data}
+                                    id={id}
+                                    projectKey={projectKey}
+                                    callback={handleSettingsChange}
+                                />}
+                        </>
                     }
                     <div className="flex w-full my-4 lg:mt-0 lg:w-[300px] border-y lg:border-none">
                         <article className="h-fit s-regular flex flex-col items-stretch justify-start ml-[5vw] lg:ml-[30px] py-4 lg:py-[24px]">

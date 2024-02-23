@@ -1,6 +1,6 @@
 'use client';
 
-import { changeProjectDesc, changeProjectThumnail as changeProjectThumbnail, getProjectThumbnail, uploadNewProjectImage } from "@/functions/actions";
+import { changeProjectDesc, changeProjectThumbnail, getProjectThumbnail, uploadNewProjectImage} from "@/functions/actions";
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import LoadingComponent from "./LoadingComponent";
 import Link from "next/link";

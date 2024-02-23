@@ -167,14 +167,18 @@ img.animate-hidden.right {
     transform: translateX(-100%) rotate(180deg);
 }
 
+.animate-hidden,
+.animate-shown {
+    transition-duration: 1s;
+    transition-property: transform, opacity, filter;
+    transition-timing-function: ease-in-out;
+}
+
 .animate-shown.right,
 .animate-shown.left {
     opacity: 1;
     filter: blur(0);
     transform: translateX(0);
-    transition-duration: 1s;
-    transition-property: transform, opacity, filter;
-    transition-timing-function: ease-in-out;
 }
 
 .animate-shown.left.rotate {

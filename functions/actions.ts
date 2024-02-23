@@ -88,8 +88,11 @@ export const getProjectId = cache(
 
 export const getProjectKey = cache(
     async (id: string) => {
-        const projectKey = await redis.get(id) as string;
-        return { success: true, data: projectKey };
+        const projectKey = await redis.get(id);
+        if (projectKey) {
+            return { success: true, data: projectKey as string };
+        }
+        return { success: false, message: "Project does not exist" };
     }, undefined, { revalidate: revalidate }
 )
 
@@ -130,9 +133,9 @@ export const changeProjectDesc = async (projectKey: string, desc: string) => {
     }
 }
 
-export const changeProjectThumnail = async (projectKey: string, url: string) => {
+export const changeProjectThumbnail = async (projectKey: string, url: string) => {
     if (await redis.exists(projectKey)) {
-        logger('changeProjectThumnail', 'HSET', projectKey);
+        logger('changeProjectThumbnail', 'HSET', projectKey);
         await redis.hset(projectKey, { "image": url });
         return { success: true };
     } else {
@@ -250,6 +253,61 @@ export const createNewProject = async (formData: FormData) => {
         return { success: true, message: id };
     } catch (error) {
         return { success: false, message: "Failed to create new project" };
+    }
+}
+
+export const changeProjectSettings = async (projectKey: string, id: string, data: ProjectData, settings: { id: string, imageNumber: number, grid: boolean, access: "member" | "public" }) => {
+    const newSettings: { id?: string, access?: "member" | "public", data?: string } = { id: settings.id, access: settings.access, data: "" };
+    let nonCoverImageNumber = settings.imageNumber - 1;
+    try {        
+        if (await redis.exists(projectKey)) {
+            // Delete unchanged data
+            if (id !== settings.id) {
+                if (await redis.exists(settings.id!)) {
+                    return { success: false, message: "ID already exists" };
+                }
+                logger('changeProjectSettings', 'RENAME', id);
+                await redis.rename(id, settings.id!);
+            } else {
+                delete newSettings.id;
+            }
+            if (data.access === settings.access) {
+                delete newSettings.access;
+            }
+            // if grid is changed, or if the legnth is different
+            if (data.data.main.body.grid.use !== settings.grid || data.data.main.body.normal.length !== nonCoverImageNumber - (settings.grid ? 4 : 0)) {
+                if (settings.grid) {
+                    nonCoverImageNumber = nonCoverImageNumber - 4;
+                    data.data.main.body.grid.images = Array(4).fill("https://via.placeholder.com/800x800");
+                    data.data.main.body.grid.use = true;
+                } else {
+                    data.data.main.body.grid.images = Array(4).fill("");
+                    data.data.main.body.grid.use = false;
+                }
+            } else {
+                delete newSettings.data;
+            }
+        }
+        // if longer, delete the extra images
+        if (data.data.main.body.normal.length > nonCoverImageNumber) {
+            const images = data.data.main.body.normal.slice(nonCoverImageNumber);
+            data.data.main.body.normal = data.data.main.body.normal.slice(0, nonCoverImageNumber);
+            await deleteUnusedImages(images.map((image) => image.image));
+        } else { // if shorter, add placeholders
+            data.data.main.body.normal = data.data.main.body.normal.concat(Array(nonCoverImageNumber - data.data.main.body.normal.length).fill({
+                header: "",
+                text: "",
+                image: "https://via.placeholder.com/800x800"
+            }));
+        }
+        if (newSettings.data !== undefined) {
+            newSettings.data = JSON.stringify(data.data).replaceAll("\"", "&quot");
+        }
+        logger('changeProjectSettings', 'HMSET', projectKey);
+        await redis.hmset(projectKey, newSettings);
+        return { success: true };
+    } catch (error) {
+        return { success: false, message: "Failed to change project settings" };
     }
 }
 
