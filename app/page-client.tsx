@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { usePopUp, HeaderComponent, GridComponents, PopUpComponent, FooterComponent, ScrollToTop, ScrollComponent } from "@/components";
 import Image from "next/image";
 import { logout } from "@/functions/actions";
+import { useEffect } from "react";
 
 export default function Home({ keys }: { keys: string[] }) {
     const searchParams = useSearchParams();
@@ -29,7 +30,7 @@ export default function Home({ keys }: { keys: string[] }) {
                 <section className="w-full h-fit relative bg-slate-400 flex justify-start">
                     <article className="info-container lg:p-16 p-4 h-fit ">
                         <div className="flex flex-col lg:flex-row justify-center items-center lg:items-stretch">
-                            <h1 className="text-end lg:self-start text-pale-butter lg:[writing-mode:vertical-lr] lg:mr-[10px] mb-[10px] lg:mb-0 animate-hidden left rotate">
+                            <h1 className="text-end lg:self-start text-pale-butter lg:[writing-mode:vertical-lr] lg:mr-[10px] mb-[10px] lg:mb-0 animate-hidden left lg:rotate">
                                 About Me
                             </h1>
                             <section className=" flex flex-col lg:mr-6 items-start">
