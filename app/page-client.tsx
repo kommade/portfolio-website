@@ -30,9 +30,11 @@ export default function Home({ keys }: { keys: string[] }) {
                 <section className="w-full h-fit relative bg-slate-400 flex justify-start">
                     <article className="info-container lg:p-16 p-4 h-fit ">
                         <div className="flex flex-col lg:flex-row justify-center items-center lg:items-stretch">
-                            <h1 className="text-end lg:self-start text-pale-butter lg:[writing-mode:vertical-lr] lg:mr-[10px] mb-[10px] lg:mb-0 animate-hidden left">
-                                About Me
-                            </h1>
+                            <div className="rotate-180 lg:rotate-0 lg:mr-[10px] mb-[10px] lg:mb-0 ">
+                                <h1 className="text-end lg:self-start text-pale-butter lg:[writing-mode:vertical-lr] animate-hidden left rotate">
+                                    About Me
+                                </h1>
+                            </div>
                             <section className=" flex flex-col lg:mr-6 items-start">
                                 <div className=" w-[198px] h-[256px] overflow-hidden animate-hidden left delay-[500ms]">
                                     <Image

@@ -163,6 +163,10 @@ img.animate-hidden.right {
     transform: translateX(-100%);
 }
 
+.animate-hidden.left.rotate {
+    transform: translateX(-100%) rotate(180deg);
+}
+
 .animate-hidden,
 .animate-shown {
     transition-duration: 1s;

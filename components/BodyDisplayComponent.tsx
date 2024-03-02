@@ -7,8 +7,9 @@ const textThatBecomesLinks = {
     "5 things I wish I knew before I conducted my first usability test":
         <Link key="usabilitytest" className="underline" href="https://bootcamp.uxdesign.cc/5-things-i-wish-i-knew-before-conducting-my-first-usability-test-8f0d1540f5bf" target="_blank" rel="noopener noreferrer"> 5 things I wish I knew before I conducted my first usability test</Link>,
     "Click here to view the full thesis book. ":
-        <>Click <Link key="thesisbook" className="underline" href="https://www.yumpu.com/en/document/view/68308775/window-to-another-world-spreads" target="_blank" rel="noopener noreferrer">here</Link> to view the full thesis book.</>
-    
+        <>Click <Link key="thesisbook" className="underline" href="https://www.yumpu.com/en/document/view/68308775/window-to-another-world-spreads" target="_blank" rel="noopener noreferrer">here</Link> to view the full thesis book.</>,
+    "Click here to see the entire journey and the 18 ‘How Might We’ statements that were mapped out.":
+        <>Click <Link key="ntnz" className="underline" href="https://www.dropbox.com/scl/fi/d1oteu14zoriw0svlf1eq/Unravel-Carbon-CJM.pdf?rlkey=wnvad47wf1gz344mjozgtncsz&dl=0" target="_blank" rel="noopener noreferrer">here</Link> to see the entire journey and the 18 ‘How Might We’ statements that were mapped out.</>
 }
 const checkForLinks = (text: string) => {
     for (const key in textThatBecomesLinks) {
