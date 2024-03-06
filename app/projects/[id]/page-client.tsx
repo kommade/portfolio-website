@@ -121,6 +121,12 @@ export function ProjectPage({ projectKey, serverData, access, id }:
                                 ].filter((item) => item !== "");
                             } else if (key.startsWith("main.cover")) {
                                 newData.data!.main.cover.text = el.innerText.replaceAll("\n", "<br>");
+                            } else if (key.startsWith("main.body.grid")) {
+                                if (key.endsWith("header")) {
+                                    newData.data!.main.body.grid.header = el.innerText;
+                                } else if (key.endsWith("text")) {
+                                    newData.data!.main.body.grid.text = el.innerText.replaceAll("\n", "<br>");
+                                }
                             } else if (key.startsWith("main.body")) {
                                 const index = parseInt(getIndex(key));
                                 if (key.endsWith("header")) {
@@ -132,12 +138,13 @@ export function ProjectPage({ projectKey, serverData, access, id }:
                         } else {
                             if (key.startsWith("main.body.grid")) {
                                 const index = parseInt(getIndex(key));
-                                (newData.data!.main.body.grid as any).images[index] = parseUrl(el.src);
+                                console.log(el.src)
+                                newData.data!.main.body.grid.images[index] = parseUrl(el.src);
                             } else if (key === "main.cover.image") {
                                 newData.data!.main.cover.image = parseUrl(el.src);
                             } else {
                                 const index = parseInt(getIndex(key));
-                                (newData.data!.main.body.normal[index] as any).image = parseUrl(el.src);
+                                newData.data!.main.body.normal[index].image = parseUrl(el.src);
                             }
                         }
                     }
@@ -261,9 +268,12 @@ export function ProjectPage({ projectKey, serverData, access, id }:
                             const newData = { ...data };
                             if (selectedImage === "main.cover.image") {
                                 newData.data.main.cover.image = res.data!;
-                            } else {
+                            } else if (selectedImage.startsWith("main.body.normal")) {
                                 const index = parseInt(selectedImage.split("[")[1].split("]")[0]);
                                 newData.data.main.body.normal[index].image = res.data!;
+                            } else if (selectedImage.startsWith("main.body.grid")) {
+                                const index = parseInt(selectedImage.split("[")[1].split("]")[0]);
+                                newData.data.main.body.grid.images[index] = res.data!;
                             }
                             setData(newData);
                             setUploadedImages([...uploadedImages, res.data!]);

@@ -73,10 +73,10 @@ const BodyDisplayComponent = ({ body, handleImageClick, editMode }: { body: Proj
                         <div className="h-0 my-[12px]"></div>
                     ) : (
                         <div className={`my-[24px] flex flex-col ${gridState === "header only" ? "" : "gap-[10px]"} w-[100%]`}>
-                            <h4 data-key={`main.body.grid.header`} className={`editable ${editMode ? "border" : ""}`}>
+                            <h4 data-key={`main.body.grid.header`} className={`editable ${editMode ? "border min-w-[20px]" : ""}`}>
                                 {body.grid.header}
                             </h4>
-                            <p data-key={`main.body.grid.text`} className={`editable s-regular ${editMode ? "border" : ""}`}>
+                            <p data-key={`main.body.grid.text`} className={`editable s-regular ${editMode ? "border min-w-[20px]" : ""}`}>
                                 {checkForLinks(body.grid.text.replaceAll("<br>", "\n"))}
                             </p>
                         </div>
