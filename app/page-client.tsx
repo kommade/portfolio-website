@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { usePopUp, HeaderComponent, GridComponents, PopUpComponent, FooterComponent, ScrollToTop, ScrollComponent } from "@/components";
 import Image from "next/image";
 import { logout } from "@/functions/actions";
@@ -11,10 +11,13 @@ export default function Home({ keys }: { keys: string[] }) {
     const searchParams = useSearchParams();
     const expired = searchParams.get("expired") === "true";
     const [popUp, setPopUp] = usePopUp();
-    if (expired) {
-        logout();
-        setPopUp({ message: "Please log in again", type: "warning", duration: 1000 })
-    }
+    const router = useRouter();
+    useEffect(() => {
+        if (expired) {
+            logout();
+            setPopUp({ message: "Please log in again", type: "warning", duration: 1000 })
+        }
+    }, [expired]);
 
     return (
         <main className="flex flex-col items-center justify-between overflow-x-clip">

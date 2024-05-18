@@ -29,7 +29,6 @@ const renderMainBody = (component: any, index: number, editMode: boolean,  handl
     let state = component.text === "" ? (component.header === "" ? "none" : "header only") : "header and text";
     if (editMode) state = "header and text";
     return (
-        
         <section key={`body-${index}`} className="w-[90%] flex-col justify-center items-start flex">
             {state === "none" ? (
                 <div className="h-[24px]"></div>
@@ -50,6 +49,7 @@ const renderMainBody = (component: any, index: number, editMode: boolean,  handl
                 loading="lazy"
                 alt=""
                 data-key={`main.body.normal[${index}].image`}
+                data-n-img={index + 1}
                 className="editable w-full h-full lg:min-h-[400px] object-cover"
                 src={component.image}
                 onClick={handleImageClick}
@@ -91,6 +91,7 @@ const BodyDisplayComponent = ({ body, handleImageClick, editMode }: { body: Proj
                                     loading="lazy"
                                     alt=""
                                     data-key={`main.body.grid.images[0]`}
+                                    data-n-img={body.normal.length + 1}
                                     className="editable w-full h-full object-cover"
                                     src={body.grid.images[0]}
                                     onClick={handleImageClick}
@@ -106,6 +107,7 @@ const BodyDisplayComponent = ({ body, handleImageClick, editMode }: { body: Proj
                                     loading="lazy"
                                     alt=""
                                     data-key={`main.body.grid.images[1]`}
+                                    data-n-img={body.normal.length + 2}
                                     className="editable w-full h-full object-cover"
                                     src={body.grid.images[1]}
                                     onClick={handleImageClick}
@@ -123,6 +125,7 @@ const BodyDisplayComponent = ({ body, handleImageClick, editMode }: { body: Proj
                                     loading="lazy"
                                     alt=""
                                     data-key={`main.body.grid.images[2]`}
+                                    data-n-img={body.normal.length + 3}
                                     className="editable w-full h-full object-cover"
                                     src={body.grid.images[2]}
                                     onClick={handleImageClick}
@@ -138,6 +141,7 @@ const BodyDisplayComponent = ({ body, handleImageClick, editMode }: { body: Proj
                                     loading="lazy"
                                     alt=""
                                     data-key={`main.body.grid.images[3]`}
+                                    data-n-img={body.normal.length + 4}
                                     className="editable w-full h-full object-cover"
                                     src={body.grid.images[3]}
                                     onClick={handleImageClick}
