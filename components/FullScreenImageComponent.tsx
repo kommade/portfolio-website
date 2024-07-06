@@ -49,8 +49,8 @@ const FullScreenImageComponent =
                             <CarouselItem key={i} className="relative">
                                 <div className="relative w-full h-full">
                                     <Image className="object-scale-down" src={image} alt={`img-${i}`} fill sizes="90vw" onContextMenu={(e) => e.preventDefault()}/>
-                                    <div className={`w-fit h-[18px] absolute bottom-[30px] left-1/2 -translate-x-1/2 text-center flex transition-opacity duration-300 ease-in-out ${clicked ? " opacity-100" : "opacity-0"}`}>
-                                        <h4 className="z-[2026] bg-pale-butter bg-opacity-50 rounded-full p-[2px] px-2">{i + 1} of {images.length}</h4>
+                                    <div className={`w-fit h-[18px] absolute bottom-[30px] left-1/2 -translate-x-1/2 flex items-center transition-opacity duration-300 ease-in-out ${clicked ? " opacity-100" : "opacity-0"}`}>
+                                        <h4 className="z-[2026] bg-pale-butter bg-opacity-50 rounded-full py-1 px-3">{i + 1} of {images.length}</h4>
                                     </div>
                                 </div>
                             </CarouselItem>
