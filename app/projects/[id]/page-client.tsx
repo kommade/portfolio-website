@@ -10,6 +10,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import ProjectSettingsComponent from "@/components/ProjectSettingsComponent";
+import FullScreenImageComponent from "@/components/FullScreenImageComponent";
 
 export interface ProjectData {
     name: string,
@@ -55,6 +56,8 @@ export function ProjectPage({ projectKey, serverData, access, id }:
     const [selectedImageName, setSelectedImageName] = useState("");
     const [uploadedImages, setUploadedImages] = useState<string[]>([]);
     const [settingsOpen, setSettingsOpen] = useState(false);
+    const [fullScreenImage, setFullScreenImage] = useState(false);
+    const [fullScreenImageIndex, setFullScreenImageIndex] = useState(0);
     
     useEffect(() => {
         const observer = new IntersectionObserver((entries) => {
@@ -187,7 +190,12 @@ export function ProjectPage({ projectKey, serverData, access, id }:
     }
 
     const handleImageClick = (e: React.MouseEvent) => {
-        if (!editMode) return;
+        if (!editMode) {
+            const dataKey = e.currentTarget.getAttribute("data-n-img");
+            setFullScreenImageIndex(dataKey ? parseInt(dataKey) : 0);
+            setFullScreenImage(true);
+            return
+        };
         if (fileInputRef.current) {
             const dataKey = e.currentTarget.getAttribute("data-key") as string;
             setSelectedImage(dataKey);
@@ -295,6 +303,14 @@ export function ProjectPage({ projectKey, serverData, access, id }:
                         }} />
                     <input ref={fileSubmitRef} type="submit" />
                 </form>
+                {
+                    fullScreenImage &&
+                    <FullScreenImageComponent
+                        images={[data.data.main.cover.image, ...data.data.main.body.normal.map((item) => item.image), ...data.data.main.body.grid.images].filter((image) => image !== "")}
+                        index={fullScreenImageIndex}
+                        close={() => setFullScreenImage(false)}
+                    />
+                }
                 <section className="w-[100%] min-h-[calc(100vh_-_108px)] lg:min-h-[calc(100vh_-_138px)] relative justify-between items-start mt-[40px] lg:mt-[70px] lg:mx-auto flex flex-col lg:flex-row">
                     {
                         editMode &&
@@ -345,6 +361,7 @@ export function ProjectPage({ projectKey, serverData, access, id }:
                                 sizes="100vw"
                                 alt="main.cover.image"
                                 data-key="main.cover.image"
+                                data-n-img={0}
                                 className="editable w-full h-full lg:min-h-[400px] object-cover animate-hidden right"
                                 src={data.data.main.cover.image}
                                 onClick={handleImageClick}
