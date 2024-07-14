@@ -220,12 +220,12 @@ export const FunStuff = ({ data, access }: { data: FunStuffData, access: string}
                     onTouchEnd={handleTouchEnd}
                     onTouchMove={handleTouchMove}
                     onWheel={handleWheel}
-                    onClick={handleMouseClick}
+                    onPointerDown={handleMouseClick}
                 >
                     <div
                         ref={parentDropdownRef}
                         className={`w-[100px] h-[42px] pl-4 mt-2 ml-2 rounded-lg text-start flex justify-between items-center z-[2]  ${!dropdown ? "" : "hidden"}`}
-                        onClick={() => setDropdown(true)}>
+                        onPointerDown={() => setDropdown(true)}>
                         <div className="h-[24px] flex justify-center items-center">
                             <p className="s-regular select-none h-fit">{category.charAt(0).toUpperCase() + category.slice(1)}</p>
                         </div>
@@ -241,7 +241,7 @@ export const FunStuff = ({ data, access }: { data: FunStuffData, access: string}
                     <div ref={dropdownRef} className={`absolute w-[150px] h-[126px] bg-pale-butter rounded-lg rounded-t-none p-4 z-[1] opacity-90 shadow-xl ${dropdown ? "" : "hidden"}`}>
                         <div
                             className="s-regular w-full flex justify-start items-center gap-2 py-2 pl-2 rounded-lg hover:bg-white hover:cursor-pointer"
-                            onClick={() => {
+                            onPointerDown={() => {
                                 categoryClicked("sketchbook")
                                 setDropdown(false)
                             }}>
@@ -249,7 +249,7 @@ export const FunStuff = ({ data, access }: { data: FunStuffData, access: string}
                         </div>
                         <div
                             className="s-regular w-full flex justify-start items-center gap-2 py-2 pl-2 rounded-lg hover:bg-white hover:cursor-pointer"
-                            onClick={() => {
+                            onPointerDown={() => {
                                 categoryClicked("photography")
                                 setDropdown(false)
                             }}>
@@ -257,7 +257,7 @@ export const FunStuff = ({ data, access }: { data: FunStuffData, access: string}
                         </div>
                         <div
                             className="s-regular w-full flex justify-start items-center gap-2 py-2 pl-2 rounded-lg hover:bg-white hover:cursor-pointer"
-                            onClick={() => {
+                            onPointerDown={() => {
                                 categoryClicked("craft")
                                 setDropdown(false)
                             }}>
@@ -281,7 +281,7 @@ export const FunStuff = ({ data, access }: { data: FunStuffData, access: string}
                         <p
                             ref={descRef}
                             className="h-[1px] w-fit mt-[10px] min-w-[100px] s-regular z-[100]"
-                            onClick={(e) => {
+                            onPointerDown={(e) => {
                                 e.stopPropagation();
                             }}
                             onKeyDown={async (e) => {
@@ -313,7 +313,7 @@ export const FunStuff = ({ data, access }: { data: FunStuffData, access: string}
                                     width="10"
                                     height="10"
                                     viewBox="0 0 50 50"
-                                    onClick={(e) => {
+                                    onPointerDown={(e) => {
                                         e.stopPropagation();
                                         if (descRef.current) { 
                                             (descRef.current as HTMLElement).contentEditable = "true"
@@ -336,7 +336,7 @@ export const FunStuff = ({ data, access }: { data: FunStuffData, access: string}
                                         data-key={index}
                                         className={`image transition-all duration-[800ms] ease-in-out object-cover ${currentFullScreen === index ? "h-[66.66vmin] -translate-x-[calc((100%_-_40vmin)_/_2)]" : "h-[56vmin]" }`}
                                         style={{objectPosition: `${-88 * 100 / ((n - 1) * 44) + 100}% 50%`}}
-                                        onClick={handleMouseClick}
+                                        onPointerDown={handleMouseClick}
                                         src={image!.url}
                                         alt={image!.name}
                                         fill
@@ -356,7 +356,7 @@ export const FunStuff = ({ data, access }: { data: FunStuffData, access: string}
                                                 width="32"
                                                 height="32"
                                                 viewBox="0,0,256,256"
-                                                onClick={(e) => {
+                                                onPointerDown={(e) => {
                                                     const name = e.currentTarget.getAttribute("data-key")!.replace("-del-icon", "")
                                                     setDeleteImageId(parseInt(name))
                                                     setDialogOpen(true)

@@ -9,7 +9,9 @@ const textThatBecomesLinks = {
     "Click here to view the full thesis book. ":
         <>Click <Link key="thesisbook" className="underline" href="https://www.yumpu.com/en/document/view/68308775/window-to-another-world-spreads" target="_blank" rel="noopener noreferrer">here</Link> to view the full thesis book.</>,
     "Click here to see the entire journey and the 18 ‘How Might We’ statements that were mapped out.":
-        <>Click <Link key="ntnz" className="underline" href="https://www.dropbox.com/scl/fi/d1oteu14zoriw0svlf1eq/Unravel-Carbon-CJM.pdf?rlkey=wnvad47wf1gz344mjozgtncsz&dl=0" target="_blank" rel="noopener noreferrer">here</Link> to see the entire journey and the 18 ‘How Might We’ statements that were mapped out.</>
+        <>Click <Link key="ntnz" className="underline" href="https://www.dropbox.com/scl/fi/d1oteu14zoriw0svlf1eq/Unravel-Carbon-CJM.pdf?rlkey=wnvad47wf1gz344mjozgtncsz&dl=0" target="_blank" rel="noopener noreferrer">here</Link> to see the entire journey and the 18 ‘How Might We’ statements that were mapped out.</>,
+    "Confronting climate disclosure: why financial institutions are struggling to commit to a net-zero transition":
+        <Link key="ntnz" className="underline" href="https://www.psykhe.co/blog/confronting-climate-disclosure-why-financial-institutions-are-struggling-to-remain-accountable-to-their-net-zero-goals" target="_blank" rel="noopener noreferrer">Confronting climate disclosure: why financial institutions are struggling to commit to a net-zero transition</Link>,
 }
 const checkForLinks = (text: string) => {
     for (const key in textThatBecomesLinks) {
