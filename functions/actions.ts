@@ -1,4 +1,5 @@
 "use server";
+"use cache";
 
 import { Resend } from "resend";
 import { S3Client, PutObjectCommand, DeleteObjectCommand, DeleteObjectsCommand } from "@aws-sdk/client-s3";
@@ -8,11 +9,9 @@ import emailTemplate from "./emailTemplate";
 import sizeOf from "image-size";
 import { ProjectData } from "@/app/projects/[id]/page-client";
 import { Redis } from "@upstash/redis";
-import { unstable_cache as cache } from "next/cache";
 import { cookies } from "next/headers";
 
 const redis = Redis.fromEnv()
-const revalidate = 60;
 
 interface User {
     id: string,
@@ -57,7 +56,7 @@ export const login = async (formdata: FormData) => {
         return { success: false, message: "Incorrect password" };
     }
     logger('login', 'HSET', user.id)
-    redis.hset(user.id, { "last": new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Singapore', timeStyle: "medium", dateStyle: "medium" }).format(new Date())})
+    redis.hset(user.id, { "last": new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Singapore', timeStyle: "medium", dateStyle: "medium" }).format(Date.now())})
     const token = jwt.sign({ userId: user.id, role: user.role }, process.env.SECRET_KEY as string, { expiresIn: '1h' });
     (await cookies()).set('token', token, {
         maxAge: 3600,
@@ -73,35 +72,37 @@ export const logout = async () => {
     return { success: true }
 }
 
-export const getAllProjects = cache(
-    async () => {
-        return await redis.keys("project:*");
-    }, undefined, { revalidate: revalidate }
-)
+export const getAllProjects = async () => {
+    return await redis.keys("project:*");
+}
 
-export const getProjectId = cache(
-    async (key: string) => {
-        const id = await redis.hget(key, "id") as string;
-        return { success: true, data: id };
-    }, undefined, { revalidate: revalidate }
-)
+export const getProjectId = async (key: string) => {
+    const id = await redis.hget(key, "id") as string;
+    return { success: true, data: id };
+}
 
-export const getProjectKey = cache(
-    async (id: string) => {
-        const projectKey = await redis.get(id);
-        if (projectKey) {
-            return { success: true, data: projectKey as string };
-        }
-        return { success: false, message: "Project does not exist" };
-    }, undefined, { revalidate: revalidate }
-)
+export const getAllProjectIds = async () => {
+    const keys = await getAllProjects();
+    return await Promise.all(keys.map(async (key) => {
+        return (await getProjectId(key)).data;
+    }))
+}
 
-export const getProjectThumbnail = cache(
-    async (projectKey: string) => {
-        const data = await redis.hmget(projectKey, ...["name", "desc", "image", "year", "id"]);
-        return { success: true, data: data };
-    }, undefined, { revalidate: revalidate }
-)
+export const getProjectKey = async (id: string | Promise<string>) => {
+    if (typeof id === "object") {
+        id = await id;
+    }
+    const projectKey = await redis.get(id);
+    if (projectKey) {
+        return { success: true, data: projectKey as string };
+    }
+    return { success: false, message: "Project does not exist" };
+}
+
+export const getProjectThumbnail = async (projectKey: string) => {
+    const data = await redis.hmget(projectKey, ...["name", "desc", "image", "year", "id"]);
+    return { success: true, data: data };
+}
 
 export const uploadNewProjectThumbnail = async (formData: FormData) => {
     const id = formData.get("id") as string;
@@ -143,15 +144,13 @@ export const changeProjectThumbnail = async (projectKey: string, url: string) =>
     }
 }
 
-export const getProjectData = cache(
-    async (projectKey: string) => {
-        const data = await redis.hmget(projectKey, ...["name", "year", "data", "access"]);
-        if (data && data.data && typeof data.data === "string") {
-            data.data = JSON.parse(data.data.replaceAll("&quot", "\""))
-        }
-        return { success: true, data: data as unknown as ProjectData };
-    }, undefined, { revalidate: revalidate }
-)
+export const getProjectData = async (projectKey: string) => {
+    const data = await redis.hmget(projectKey, ...["name", "year", "data", "access"]);
+    if (data && data.data && typeof data.data === "string") {
+        data.data = JSON.parse(data.data.replaceAll("&quot", "\""))
+    }
+    return { success: true, data: data as unknown as ProjectData };
+}
 
 export const saveNewProjectData = async (projectKey: string, data: ProjectData) => {
     logger('saveNewProjectData', 'HMSET', projectKey);
@@ -355,45 +354,38 @@ export const submitContactForm = async (formData : FormData) => {
     return { success: true };
 }
 
-export const getFunStuff = cache(
-    async () => {
-        const sketchData = await getAllCategoryData(await redis.keys("sketchbook*"));
-        const photogData = (await getAllCategoryData(await redis.keys("photography*")));
-        const craftData = await getAllCategoryData(await redis.keys("craft*"));
-        return {
-            data: {
-                sketchbook: sketchData.data,
-                photography: photogData.data.reverse(),
-                craft: craftData.data
-            },
-            success: sketchData.success && photogData.success && craftData.success
-        };
-    }, undefined, { revalidate: revalidate }
-)
-
-export const getAllCategoryData = cache(
-    async (ids: string[]) => {
-        let success = true;
-        const data = await Promise.all(ids.map(async (id) => {
-            const res = await getFunStuffData(id);
-            if (!res.success) {
-                success = false;
-            }
-            return {id: id, ...res.data} as { id: string, name: string, url: string } | null;
-        }))
-        return { success: success, data: data }
-    }, undefined, { revalidate: revalidate }
-)
-
-export const getFunStuffData = cache(
-    async (id: string) => {
-        const data = await redis.hgetall(id);
-        if (data) {
-            return { success: true, data: data }
+export const getFunStuff = async () => {
+    const sketchData = await getAllCategoryData(await redis.keys("sketchbook*"));
+    const photogData = (await getAllCategoryData(await redis.keys("photography*")));
+    const craftData = await getAllCategoryData(await redis.keys("craft*"));
+    return {
+        data: {
+            sketchbook: sketchData.data,
+            photography: photogData.data.reverse(),
+            craft: craftData.data
+        },
+        success: sketchData.success && photogData.success && craftData.success
+    };
+}
+export const getAllCategoryData = async (ids: string[]) => {
+    let success = true;
+    const data = await Promise.all(ids.map(async (id) => {
+        const res = await getFunStuffData(id);
+        if (!res.success) {
+            success = false;
         }
-        return { success: false, data: null }
-    }, undefined, { revalidate: revalidate }
-)
+        return {id: id, ...res.data} as { id: string, name: string, url: string } | null;
+    }))
+    return { success: success, data: data }
+}
+
+export const getFunStuffData = async (id: string) => {
+    const data = await redis.hgetall(id);
+    if (data) {
+        return { success: true, data: data }
+    }
+    return { success: false, data: null }
+}
 
 export const submitNewFunStuff = async (formData: FormData) => {
     const category = formData.get("type")!;
@@ -471,5 +463,51 @@ export const deleteItem = async (key: string) => {
             return { success: false, message: "Failed to delete item" }
         }
         return { success: true }
+    }
+}
+
+function getHostname() {
+    if (process.env.NODE_ENV === "development") {
+        return "localhost:3000";
+    }
+    if (process.env.VERCEL_ENV === "production") {
+        return process.env.VERCEL_PROJECT_PRODUCTION_URL;
+    }
+    return process.env.VERCEL_BRANCH_URL;
+}
+
+import { parseHTML } from "linkedom";
+import { unstable_cacheTag } from "next/cache";
+
+export const prefetchImagesForURL = async (href: string) => {
+    const schema = process.env.NODE_ENV === "development" ? "http" : "https";
+    const host = getHostname();
+    if (!host) {
+        return { ok: false, images: [] };
+    }
+
+    const images = [];
+
+    const url = `${schema}://${host}/${href}`;
+        const response = await fetch(url);
+    if (!response.ok) {
+            return { ok: false, images: [] };
+        }
+        const body = await response.text();
+        const { document } = parseHTML(body);
+        const imgs = Array.from(document.querySelectorAll("main img"))
+            .map((img) => ({
+                srcset: img.getAttribute("srcset") || img.getAttribute("srcSet"), // Linkedom is case-sensitive
+                sizes: img.getAttribute("sizes"),
+                src: img.getAttribute("src"),
+                alt: img.getAttribute("alt"),
+                loading: img.getAttribute("loading"),
+            }))
+            .filter((img) => img.src);
+        images.push(...imgs);
+
+    return {
+        ok: true,
+        images,
     }
 }

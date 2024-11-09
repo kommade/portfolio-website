@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -49,8 +50,9 @@ export default function RootLayout({
                 <link rel="preconnect" fetchPriority="high" href="juliette-portfolio-website.s3.ap-southeast-2.amazonaws.com" crossOrigin="use-credentials" />
             </head>
             <body>
-                <Analytics/>
                 {children}
+                <Analytics />
+                <SpeedInsights />
             </body>
         </html>
     )

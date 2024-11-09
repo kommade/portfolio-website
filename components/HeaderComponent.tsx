@@ -115,7 +115,7 @@ const Header = ({ isLoginPage = false, isNewPage = false, newHidden = false }) =
                     )}
                 </div>
                 <div className="fixed left-[50%] transform -translate-x-1/2">
-                    <Link prefetch className="" href="/" rel="noopener noreferrer">
+                    <Link className="" href="/" rel="noopener noreferrer">
                         <h1 className="p-1 hover:cursor-pointer">
                             Juliette Khoo
                         </h1>
@@ -145,7 +145,7 @@ const HeaderComponent = ({ isLoginPage = false, isNewPage = false, newHidden = f
     const fallback =  (
         <header className=" w-[100vw] pr-2 h-[40px] lg:h-[70px] fixed z-10 bg-pale-butter flex flex-col justify-center shadow">
             <div className="fixed left-[50%] transform -translate-x-1/2">
-                <Link prefetch href="/" rel="noopener noreferrer">
+                <Link href="/" rel="noopener noreferrer">
                     <h1 className="p-1 hover:cursor-pointer">
                         Juliette Khoo
                     </h1>

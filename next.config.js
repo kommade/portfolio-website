@@ -15,6 +15,7 @@ const cspHeader = `
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
+        minimumCacheTTL: 31536000,
         remotePatterns: [
             {
                 protocol: "https",
@@ -40,6 +41,22 @@ const nextConfig = {
                         value: cspHeader.replace(/\n/g, ''),
                     }
                 ]
+            }
+        ]
+    },
+    experimental: {
+        ppr: "incremental",
+        dynamicIO: true,
+    },
+    async rewrites() {
+        return [
+            {
+                source: "/insights/vitals.js",
+                destination: "https://cdn.vercel-insights.com/v1/speed-insights/script.js",
+            },
+            {
+                source: "/insights/event.js",
+                destination: "https://cdn.vercel-insights.com/v1/script.js",
             }
         ]
     }

@@ -1,11 +1,12 @@
 import { HeaderComponent, MessageDisplayComponent, LoadingComponent, FooterComponent } from "@/components";
-import { getFunStuff, getRole } from "@/functions/actions";
+import { getFunStuff } from "@/functions/actions";
 import React, { Suspense } from 'react';
 import { FunStuff } from "./page-client";
 
+export const experimental_ppr = true
 
 const FunStuffWrapper = async () => {
-    const access = await getRole();
+    "use cache";
     const dataRes = await getFunStuff();
     if (!dataRes.success) {
         return (
@@ -21,7 +22,7 @@ const FunStuffWrapper = async () => {
 
     return (
         <Suspense fallback={<LoadingComponent/>}>
-            <FunStuff data={dataRes.data} access={access} />
+            <FunStuff data={dataRes.data} />
         </Suspense>
     )
 }
