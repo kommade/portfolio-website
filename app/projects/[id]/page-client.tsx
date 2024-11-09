@@ -366,6 +366,7 @@ export function ProjectPage({ projectKey, serverData, access, id }:
                                 src={data.data.main.cover.image}
                                 onClick={handleImageClick}
                                 priority={true}
+                                loading="eager"
                                 draggable={false}
                                 onContextMenu={(e) => e.preventDefault()}
                             />
