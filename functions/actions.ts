@@ -1,4 +1,5 @@
 "use server";
+"use cache";
 
 import { Resend } from "resend";
 import { S3Client, PutObjectCommand, DeleteObjectCommand, DeleteObjectsCommand } from "@aws-sdk/client-s3";
@@ -72,18 +73,15 @@ export const logout = async () => {
 }
 
 export const getAllProjects = async () => {
-    'use cache';
     return await redis.keys("project:*");
 }
 
 export const getProjectId = async (key: string) => {
-    'use cache';
     const id = await redis.hget(key, "id") as string;
     return { success: true, data: id };
 }
 
 export const getAllProjectIds = async () => {
-    'use cache';
     const keys = await getAllProjects();
     return await Promise.all(keys.map(async (key) => {
         return (await getProjectId(key)).data;
@@ -91,7 +89,6 @@ export const getAllProjectIds = async () => {
 }
 
 export const getProjectKey = async (id: string | Promise<string>) => {
-    'use cache';
     if (typeof id === "object") {
         id = await id;
     }
@@ -103,7 +100,6 @@ export const getProjectKey = async (id: string | Promise<string>) => {
 }
 
 export const getProjectThumbnail = async (projectKey: string) => {
-    'use cache';
     const data = await redis.hmget(projectKey, ...["name", "desc", "image", "year", "id"]);
     return { success: true, data: data };
 }
@@ -149,7 +145,6 @@ export const changeProjectThumbnail = async (projectKey: string, url: string) =>
 }
 
 export const getProjectData = async (projectKey: string) => {
-    'use cache';
     const data = await redis.hmget(projectKey, ...["name", "year", "data", "access"]);
     if (data && data.data && typeof data.data === "string") {
         data.data = JSON.parse(data.data.replaceAll("&quot", "\""))
@@ -360,7 +355,6 @@ export const submitContactForm = async (formData : FormData) => {
 }
 
 export const getFunStuff = async () => {
-    'use cache';
     const sketchData = await getAllCategoryData(await redis.keys("sketchbook*"));
     const photogData = (await getAllCategoryData(await redis.keys("photography*")));
     const craftData = await getAllCategoryData(await redis.keys("craft*"));
@@ -374,7 +368,6 @@ export const getFunStuff = async () => {
     };
 }
 export const getAllCategoryData = async (ids: string[]) => {
-    'use cache';
     let success = true;
     const data = await Promise.all(ids.map(async (id) => {
         const res = await getFunStuffData(id);
@@ -387,7 +380,6 @@ export const getAllCategoryData = async (ids: string[]) => {
 }
 
 export const getFunStuffData = async (id: string) => {
-    'use cache';
     const data = await redis.hgetall(id);
     if (data) {
         return { success: true, data: data }
