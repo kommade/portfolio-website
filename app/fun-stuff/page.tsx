@@ -3,6 +3,7 @@ import { getFunStuff } from "@/functions/actions";
 import React, { Suspense } from 'react';
 import { FunStuff } from "./page-client";
 
+export const experimental_ppr = true
 
 const FunStuffWrapper = async () => {
     "use cache";

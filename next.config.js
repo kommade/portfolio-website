@@ -45,7 +45,7 @@ const nextConfig = {
         ]
     },
     experimental: {
-        ppr: true,
+        ppr: "incremental",
         dynamicIO: true,
     },
     async rewrites() {

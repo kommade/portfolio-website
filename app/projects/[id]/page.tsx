@@ -3,14 +3,16 @@ import { Suspense } from "react";
 import { FooterComponent, HeaderComponent, LoadingComponent, MessageDisplayComponent, } from "@/components";
 import { ProjectPage } from "./page-client";
 
-export async function generateStaticParams() {
-    const projects = await getAllProjectIds();
-    return projects.map((project) => ({ id: project }));
+export function generateStaticParams() {
+    return getAllProjectIds().then(ids => ids.map(id => ({ id })));
 }
+
+export const experimental_ppr = true
 
 type Params = Promise<{ id: string }>
 
-async function fetchData(id: string ) {
+async function fetchData(id: string) {
+    "use cache";
     const keyRes = await getProjectKey(id);
     if (keyRes.success === false) {
         return { success: false};
@@ -22,11 +24,8 @@ async function fetchData(id: string ) {
     return { success: true, key: keyRes.data!, data: dataRes.data!};
 }
 
-export default async function ProjectPageWrapper({ params }: { params: Params }) {
-    "use cache";
-    const { id } = await params;
-    const { success, key, data } = await fetchData(id);
-
+async function DataFetcher({ id }: { id: Promise<string> }) {
+    const { success, key, data } = await fetchData(await id);
     if (!success) {
         return (
             <main className="flex flex-col items-center justify-between overflow-x-clip">
@@ -38,10 +37,17 @@ export default async function ProjectPageWrapper({ params }: { params: Params })
             </main>
         );
     }
-
     return (
-        <Suspense fallback={<LoadingComponent/>}>
-            <ProjectPage projectKey={key!} serverData={data!} id={id} />
+        <Suspense fallback={<LoadingComponent />}>
+            <ProjectPage projectKey={key!} serverData={data!} id={await id} />
         </Suspense>
-    )
+    );
+}
+
+export default async function ProjectPageWrapper({ params }: { params: Params }) {
+    return (
+        <Suspense fallback={<LoadingComponent />}>
+            <DataFetcher id={params.then(p => p.id)} />
+        </Suspense>
+    );
 }

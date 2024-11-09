@@ -3,6 +3,7 @@ import Projects from "./page-client";
 import { getAllProjects } from "@/functions/actions";
 import { LoadingComponent } from "@/components";
 
+export const experimental_ppr = true
 
 export default async function ProjectsWrapper() {
     'use cache';
