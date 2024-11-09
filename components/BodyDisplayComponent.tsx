@@ -7,21 +7,20 @@ const textThatBecomesLinks = {
     "5 things I wish I knew before I conducted my first usability test":
         <Link key="usabilitytest" className="underline" href="https://bootcamp.uxdesign.cc/5-things-i-wish-i-knew-before-conducting-my-first-usability-test-8f0d1540f5bf" target="_blank" rel="noopener noreferrer"> 5 things I wish I knew before I conducted my first usability test</Link>,
     "Click here to view the full thesis book. ":
-        <>Click <Link key="thesisbook" className="underline" href="https://www.yumpu.com/en/document/view/68308775/window-to-another-world-spreads" target="_blank" rel="noopener noreferrer">here</Link> to view the full thesis book.</>,
+        <React.Fragment key="thesis">Click <Link className="underline" href="https://www.yumpu.com/en/document/view/68308775/window-to-another-world-spreads" target="_blank" rel="noopener noreferrer">here</Link> to view the full thesis book.</React.Fragment>,
     "Click here to see the entire journey and the 18 ‘How Might We’ statements that were mapped out.":
-        <>Click <Link key="ntnz1" className="underline" href="https://www.dropbox.com/scl/fi/d1oteu14zoriw0svlf1eq/Unravel-Carbon-CJM.pdf?rlkey=wnvad47wf1gz344mjozgtncsz&dl=0" target="_blank" rel="noopener noreferrer">here</Link> to see the entire journey and the 18 ‘How Might We’ statements that were mapped out.</>,
+        <React.Fragment key="ntnz1">Click <Link className="underline" href="https://www.dropbox.com/scl/fi/d1oteu14zoriw0svlf1eq/Unravel-Carbon-CJM.pdf?rlkey=wnvad47wf1gz344mjozgtncsz&dl=0" target="_blank" rel="noopener noreferrer">here</Link> to see the entire journey and the 18 ‘How Might We’ statements that were mapped out.</React.Fragment>,
     "Confronting climate disclosure: why financial institutions are struggling to commit to a net-zero transition":
         <Link key="ntnz2" className="underline" href="https://www.psykhe.co/blog/confronting-climate-disclosure-why-financial-institutions-are-struggling-to-remain-accountable-to-their-net-zero-goals" target="_blank" rel="noopener noreferrer">Confronting climate disclosure: why financial institutions are struggling to commit to a net-zero transition</Link>,
 }
 const checkForLinks = (text: string) => {
     for (const key in textThatBecomesLinks) {
         if (text.includes(key)) {
-            const reactKey = key.substring(0, 10);
             const split = text.split(key);
             return [
-                <React.Fragment key={reactKey + "-f"}>{split[0]}</React.Fragment>,
+                <React.Fragment key={"link-f"}>{split[0]}</React.Fragment>,
                 textThatBecomesLinks[key as keyof typeof textThatBecomesLinks]!,
-                <React.Fragment key={reactKey + "-b"}>{split[1]}</React.Fragment>,
+                <React.Fragment key={"link-b"}>{split[1]}</React.Fragment>,
             ];
         }
     }
