@@ -1,4 +1,4 @@
-import { getProjectKey, getProjectData, getAllProjectIds } from "@/functions/actions";
+import { getProjectKey, getProjectData, getAllProjectIds, getRole } from "@/functions/actions";
 import { Suspense } from "react";
 import { FooterComponent, HeaderComponent, LoadingComponent, MessageDisplayComponent, } from "@/components";
 import { ProjectPage } from "./page-client";
@@ -26,6 +26,7 @@ async function fetchData(id: string) {
 
 async function DataFetcher({ id }: { id: Promise<string> }) {
     const { success, key, data } = await fetchData(await id);
+    const role = await getRole();
     if (!success) {
         return (
             <main className="flex flex-col items-center justify-between overflow-x-clip">
@@ -39,7 +40,7 @@ async function DataFetcher({ id }: { id: Promise<string> }) {
     }
     return (
         <Suspense fallback={<LoadingComponent />}>
-            <ProjectPage projectKey={key!} serverData={data!} id={await id} />
+            <ProjectPage projectKey={key!} serverData={data!} id={await id} role={role} />
         </Suspense>
     );
 }
