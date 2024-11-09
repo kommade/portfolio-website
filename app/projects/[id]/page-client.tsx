@@ -42,8 +42,8 @@ export interface ProjectData {
     access: "member" | "public"
 }
 
-export function ProjectPage({ projectKey, serverData, id }:
-    { projectKey: string, serverData: ProjectData, id: string }
+export function ProjectPage({ projectKey, serverData, id, role }:
+    { projectKey: string, serverData: ProjectData, id: string, role: string }
 ) {
     const searchParams = useSearchParams();
     const router = useRouter();
@@ -59,22 +59,8 @@ export function ProjectPage({ projectKey, serverData, id }:
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [fullScreenImage, setFullScreenImage] = useState(false);
     const [fullScreenImageIndex, setFullScreenImageIndex] = useState(0);
-    const [role, setRole] = useState<"none" | "member" | "admin" | "expired">("none")
 
-    useEffect(() => {
-        const getAccess = async () => {
-            setRole(await getRole())
-        }
-        getAccess();
-    }, [])
 
-    useEffect(() => {
-        if (role === "expired") {
-            logout();
-            router.push("/?expired=true")
-        }
-    }, [role])
-    
     useEffect(() => {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
@@ -92,7 +78,7 @@ export function ProjectPage({ projectKey, serverData, id }:
                 observer.unobserve(el);
             });
         }
-    }, []);
+    }, [])
     
     const handleSave = async () => {
         const getIndex = (key: string) => key.split("[")[1].split("]")[0];
