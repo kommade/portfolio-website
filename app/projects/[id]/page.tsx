@@ -1,10 +1,10 @@
-import { getProjectKey, getRole, getProjectData, getAllProjects } from "@/functions/actions";
+import { getProjectKey, getRole, getProjectData, getAllProjectIds } from "@/functions/actions";
 import { Suspense } from "react";
 import { FooterComponent, HeaderComponent, LoadingComponent, MessageDisplayComponent, } from "@/components";
 import { ProjectPage } from "./page-client";
 
 export async function generateStaticParams() {
-    const projects = await getAllProjects();
+    const projects = await getAllProjectIds();
     return projects.map((project) => ({ id: project }));
 }
 
