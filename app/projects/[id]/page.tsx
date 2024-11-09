@@ -3,8 +3,10 @@ import { Suspense } from "react";
 import { FooterComponent, HeaderComponent, LoadingComponent, MessageDisplayComponent, } from "@/components";
 import { ProjectPage } from "./page-client";
 
+type Params = Promise<{ rcdId: string}>
 
-export default async function ProjectPageWrapper({ params }: { params: { id: string } }) {
+export default async function ProjectPageWrapper({ params }: { params: Params }) {
+    const id = (await params).rcdId;
     async function fetchData(id: string) {
         const keyRes = await getProjectKey(id);
         if (keyRes.success === false) {
@@ -17,7 +19,7 @@ export default async function ProjectPageWrapper({ params }: { params: { id: str
         return { success: true, key: keyRes.data!, data: dataRes.data! };
     }
 
-    const { success, key, data } = await fetchData(params.id);
+    const { success, key, data } = await fetchData(id);
 
     if (!success) {
         return (
@@ -35,7 +37,7 @@ export default async function ProjectPageWrapper({ params }: { params: { id: str
 
     return (
         <Suspense fallback={<LoadingComponent/>}>
-            <ProjectPage projectKey={key!} serverData={data!} access={access} id={params.id} />
+            <ProjectPage projectKey={key!} serverData={data!} access={access} id={id} />
         </Suspense>
     )
 }
