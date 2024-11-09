@@ -42,9 +42,6 @@ const nextConfig = {
                 ]
             }
         ]
-    },
-    experimental: {
-        dynamicIO: true,
     }
 }
 
