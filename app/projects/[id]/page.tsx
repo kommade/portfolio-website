@@ -3,10 +3,10 @@ import { Suspense } from "react";
 import { FooterComponent, HeaderComponent, LoadingComponent, MessageDisplayComponent, } from "@/components";
 import { ProjectPage } from "./page-client";
 
-type Params = Promise<{ rcdId: string}>
+type Params = Promise<{ id: string }>
 
 export default async function ProjectPageWrapper({ params }: { params: Params }) {
-    const id = (await params).rcdId;
+    const id = (await params).id;
     async function fetchData(id: string) {
         const keyRes = await getProjectKey(id);
         if (keyRes.success === false) {
