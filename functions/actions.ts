@@ -58,8 +58,8 @@ export const login = async (formdata: FormData) => {
     }
     logger('login', 'HSET', user.id)
     redis.hset(user.id, { "last": new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Singapore', timeStyle: "medium", dateStyle: "medium" }).format(new Date())})
-    const token = jwt.sign({ userId: user.id, role: user.role }, process.env.SECRET_KEY as string, { expiresIn: '1h'})
-    cookies().set('token', token, {
+    const token = jwt.sign({ userId: user.id, role: user.role }, process.env.SECRET_KEY as string, { expiresIn: '1h' });
+    (await cookies()).set('token', token, {
         maxAge: 3600,
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
@@ -69,7 +69,7 @@ export const login = async (formdata: FormData) => {
 }
 
 export const logout = async () => {
-    cookies().delete('token');
+    (await cookies()).delete('token');
     return { success: true }
 }
 
@@ -312,7 +312,7 @@ export const changeProjectSettings = async (projectKey: string, id: string, data
 }
 
 export const getRole = async () => {
-    const token = cookies().get('token');
+    const token = (await cookies()).get('token');
     if (!token) {
         return "none";
     }

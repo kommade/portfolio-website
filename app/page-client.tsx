@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { usePopUp, HeaderComponent, GridComponents, PopUpComponent, FooterComponent, ScrollToTop, ScrollComponent } from "@/components";
 import Image from "next/image";
 import { logout } from "@/functions/actions";
@@ -11,7 +11,6 @@ export default function Home({ keys }: { keys: string[] }) {
     const searchParams = useSearchParams();
     const expired = searchParams.get("expired") === "true";
     const [popUp, setPopUp] = usePopUp();
-    const router = useRouter();
     useEffect(() => {
         if (expired) {
             logout();
@@ -26,7 +25,7 @@ export default function Home({ keys }: { keys: string[] }) {
                 <HeaderComponent/>
                 <GridComponents keys={keys} max={12} />
                 <div className="w-[85%] mx-[7.5%] h-fit flex my-[32px] justify-center items-end">
-                    <Link href="/projects" rel="noopener noreferrer">
+                    <Link prefetch href="/projects" rel="noopener noreferrer">
                         <h5 className="text-warm-grey hover:text-black transition-colors">See all</h5>
                     </Link>
                 </div>
@@ -75,18 +74,19 @@ export default function Home({ keys }: { keys: string[] }) {
                                 </p>
                                 <div className="w-full h-full flex flex-col justify-center items-center gap-4 lg:gap-6 animate-hidden right delay-[300ms]">
                                     <Link
-                                    className="w-[50%] h-[10%] min-h-[40px] mt-4 place-self-center flex justify-center items-center bg-white rounded-[15px] border border-eggplant-purple transform transition duration-500 ease-in-out hover:scale-110 hover:cursor-pointer"
-                                    href="/contact"
-                                    rel="noopener noreferrer"
+                                        className="w-[50%] h-[10%] min-h-[40px] mt-4 place-self-center flex justify-center items-center bg-white rounded-[15px] border border-eggplant-purple transform transition duration-500 ease-in-out hover:scale-110 hover:cursor-pointer"
+                                        href="/contact"
+                                        rel="noopener noreferrer"
                                     >
                                     <div className="w-full h-fit text-center text-eggplant-purple s-regular">
                                         Drop me a message
                                     </div>
                                     </Link>
                                     <Link
-                                    className="w-[50%] h-[10%] min-h-[40px] place-self-center flex justify-center items-center bg-white rounded-[15px] border border-eggplant-purple transform transition duration-500 ease-in-out hover:scale-110 hover:cursor-pointer"
-                                    href="/fun-stuff"
-                                    rel="noopener noreferrer"
+                                        prefetch
+                                        className="w-[50%] h-[10%] min-h-[40px] place-self-center flex justify-center items-center bg-white rounded-[15px] border border-eggplant-purple transform transition duration-500 ease-in-out hover:scale-110 hover:cursor-pointer"
+                                        href="/fun-stuff"
+                                        rel="noopener noreferrer"
                                     >
                                     <div className="w-full h-fit text-center text-eggplant-purple s-regular">
                                         Fun stuff I&apos;ve made 

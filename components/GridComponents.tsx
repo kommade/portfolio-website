@@ -117,6 +117,7 @@ const GridComponents = ({ keys, max, showTitle = true, editMode = false }: { key
         }
         return (
             <Link
+                prefetch
                 href={`/projects/${data.id}`}
                 rel="noopener noreferrer"
                 className={`animate-hidden left bg-white relative overflow-hidden shadow ${span.row === 2 ? 'grid-long' : span.col === 2 ? 'grid-wide' : 'aspect-square'} ${editMode ? " cursor-default" : ""}`}
