@@ -1,6 +1,6 @@
 "use client";
 
-import { saveNewProjectData, uploadNewProjectImage, deleteUnusedImages, logout } from "@/functions/actions";
+import { saveNewProjectData, uploadNewProjectImage, deleteUnusedImages, logout, getRole } from "@/functions/actions";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import { FooterComponent, HeaderComponent, MessageDisplayComponent, PopUpComponent, ScrollComponent, usePopUp } from "@/components";
@@ -42,8 +42,8 @@ export interface ProjectData {
     access: "member" | "public"
 }
 
-export function ProjectPage({ projectKey, serverData, access, id }:
-    { projectKey: string, serverData: ProjectData, access: string, id: string }
+export function ProjectPage({ projectKey, serverData, id }:
+    { projectKey: string, serverData: ProjectData, id: string }
 ) {
     const searchParams = useSearchParams();
     const router = useRouter();
@@ -59,6 +59,21 @@ export function ProjectPage({ projectKey, serverData, access, id }:
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [fullScreenImage, setFullScreenImage] = useState(false);
     const [fullScreenImageIndex, setFullScreenImageIndex] = useState(0);
+    const [role, setRole] = useState<"none" | "member" | "admin" | "expired">("none")
+
+    useEffect(() => {
+        const getAccess = async () => {
+            setRole(await getRole())
+        }
+        getAccess();
+    }, [])
+
+    useEffect(() => {
+        if (role === "expired") {
+            logout();
+            router.push("/?expired=true")
+        }
+    }, [role])
     
     useEffect(() => {
         const observer = new IntersectionObserver((entries) => {
@@ -78,11 +93,6 @@ export function ProjectPage({ projectKey, serverData, access, id }:
             });
         }
     }, []);
-
-    if (access === "expired") {
-        logout();
-        router.push("/?expired=true");
-    }
     
     const handleSave = async () => {
         const getIndex = (key: string) => key.split("[")[1].split("]")[0];
@@ -204,7 +214,7 @@ export function ProjectPage({ projectKey, serverData, access, id }:
         }
     }
 
-    if (access === "admin" && editMode) {
+    if (role === "admin" && editMode) {
         if (typeof document !== "undefined") {
             document.querySelectorAll(".editable").forEach((el) => {
                 if (el instanceof HTMLElement && el.tagName !== "IMG") {
@@ -215,7 +225,7 @@ export function ProjectPage({ projectKey, serverData, access, id }:
         }
         
     }
-    if (access === "none" && data.access === "member") {
+    if (role === "none" && data.access === "member") {
         return (
             <main className="flex flex-col items-center justify-between overflow-x-clip">
                 <div className="w-screen relative flex flex-col">

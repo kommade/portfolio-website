@@ -1,7 +1,7 @@
 "use client";
 
 import { HeaderComponent, FooterComponent, DeleteWarningComponent, PopUpComponent, usePopUp } from "@/components";
-import { logout, updateFunStuffName } from "@/functions/actions";
+import { getRole, logout, updateFunStuffName } from "@/functions/actions";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from 'react';
 import Image from "next/image";
@@ -12,7 +12,7 @@ export interface FunStuffData {
     craft: ({ id:string, name: string, url: string } | null)[]
 }
 
-export const FunStuff = ({ data, access }: { data: FunStuffData, access: string}) => {
+export const FunStuff = ({ data }: { data: FunStuffData }) => {
     const [n, setN] = useState(data["sketchbook"].length);
     const [percentage, setPercentage] = useState(-108); // Disclaimer: none of these are percentages
     const [prevPercentage, setPrevPercentage] = useState(-108);
@@ -34,11 +34,21 @@ export const FunStuff = ({ data, access }: { data: FunStuffData, access: string}
     const descRef = useRef(null);
     const [descText, setDescText] = useState("");
     const [descEdit, setDescEdit] = useState(false);
+    const [role, setRole] = useState<"none" | "member" | "admin" | "expired">("none")
 
-    if (access === "expired") {
-        logout();
-        router.push("/?expired=true");
-    }
+    useEffect(() => {
+        const getAccess = async () => {
+            setRole(await getRole())
+        }
+        getAccess();
+    }, [])
+
+    useEffect(() => {
+        if (role === "expired") {
+            logout();
+            router.push("/?expired=true")
+        }
+    }, [role])
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {

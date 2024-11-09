@@ -4,6 +4,7 @@ import Home from "./page-client";
 import { LoadingComponent } from "@/components";
 
 async function HomeWrapper() {
+    'use cache';
     const keys = await getAllProjects();
     return (
         <Suspense fallback={<LoadingComponent/>}>

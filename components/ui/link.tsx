@@ -40,9 +40,9 @@ const Link: typeof NextLink = (({ children, ...props }) => {
     const [preloading, setPreloading] = useState<(() => void)[]>([]);
     const linkRef = useRef<HTMLAnchorElement>(null);
     const router = useRouter();
-    let prefetchTimeout: NodeJS.Timeout | null = null; // Track the timeout ID
-
+    
     useEffect(() => {
+        let prefetchTimeout: NodeJS.Timeout | null = null; // Track the timeout ID
         if (props.prefetch === false) {
             return;
         }

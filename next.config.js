@@ -45,7 +45,8 @@ const nextConfig = {
         ]
     },
     experimental: {
-        ppr: true
+        ppr: true,
+        dynamicIO: true,
     },
     async rewrites() {
         return [

@@ -1,4 +1,4 @@
-import { getProjectKey, getRole, getProjectData, getAllProjectIds } from "@/functions/actions";
+import { getProjectKey, getProjectData, getAllProjectIds } from "@/functions/actions";
 import { Suspense } from "react";
 import { FooterComponent, HeaderComponent, LoadingComponent, MessageDisplayComponent, } from "@/components";
 import { ProjectPage } from "./page-client";
@@ -10,20 +10,21 @@ export async function generateStaticParams() {
 
 type Params = Promise<{ id: string }>
 
-export default async function ProjectPageWrapper({ params }: { params: Params }) {
-    const id = (await params).id;
-    async function fetchData(id: string) {
-        const keyRes = await getProjectKey(id);
-        if (keyRes.success === false) {
-            return { success: false };
-        }
-        const dataRes = await getProjectData(keyRes.data!);
-        if (dataRes.success === false) {
-            return { success: false };
-        }
-        return { success: true, key: keyRes.data!, data: dataRes.data! };
+async function fetchData(id: string ) {
+    const keyRes = await getProjectKey(id);
+    if (keyRes.success === false) {
+        return { success: false};
     }
+    const dataRes = await getProjectData(keyRes.data!);
+    if (dataRes.success === false) {
+        return { success: false};
+    }
+    return { success: true, key: keyRes.data!, data: dataRes.data!};
+}
 
+export default async function ProjectPageWrapper({ params }: { params: Params }) {
+    "use cache";
+    const { id } = await params;
     const { success, key, data } = await fetchData(id);
 
     if (!success) {
@@ -38,11 +39,9 @@ export default async function ProjectPageWrapper({ params }: { params: Params })
         );
     }
 
-    const access = await getRole();
-
     return (
         <Suspense fallback={<LoadingComponent/>}>
-            <ProjectPage projectKey={key!} serverData={data!} access={access} id={id} />
+            <ProjectPage projectKey={key!} serverData={data!} id={id} />
         </Suspense>
     )
 }
