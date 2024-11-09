@@ -7,10 +7,11 @@ import { FooterComponent, HeaderComponent, MessageDisplayComponent, PopUpCompone
 import SubmitFileConfirmationComponent from "@/components/SubmitFileConfirmationComponent";
 import BodyDisplayComponent from "@/components/BodyDisplayComponent";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/ui/link";
 import React from "react";
 import ProjectSettingsComponent from "@/components/ProjectSettingsComponent";
 import FullScreenImageComponent from "@/components/FullScreenImageComponent";
+
 
 export interface ProjectData {
     name: string,

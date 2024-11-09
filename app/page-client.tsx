@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/ui/link";
 import { useSearchParams } from "next/navigation";
 import { usePopUp, HeaderComponent, GridComponents, PopUpComponent, FooterComponent, ScrollToTop, ScrollComponent } from "@/components";
 import Image from "next/image";
@@ -25,7 +25,7 @@ export default function Home({ keys }: { keys: string[] }) {
                 <HeaderComponent/>
                 <GridComponents keys={keys} max={12} />
                 <div className="w-[85%] mx-[7.5%] h-fit flex my-[32px] justify-center items-end">
-                    <Link prefetch href="/projects" rel="noopener noreferrer">
+                    <Link href="/projects" rel="noopener noreferrer">
                         <h5 className="text-warm-grey hover:text-black transition-colors">See all</h5>
                     </Link>
                 </div>
@@ -83,7 +83,6 @@ export default function Home({ keys }: { keys: string[] }) {
                                     </div>
                                     </Link>
                                     <Link
-                                        prefetch
                                         className="w-[50%] h-[10%] min-h-[40px] place-self-center flex justify-center items-center bg-white rounded-[15px] border border-eggplant-purple transform transition duration-500 ease-in-out hover:scale-110 hover:cursor-pointer"
                                         href="/fun-stuff"
                                         rel="noopener noreferrer"

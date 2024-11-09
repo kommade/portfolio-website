@@ -3,7 +3,7 @@
 import { changeProjectDesc, changeProjectThumbnail, getProjectThumbnail, uploadNewProjectImage} from "@/functions/actions";
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import LoadingComponent from "./LoadingComponent";
-import Link from "next/link";
+import Link from "@/components/ui/link";
 import { DeleteWarningComponent, MessageDisplayComponent, PopUpComponent, usePopUp } from ".";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -117,7 +117,6 @@ const GridComponents = ({ keys, max, showTitle = true, editMode = false }: { key
         }
         return (
             <Link
-                prefetch
                 href={`/projects/${data.id}`}
                 rel="noopener noreferrer"
                 className={`animate-hidden left bg-white relative overflow-hidden shadow ${span.row === 2 ? 'grid-long' : span.col === 2 ? 'grid-wide' : 'aspect-square'} ${editMode ? " cursor-default" : ""}`}

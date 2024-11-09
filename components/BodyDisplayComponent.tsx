@@ -1,7 +1,7 @@
 import React from 'react'
 import { ProjectData } from "@/app/projects/[id]/page-client";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/ui/link";
 
 const textThatBecomesLinks = {
     "5 things I wish I knew before I conducted my first usability test":
@@ -27,7 +27,9 @@ const checkForLinks = (text: string) => {
     return text;
 }
 
-const renderMainBody = (component: any, index: number, editMode: boolean,  handleImageClick: (e: React.MouseEvent) => void) => {
+type Component = ProjectData["data"]["main"]["body"]["normal"][0];
+
+const renderMainBody = (component: Component, index: number, editMode: boolean,  handleImageClick: (e: React.MouseEvent) => void) => {
     let state = component.text === "" ? (component.header === "" ? "none" : "header only") : "header and text";
     if (editMode) state = "header and text";
     return (
@@ -48,7 +50,7 @@ const renderMainBody = (component: any, index: number, editMode: boolean,  handl
                 width={0}
                 height={0}
                 sizes="100vw"
-                loading="lazy"
+                loading={index < 4 ? "eager" : "lazy"}
                 alt=""
                 data-key={`main.body.normal[${index}].image`}
                 data-n-img={index + 1}
@@ -62,7 +64,11 @@ const renderMainBody = (component: any, index: number, editMode: boolean,  handl
     );
 };
 
-const BodyDisplayComponent = ({ body, handleImageClick, editMode }: { body: ProjectData["data"]["main"]["body"]; handleImageClick: (e: React.MouseEvent) => void; editMode: boolean }) => {
+const BodyDisplayComponent = ({ body, handleImageClick, editMode }: {
+    body: ProjectData["data"]["main"]["body"];
+    handleImageClick: (e: React.MouseEvent) => void;
+    editMode: boolean
+}) => {
     
     if (body.grid.use) {
         let gridState = body.grid.text === "" ? (body.grid.header === "" ? "none" : "header only") : "header and text";
