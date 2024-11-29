@@ -21,7 +21,7 @@ const ProjectSettingsComponent = ({ data, id, projectKey, callback }:
     }
 
     return (
-        <div className="fixed w-screen h-screen bg-[rgba(0,0,0,0.4)] z-[9999]">
+        <div className="fixed w-screen h-screen bg-[rgba(0,0,0,0.4)] z-9999">
             <div className="fixed w-[350px] h-[220px] rounded-lg top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-pale-butter opacity-100 flex flex-col items-center justify-evenly">
                 <div className="flex justify-center items-center gap-4">
                     <form

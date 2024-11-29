@@ -249,7 +249,7 @@ const UploadComponent = ({ type }: { type: string | undefined }) => {
                                 </label>
                                 <div
                                     ref={parentDropdownRef}
-                                    className={`w-[300px] h-[42px] bg-neutral-200 pl-2 rounded-lg text-start flex justify-start items-center z-[1]`}
+                                    className={`w-[300px] h-[42px] bg-neutral-200 pl-2 rounded-lg text-start flex justify-start items-center z-1`}
                                     onClick={() => setDropdown(true)}>
                                     <p className="s-regular select-none ">{dropdown ? "..." : category}</p>
                                 </div>

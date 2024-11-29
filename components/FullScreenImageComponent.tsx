@@ -41,7 +41,7 @@ const FullScreenImageComponent =
                     loop: true,
                 }}
 
-                className="fixed top-0 left-0 w-full h-full bg-warm-grey bg-opacity-90 z-[2025] flex justify-center items-center"
+                className="fixed top-0 left-0 w-full h-full bg-warm-grey bg-opacity-90 z-2025 flex justify-center items-center"
             >
                 <CarouselContent className="w-[90vw] h-[90vh]">
                     {
@@ -50,15 +50,15 @@ const FullScreenImageComponent =
                                 <div className="relative w-full h-full">
                                     <Image loading={(i < 5 || i - 5 > images.length) ? "eager" : "lazy"} className="object-scale-down" src={image} alt={`img-${i}`} fill sizes="90vw" onContextMenu={(e) => e.preventDefault()}/>
                                     <div className={`w-fit h-[18px] absolute bottom-[30px] left-1/2 -translate-x-1/2 flex items-center transition-opacity duration-300 ease-in-out ${clicked ? " opacity-100" : "opacity-0"}`}>
-                                        <h4 className="z-[2026] bg-pale-butter bg-opacity-50 rounded-full py-1 px-3">{i + 1} of {images.length}</h4>
+                                        <h4 className="z-2026 bg-pale-butter bg-opacity-50 rounded-full py-1 px-3">{i + 1} of {images.length}</h4>
                                     </div>
                                 </div>
                             </CarouselItem>
                         ))
                     }
                 </CarouselContent>
-                <CarouselNext scrollFunction={updateNumberDisplay} className={`absolute top-1/2 right-8 transform -translate-y-1/2 border-0 dark:bg-transparent hover:dark:bg-transparent hover:dark:text-eggplant-purple dark:text-eggplant-purple`}/>
-                <CarouselPrevious scrollFunction={updateNumberDisplay} className="absolute top-1/2 left-8 transform -translate-y-1/2 border-0 dark:bg-transparent hover:dark:bg-transparent hover:dark:text-eggplant-purple dark:text-eggplant-purple"/>
+                <CarouselNext scrollFunction={updateNumberDisplay} className={`absolute top-1/2 right-8 transform -translate-y-1/2 border-0 dark:bg-transparent dark:hover:bg-transparent dark:hover:text-eggplant-purple dark:text-eggplant-purple`}/>
+                <CarouselPrevious scrollFunction={updateNumberDisplay} className="absolute top-1/2 left-8 transform -translate-y-1/2 border-0 dark:bg-transparent dark:hover:bg-transparent dark:hover:text-eggplant-purple dark:text-eggplant-purple"/>
                 <button className="absolute top-8 right-8 rounded-full" onClick={close}><XIcon className="stroke-black"/></button>
             </Carousel>
         )

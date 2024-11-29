@@ -312,7 +312,7 @@ export function ProjectPage({ projectKey, serverData, id, role }:
                     {
                         editMode &&
                         <>
-                            <div className="fixed left-10 top-[20px] z-[2025] gap-4 flex justify-center items-center" >
+                            <div className="fixed left-10 top-[20px] z-2025 gap-4 flex justify-center items-center" >
                                 <h4 className="w-fit">Edit mode</h4>
                                 <button className="s-regular rounded-2xl border-2 py-2 px-4 hover:bg-white" onClick={() => setSettingsOpen(!settingsOpen)}>Settings</button>
                                 <button className="s-regular rounded-2xl border-2 py-2 px-4 hover:bg-white" onClick={handleSave}>Save</button>

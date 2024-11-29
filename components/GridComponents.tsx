@@ -119,7 +119,7 @@ const GridComponents = ({ keys, max, showTitle = true, editMode = false }: { key
             <Link
                 href={`/projects/${data.id}`}
                 rel="noopener noreferrer"
-                className={`animate-hidden left bg-white relative overflow-hidden shadow ${span.row === 2 ? 'grid-long' : span.col === 2 ? 'grid-wide' : 'aspect-square'} ${editMode ? " cursor-default" : ""}`}
+                className={`animate-hidden left bg-white relative overflow-hidden shadow-sm ${span.row === 2 ? 'grid-long' : span.col === 2 ? 'grid-wide' : 'aspect-square'} ${editMode ? " cursor-default" : ""}`}
                 onClick={(e) => {
                     if (editMode) {
                         e.preventDefault();
@@ -129,7 +129,7 @@ const GridComponents = ({ keys, max, showTitle = true, editMode = false }: { key
                 {
                     editMode ? (
                         <svg
-                            className={`absolute right-2 top-2 cursor-pointer z-[999]`}
+                            className={`absolute right-2 top-2 cursor-pointer z-999`}
                             data-key={`${projectKey}-del-icon`}
                             x="0px"
                             y="0px"
@@ -246,7 +246,7 @@ const GridComponents = ({ keys, max, showTitle = true, editMode = false }: { key
             <>
                 {deleteDialogOpen ? <DeleteWarningComponent item={deleteProjectItem} callback={handleCallback} /> : <></>}
                 {editMode &&
-                    <div className="fixed left-10 top-[20px] z-[2025] flex justify-center items-center" >
+                    <div className="fixed left-10 top-[20px] z-2025 flex justify-center items-center" >
                         <h4 className="w-[100px]">Edit mode</h4>
                         <button className="s-regular rounded-2xl border-2 py-2 px-4 hover:bg-white" onClick={handleSave}>Save</button>
                     </div>
