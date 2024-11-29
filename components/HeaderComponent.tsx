@@ -74,7 +74,7 @@ const Header = ({ isLoginPage = false, isNewPage = false, newHidden = false }) =
 
     return (
         <>
-            <header className=" w-[100vw] h-[40px] lg:h-[70px] fixed z-[2024] bg-pale-butter flex flex-col justify-center shadow">
+            <header className=" w-[100vw] h-[40px] lg:h-[70px] fixed z-2024 bg-pale-butter flex flex-col justify-center shadow-sm">
                 <div ref={parentDropdownRef} className="fixed lg:left-[60px] left-[20px]">
                     {(!isNewPage && role === "admin" && !newHidden) && (
                         <>
@@ -87,7 +87,7 @@ const Header = ({ isLoginPage = false, isNewPage = false, newHidden = false }) =
                                     height={32}
                                 />
                             </button>
-                            <div ref={dropdownRef} className={`fixed top-[70px] left-[10px] bg-pale-butter shadow opacity-90 w-[160px] xs-regular rounded-lg p-2 ${dropdown ? "" : "hidden"}`}>
+                            <div ref={dropdownRef} className={`fixed top-[70px] left-[10px] bg-pale-butter shadow-sm opacity-90 w-[160px] xs-regular rounded-lg p-2 ${dropdown ? "" : "hidden"}`}>
                                 <Link className="w-full flex justify-start items-center gap-2 p-2 rounded-lg hover:bg-white hover:cursor-pointer" href="/new?type=project" rel="noopener noreferrer">
                                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="16" height="16" viewBox="0 0 24 24">
                                         <path fillRule="evenodd" d="M 11 2 L 11 11 L 2 11 L 2 13 L 11 13 L 11 22 L 13 22 L 13 13 L 22 13 L 22 11 L 13 11 L 13 2 Z" />
@@ -143,7 +143,7 @@ const Header = ({ isLoginPage = false, isNewPage = false, newHidden = false }) =
 
 const HeaderComponent = ({ isLoginPage = false, isNewPage = false, newHidden = false }) => {
     const fallback =  (
-        <header className=" w-[100vw] pr-2 h-[40px] lg:h-[70px] fixed z-10 bg-pale-butter flex flex-col justify-center shadow">
+        <header className=" w-[100vw] pr-2 h-[40px] lg:h-[70px] fixed z-10 bg-pale-butter flex flex-col justify-center shadow-sm">
             <div className="fixed left-[50%] transform -translate-x-1/2">
                 <Link href="/" rel="noopener noreferrer">
                     <h1 className="p-1 hover:cursor-pointer">

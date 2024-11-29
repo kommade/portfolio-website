@@ -1,9 +1,51 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@theme {
+  --color-pale-butter: #fbfbf1;
+  --color-eggplant-purple: #37344b;
+  --color-air-force-blue: #3688d4;
+  --color-warm-grey: #aaada3;
+  --color-neutral-light-grey: #e4e5e1;
+
+  --background-image-gradient-radial: radial-gradient(var(--tw-gradient-stops));
+  --background-image-gradient-conic: conic-gradient(
+    from 180deg at 50% 50%,
+    var(--tw-gradient-stops)
+  );
+
+  --animate-wiggle: wiggle 1s ease-in-out infinite;
+
+  @keyframes wiggle {
+    0%,
+    100% {
+      transform: none;
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
 
 body {
-    background: theme('colors.[pale-butter]');
+    background: var(--color-pale-butter);
     overscroll-behavior-x: none;
 }
 
@@ -13,7 +55,7 @@ h1 {
     font-weight: normal;
     line-height: 100%;
     letter-spacing: -2.4px;
-    color: theme('colors.[air-force-blue]');
+    color: var(--color-air-force-blue);
 }
 
 h2 {
@@ -22,7 +64,7 @@ h2 {
     font-weight: normal;
     line-height: 100%;
     letter-spacing: -1.4px;
-    color: theme('colors.[eggplant-purple]');
+    color: var(--color-eggplant-purple);
 }
 
 h3 {
@@ -32,7 +74,7 @@ h3 {
     font-style: italic;
     line-height: 100%;
     letter-spacing: -1.4px;
-    color: theme('colors.[eggplant-purple]');
+    color: var(--color-eggplant-purple);
 }
 
 h4 {
@@ -41,7 +83,7 @@ h4 {
     font-weight: 600;
     line-height: 100%;
     letter-spacing: 0.28px;
-    color: theme('colors.[eggplant-purple]');;
+    color: var(--color-eggplant-purple);;
 }
 
 h5 {
@@ -139,7 +181,7 @@ h5 {
     transition-duration: 300ms;
     transition-timing-function: ease-in-out;
     &:hover {
-        color: theme('colors.[air-force-blue]');;
+        color: var(--color-air-force-blue);;
     }
 }
 

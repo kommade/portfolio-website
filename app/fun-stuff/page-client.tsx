@@ -234,7 +234,7 @@ export const FunStuff = ({ data }: { data: FunStuffData }) => {
                 >
                     <div
                         ref={parentDropdownRef}
-                        className={`w-[100px] h-[42px] pl-4 mt-2 ml-2 rounded-lg text-start flex justify-between items-center z-[2]  ${!dropdown ? "" : "hidden"}`}
+                        className={`w-[100px] h-[42px] pl-4 mt-2 ml-2 rounded-lg text-start flex justify-between items-center z-2  ${!dropdown ? "" : "hidden"}`}
                         onPointerDown={() => setDropdown(true)}>
                         <div className="h-[24px] flex justify-center items-center">
                             <p className="s-regular select-none h-fit">{category.charAt(0).toUpperCase() + category.slice(1)}</p>
@@ -248,7 +248,7 @@ export const FunStuff = ({ data }: { data: FunStuffData }) => {
                             draggable={false}
                         />
                     </div>
-                    <div ref={dropdownRef} className={`absolute w-[150px] h-[126px] bg-pale-butter rounded-lg rounded-t-none p-4 z-[1] opacity-90 shadow-xl ${dropdown ? "" : "hidden"}`}>
+                    <div ref={dropdownRef} className={`absolute w-[150px] h-[126px] bg-pale-butter rounded-lg rounded-t-none p-4 z-1 opacity-90 shadow-xl ${dropdown ? "" : "hidden"}`}>
                         <div
                             className="s-regular w-full flex justify-start items-center gap-2 py-2 pl-2 rounded-lg hover:bg-white hover:cursor-pointer"
                             onPointerDown={() => {
@@ -287,10 +287,10 @@ export const FunStuff = ({ data }: { data: FunStuffData }) => {
                         </h4>
                         <h4>- {n}</h4>
                     </div>
-                    <div className={`z-[100] w-fit h-[20px] fixed px-2 bottom-[40vmin] lg:bottom-[15vmin] left-1/2 -translate-x-1/2 text-center flex transition-opacity duration-300 ease-in-out opacity-0 ${currentFullScreen > -1 ? "opacity-100 delay-500" : ""}`}>
+                    <div className={`z-100 w-fit h-[20px] fixed px-2 bottom-[40vmin] lg:bottom-[15vmin] left-1/2 -translate-x-1/2 text-center flex transition-opacity duration-300 ease-in-out opacity-0 ${currentFullScreen > -1 ? "opacity-100 delay-500" : ""}`}>
                         <p
                             ref={descRef}
-                            className="h-[1px] w-fit mt-[10px] min-w-[100px] s-regular z-[100]"
+                            className="h-[1px] w-fit mt-[10px] min-w-[100px] s-regular z-100"
                             onPointerDown={(e) => {
                                 e.stopPropagation();
                             }}
