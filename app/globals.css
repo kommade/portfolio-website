@@ -1,188 +1,188 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-pale-butter: #fbfbf1;
-  --color-eggplant-purple: #37344b;
-  --color-air-force-blue: #3688d4;
-  --color-warm-grey: #aaada3;
-  --color-neutral-light-grey: #e4e5e1;
+    --color-pale-butter: #fbfbf1;
+    --color-eggplant-purple: #37344b;
+    --color-air-force-blue: #3688d4;
+    --color-warm-grey: #aaada3;
+    --color-neutral-light-grey: #e4e5e1;
 
-  --background-image-gradient-radial: radial-gradient(var(--tw-gradient-stops));
-  --background-image-gradient-conic: conic-gradient(
-    from 180deg at 50% 50%,
-    var(--tw-gradient-stops)
-  );
+    --background-image-gradient-radial: radial-gradient(var(--tw-gradient-stops));
+    --background-image-gradient-conic: conic-gradient(
+        from 180deg at 50% 50%,
+        var(--tw-gradient-stops)
+    );
 
-  --animate-wiggle: wiggle 1s ease-in-out infinite;
+    --animate-wiggle: wiggle 1s ease-in-out infinite;
 
-  @keyframes wiggle {
-    0%,
-    100% {
-      transform: none;
+    @keyframes wiggle {
+        0%,
+        100% {
+            transform: none;
+        }
+        50% {
+            transform: translateY(-5px);
+        }
     }
-    50% {
-      transform: translateY(-5px);
-    }
-  }
 }
 
 /*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
+    The default border color has changed to `currentColor` in Tailwind CSS v4,
+    so we've added these compatibility styles to make sure everything still
+    looks the same as it did with Tailwind CSS v3.
 
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
+    If we ever want to remove these styles, we need to add an explicit border
+    color utility to any element that depends on these defaults.
 */
 @layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
-  }
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
 }
 
 body {
-    background: var(--color-pale-butter);
-    overscroll-behavior-x: none;
+        background: #fbfbf1;
+        overscroll-behavior-x: none;
 }
 
 h1 {
-    font-size: 48px;
-    font-family: Junicode;
-    font-weight: normal;
-    line-height: 100%;
-    letter-spacing: -2.4px;
-    color: var(--color-air-force-blue);
+        font-size: 48px;
+        font-family: Junicode;
+        font-weight: normal;
+        line-height: 100%;
+        letter-spacing: -2.4px;
+        color: #3688d4;
 }
 
 h2 {
-    font-size: 28px;
-    font-family: Junicode;
-    font-weight: normal;
-    line-height: 100%;
-    letter-spacing: -1.4px;
-    color: var(--color-eggplant-purple);
+        font-size: 28px;
+        font-family: Junicode;
+        font-weight: normal;
+        line-height: 100%;
+        letter-spacing: -1.4px;
+        color: #37344b;
 }
 
 h3 {
-    font-size: 28px;
-    font-family: Junicode;
-    font-weight: normal;
-    font-style: italic;
-    line-height: 100%;
-    letter-spacing: -1.4px;
-    color: var(--color-eggplant-purple);
+        font-size: 28px;
+        font-family: Junicode;
+        font-weight: normal;
+        font-style: italic;
+        line-height: 100%;
+        letter-spacing: -1.4px;
+        color: #37344b;
 }
 
 h4 {
-    font-size: 14px;
-    font-family: Epilogue;
-    font-weight: 600;
-    line-height: 100%;
-    letter-spacing: 0.28px;
-    color: var(--color-eggplant-purple);;
+        font-size: 14px;
+        font-family: Epilogue;
+        font-weight: 600;
+        line-height: 100%;
+        letter-spacing: 0.28px;
+        color: #37344b;
 }
 
 h5 {
-    font-size: 16px;
-    font-family: Epilogue;
-    font-weight: normal;
-    line-height: 145%;
-    letter-spacing: 0.32px;
+        font-size: 16px;
+        font-family: Epilogue;
+        font-weight: normal;
+        line-height: 145%;
+        letter-spacing: 0.32px;
 }
 
 .s-regular {
-    font-size: 12px;
-    font-family: Epilogue;
-    font-weight: normal;
-    line-height: 145%;
-    letter-spacing: 0.24px;
+        font-size: 12px;
+        font-family: Epilogue;
+        font-weight: normal;
+        line-height: 145%;
+        letter-spacing: 0.24px;
 }
 
 .s-light {
-    font-size: 12px;
-    font-family: Epilogue;
-    font-weight: 300;
-    line-height: 145%;
-    letter-spacing: 0.24px;
+        font-size: 12px;
+        font-family: Epilogue;
+        font-weight: 300;
+        line-height: 145%;
+        letter-spacing: 0.24px;
 }
 
 .xs-regular {
-    font-size: 10px;
-    font-family: Epilogue;
-    font-weight: normal;
-    line-height: 145%;
-    letter-spacing: 0.2px;
+        font-size: 10px;
+        font-family: Epilogue;
+        font-weight: normal;
+        line-height: 145%;
+        letter-spacing: 0.2px;
 }
 
 .xs-semibold {
-    font-size: 10px;
-    font-family: Epilogue;
-    font-weight: 600;
-    line-height: 145%;
-    letter-spacing: 0.2px;
+        font-size: 10px;
+        font-family: Epilogue;
+        font-weight: 600;
+        line-height: 145%;
+        letter-spacing: 0.2px;
 }
 
 @media (max-width: 1023px) {
-    h1 {
-        font-size: 32px;
-        letter-spacing: -1.6px;
-    }
-    h2 {
-        font-size: 22px;
-        letter-spacing: -1.1px;
-    }
-    h3 {
-        font-size: 22px;
-        letter-spacing: -1.1px;
-    }
-    h4 {
-        font-size: 12px;
-        letter-spacing: 0.24px;
-    }
-    h5 {
-        font-size: 14px;
-        letter-spacing: 0.28px;
-    }
-    .s-regular {
-        font-size: 10px;
-        letter-spacing: 0.2px;
-    }
-    .s-light {
-        font-size: 10px;
-        letter-spacing: 0.2px;
-    }
-    .grid-wide {
-        grid-column: span 1;
-        aspect-ratio: 1 / 1;
-    }
-    .grid-long {
-        height: calc(85vw * 2 + 24px);
-    }
+        h1 {
+                font-size: 32px;
+                letter-spacing: -1.6px;
+        }
+        h2 {
+                font-size: 22px;
+                letter-spacing: -1.1px;
+        }
+        h3 {
+                font-size: 22px;
+                letter-spacing: -1.1px;
+        }
+        h4 {
+                font-size: 12px;
+                letter-spacing: 0.24px;
+        }
+        h5 {
+                font-size: 14px;
+                letter-spacing: 0.28px;
+        }
+        .s-regular {
+                font-size: 10px;
+                letter-spacing: 0.2px;
+        }
+        .s-light {
+                font-size: 10px;
+                letter-spacing: 0.2px;
+        }
+        .grid-wide {
+                grid-column: span 1;
+                aspect-ratio: 1 / 1;
+        }
+        .grid-long {
+                height: calc(85vw * 2 + 24px);
+        }
 }
 
 @media (min-width: 1024px) {
-    .grid-wide {
-        grid-column: span 2;
-        height: calc((85vw - 48px) / 3);
-    }
+        .grid-wide {
+                grid-column: span 2;
+                height: calc((85vw - 48px) / 3);
+        }
 }
 
 .grid-long {
-    grid-row: span 2;
+        grid-row: span 2;
 }
 
 .fun-stuff-title {
-    text-align: start;
-    transition-property: color;
-    transition-duration: 300ms;
-    transition-timing-function: ease-in-out;
-    &:hover {
-        color: var(--color-air-force-blue);;
-    }
+        text-align: start;
+        transition-property: color;
+        transition-duration: 300ms;
+        transition-timing-function: ease-in-out;
+        &:hover {
+                color: #3688d4;
+        }
 }
 
 p {

@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react'
 import Image from "next/image"
 
 const ScrollComponent = () => {
-    const [isHovered, setHovered] = useState(false);
     const [isOnTop, setIsOnTop] = useState(true);
     useEffect(() => {
         const handleScroll = () => {
@@ -24,12 +23,10 @@ const ScrollComponent = () => {
             })}
         >
             <div
-                className={`transition-opacity ${isOnTop ? 'opacity-0 cursor-default' : 'opacity-70'} w-[60px] h-[100px] left-0 top-0 absolute bg-white bg-opacity-70 rounded-[15px] border border-neutral-400 flex justify-center`}
-                onMouseEnter={() => setHovered(true)}
-                onMouseLeave={() => setHovered(false)}
+                className={`transition-opacity ${isOnTop ? 'opacity-0 cursor-default' : 'opacity-70'} w-[60px] h-[100px] left-0 top-0 absolute bg-white/70 rounded-[15px] border border-neutral-400 flex justify-center group`}
             >
                 <Image
-                    className={`self-center transition-transform transform-gpu ${isHovered ? 'animate-wiggle' : ''}`}
+                    className="self-center transition-transform transform-gpu group-hover:animate-wiggle"
                     src="/icons/scroll-up-icon.png"
                     alt="scroll-up-icon"
                     width={30}
