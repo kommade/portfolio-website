@@ -1,6 +1,5 @@
 import { HeaderComponent, MessageDisplayComponent, LoadingComponent, FooterComponent } from "@/components";
 import { getFunStuff } from "@/functions/actions";
-import React, { Suspense } from 'react';
 import { FunStuff } from "./page-client";
 
 export const experimental_ppr = true
@@ -21,9 +20,7 @@ const FunStuffWrapper = async () => {
     }
 
     return (
-        <Suspense fallback={<LoadingComponent/>}>
-            <FunStuff data={dataRes.data} />
-        </Suspense>
+        <FunStuff data={dataRes.data} />
     )
 }
 
