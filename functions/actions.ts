@@ -1,5 +1,4 @@
 "use server";
-"use cache";
 
 import { Resend } from "resend";
 import { S3Client, PutObjectCommand, DeleteObjectCommand, DeleteObjectsCommand } from "@aws-sdk/client-s3";

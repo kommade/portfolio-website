@@ -1,5 +1,4 @@
 import { getProjectKey, getProjectData, getAllProjectIds, getRole } from "@/functions/actions";
-import { Suspense } from "react";
 import { FooterComponent, HeaderComponent, LoadingComponent, MessageDisplayComponent, } from "@/components";
 import { ProjectPage } from "./page-client";
 
@@ -38,17 +37,10 @@ async function DataFetcher({ id }: { id: Promise<string> }) {
             </main>
         );
     }
-    return (
-        <Suspense fallback={<LoadingComponent />}>
-            <ProjectPage projectKey={key!} serverData={data!} id={await id} role={role} />
-        </Suspense>
-    );
+    return <ProjectPage projectKey={key!} serverData={data!} id={await id} role={role} />
+    ;
 }
 
 export default async function ProjectPageWrapper({ params }: { params: Params }) {
-    return (
-        <Suspense fallback={<LoadingComponent />}>
-            <DataFetcher id={params.then(p => p.id)} />
-        </Suspense>
-    );
+    return <DataFetcher id={params.then(p => p.id)} />;
 }
