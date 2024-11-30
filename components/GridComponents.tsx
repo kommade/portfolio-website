@@ -85,7 +85,6 @@ const GridComponents = ({ keys, max, showTitle = true, editMode = false }: { key
         max = keys.length + 1;
     }
     const GridComponent = ({ projectKey, data, span, editMode }: { projectKey: string, data: ProjectThumbnailData, span: Pos, editMode: boolean }) => {
-        const [isHovered, setIsHovered] = useState(false);
         useEffect(() => {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach((entry) => {
@@ -146,12 +145,9 @@ const GridComponents = ({ keys, max, showTitle = true, editMode = false }: { key
                         </svg>
                     ) : <></>
                 }
-                <section className='absolute inset-[15px] bottom-[25%]'
-                    onMouseOver={() => setIsHovered(true)}
-                    onMouseOut={() => setIsHovered(false)}
-                >
+                <section className='absolute inset-[15px] bottom-[25%] group'>
                     <Image
-                        className={`object-cover object-center w-full h-full absolute transition-all ${isHovered || editMode ? ' blur-[2px] bg-blend-luminosity' : ''}`}
+                        className="object-cover object-center w-full h-full absolute transition-all group-hover:blur-[2px] group-hover:bg-blend-luminosity"
                         src={data.image}
                         alt={`${data.name} image`}
                         width={0}
@@ -171,7 +167,7 @@ const GridComponents = ({ keys, max, showTitle = true, editMode = false }: { key
                     />
                     <div className="w-full h-full flex justify-center items-center">
                         <p
-                            className={`editable w-[70%] h-fit absolute text-center transition-all text-black s-regular ${isHovered || editMode ? 'opacity-100' : 'opacity-0'}`}
+                            className="editable w-[70%] h-fit absolute text-center transition-opacity text-black s-regular group-hover:opacity-100 opacity-0"
                             style={{ textShadow: '0 0 10px #FBFBF1, 0 0 20px #FBFBF1, 0 0 30px #FBFBF1, 0 0 40px #FBFBF1' }}
                         >
                             {data.desc}
