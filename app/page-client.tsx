@@ -6,8 +6,14 @@ import { usePopUp, HeaderComponent, GridComponents, PopUpComponent, FooterCompon
 import Image from "next/image";
 import { logout } from "@/functions/actions";
 import { useEffect } from "react";
+import { ProjectThumbnailResponse } from "@/components/GridComponents";
 
-export default function Home({ keys }: { keys: string[] }) {
+type HomeProps = {
+    keys: string[];
+    response: ProjectThumbnailResponse;
+};
+
+export default function Home({ keys, response }: HomeProps) {
     const searchParams = useSearchParams();
     const expired = searchParams.get("expired") === "true";
     const [popUp, setPopUp] = usePopUp();
@@ -23,7 +29,7 @@ export default function Home({ keys }: { keys: string[] }) {
             <div className="w-screen h-fit min-h-[100vh] relative flex flex-col">
                 <ScrollToTop />
                 <HeaderComponent/>
-                <GridComponents keys={keys} max={12} />
+                <GridComponents keys={keys} response={response} max={12} />
                 <div className="w-[85%] mx-[7.5%] h-fit flex my-[32px] justify-center items-end">
                     <Link href="/projects" rel="noopener noreferrer">
                         <h5 className="text-warm-grey hover:text-black transition-colors">See all</h5>

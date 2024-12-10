@@ -1,5 +1,5 @@
 import { getProjectKey, getProjectData, getAllProjectIds, getRole } from "@/functions/actions";
-import { FooterComponent, HeaderComponent, LoadingComponent, MessageDisplayComponent, } from "@/components";
+import { FooterComponent, HeaderComponent, MessageDisplayComponent, } from "@/components";
 import { ProjectPage } from "./page-client";
 
 export function generateStaticParams() {
