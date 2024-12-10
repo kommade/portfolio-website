@@ -18,6 +18,11 @@ export interface ProjectThumbnailData {
     [key: string]: unknown;
 }
 
+export type ProjectThumbnailResponse = {
+    success: boolean;
+    data?: Record<string, unknown> | null
+}[]
+
 interface Pos {
     row: number;
     col: number;
@@ -50,37 +55,31 @@ function generateComponentProperties(k: number): Pos[] {
     return result;
 }
 
-const GridComponents = ({ keys, max, showTitle = true, editMode = false }: { keys: string[], max: number, showTitle?: boolean, editMode?: boolean }) => {
+const GridComponents = ({ keys, response, max, showTitle = true, editMode = false }: { keys: string[], response: ProjectThumbnailResponse, max: number, showTitle?: boolean, editMode?: boolean }) => {
     let spanMap = generateComponentProperties(keys.length);
-    const [isLoading, setIsLoading] = useState(true);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [deleteProjectItem, setDeleteProjectItem] = useState({} as { id: string, name: string });
     const router = useRouter();
     const [popUp, setPopUp] = usePopUp();
-    const [data, setData] = useState<ProjectThumbnailData[]>([]);
     const [error, setError] = useState(false);
+    const [data, setData] = useState<ProjectThumbnailData[]>(
+        response.map((r) => {
+            if (r.success) {
+                return r.data as ProjectThumbnailData;
+            } else {
+                setError(true);
+                return null;
+            }
+        })
+        .filter((d) => d !== null)
+    );
     const fileInputRef = useRef(null);
     const fileSubmitRef = useRef(null);
     const [selectedImage, setSelectedImage] = useState("");
     const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
     const [selectedImageName, setSelectedImageName] = useState("");
     const [uploadedImages, setUploadedImages] = useState<string[]>([]);
-    useEffect(() => {
-        const fetchData = async () => {
-            let allData = [];
-            for (const key of keys) {
-                const res = await getProjectThumbnail(key);
-                if (!res.success) {
-                    setError(true);
-                }
-                allData.push(res.data as ProjectThumbnailData)
-            }
-            setData(allData)
-            setIsLoading(false);
-            
-        };
-        fetchData();
-    }, [keys]);
+
     if (max === 0) {
         max = keys.length + 1;
     }
@@ -238,77 +237,75 @@ const GridComponents = ({ keys, max, showTitle = true, editMode = false }: { key
     }
 
     return (
-        !isLoading ? (
-            <>
-                {deleteDialogOpen ? <DeleteWarningComponent item={deleteProjectItem} callback={handleCallback} /> : <></>}
-                {editMode &&
-                    <div className="fixed left-10 top-[20px] z-2025 flex justify-center items-center" >
-                        <h4 className="w-[100px]">Edit mode</h4>
-                        <button className="s-regular rounded-2xl border-2 py-2 px-4 hover:bg-white" onClick={handleSave}>Save</button>
-                    </div>
-                }
-                {
-                    uploadDialogOpen &&
-                    <SubmitFileConfirmationComponent
-                        item={{ name: selectedImageName }}
-                        callback={(message) => {
-                            setUploadDialogOpen(false);
-                            if (message === "upload") {
-                                if (fileSubmitRef.current) {
-                                    (fileSubmitRef.current as HTMLInputElement).click();
-                                }
-                            } else {
-                                setSelectedImageName("");
-                                setSelectedImage("");
+        <>
+            {deleteDialogOpen ? <DeleteWarningComponent item={deleteProjectItem} callback={handleCallback} /> : <></>}
+            {editMode &&
+                <div className="fixed left-10 top-[20px] z-2025 flex justify-center items-center" >
+                    <h4 className="w-[100px]">Edit mode</h4>
+                    <button className="s-regular rounded-2xl border-2 py-2 px-4 hover:bg-white" onClick={handleSave}>Save</button>
+                </div>
+            }
+            {
+                uploadDialogOpen &&
+                <SubmitFileConfirmationComponent
+                    item={{ name: selectedImageName }}
+                    callback={(message) => {
+                        setUploadDialogOpen(false);
+                        if (message === "upload") {
+                            if (fileSubmitRef.current) {
+                                (fileSubmitRef.current as HTMLInputElement).click();
                             }
-                        }}
-                    />
-                }
-                {/* Magic input element for image upload */}
-                <form
-                    className="hidden"
-                    action={async (formData: FormData) => {
-                        if (selectedImage === "") return;
-                        formData.append("id", selectedImage)
-                        const res = await uploadNewProjectImage(formData);
-                        if (res.success) {
-                            setPopUp({ message: "Image uploaded!", type: "success", duration: 1000 });
-                            const newData = data.map((d) => {
-                                if (d.id === selectedImage) {
-                                    d.image = res.data!;
-                                }
-                                return d;
-                            });
-                            setData(newData);
-                            setUploadedImages([...uploadedImages, res.data!]);
                         } else {
-                            setPopUp({ message: "Error uploading image!", type: "warning", duration: 1000 });
+                            setSelectedImageName("");
+                            setSelectedImage("");
                         }
                     }}
-                >
-                    <input
-                        ref={fileInputRef}
-                        type="file"
-                        name="image"
-                        accept="image/*"
-                        onChange={(e) => {
-                            if (e.target.files && e.target.files?.length > 0) {
-                                setSelectedImageName(e.target.files[0].name);
-                                setUploadDialogOpen(true);
+                />
+            }
+            {/* Magic input element for image upload */}
+            <form
+                className="hidden"
+                action={async (formData: FormData) => {
+                    if (selectedImage === "") return;
+                    formData.append("id", selectedImage)
+                    const res = await uploadNewProjectImage(formData);
+                    if (res.success) {
+                        setPopUp({ message: "Image uploaded!", type: "success", duration: 1000 });
+                        const newData = data.map((d) => {
+                            if (d.id === selectedImage) {
+                                d.image = res.data!;
                             }
-                        }} />
-                    <input ref={fileSubmitRef} type="submit" />
-                </form>
-                {showTitle ?
-                    <h2 className="w-full h-[34px] mt-[80px] lg:mt-[110px] text-center">I’m a dreamer and a UX designer, currently based in Singapore. Here’s some of my work:</h2>
-                    : <div className="h-0 mt-[40px] lg:mt-[70px]"></div>
-                }
-                <section className={`work-display w-[85%] h-fit min-h-[calc(100vh_-_108px)] lg:min-h-[calc(100vh_-_138px)] left-[7.5%] relative justify-center mt-[30px] grid grid-cols-1 lg:grid-cols-3 grid-flow-row gap-y-6 gap-x-0 lg:gap-x-6 ${showTitle ? "" : "mb-[40px]"}`}>
-                    {grid}
-                </section>
-                <PopUpComponent popUpProps={popUp}/>
-            </>
-        ) : <LoadingComponent/>
+                            return d;
+                        });
+                        setData(newData);
+                        setUploadedImages([...uploadedImages, res.data!]);
+                    } else {
+                        setPopUp({ message: "Error uploading image!", type: "warning", duration: 1000 });
+                    }
+                }}
+            >
+                <input
+                    ref={fileInputRef}
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                    onChange={(e) => {
+                        if (e.target.files && e.target.files?.length > 0) {
+                            setSelectedImageName(e.target.files[0].name);
+                            setUploadDialogOpen(true);
+                        }
+                    }} />
+                <input ref={fileSubmitRef} type="submit" />
+            </form>
+            {showTitle ?
+                <h2 className="w-full h-[34px] mt-[80px] lg:mt-[110px] text-center">I’m a dreamer and a UX designer, currently based in Singapore. Here’s some of my work:</h2>
+                : <div className="h-0 mt-[40px] lg:mt-[70px]"></div>
+            }
+            <section className={`work-display w-[85%] h-fit min-h-[calc(100vh_-_108px)] lg:min-h-[calc(100vh_-_138px)] left-[7.5%] relative justify-center mt-[30px] grid grid-cols-1 lg:grid-cols-3 grid-flow-row gap-y-6 gap-x-0 lg:gap-x-6 ${showTitle ? "" : "mb-[40px]"}`}>
+                {grid}
+            </section>
+            <PopUpComponent popUpProps={popUp}/>
+        </>
     )
 }
 

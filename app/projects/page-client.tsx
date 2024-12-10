@@ -1,9 +1,15 @@
 "use client";
 
 import { FooterComponent, GridComponents, HeaderComponent, ScrollComponent, ScrollToTop } from "@/components";
-import { useRouter, useSearchParams } from "next/navigation";
+import { ProjectThumbnailResponse } from "@/components/GridComponents";
+import { useSearchParams } from "next/navigation";
 
-export default function Projects({ keys }: { keys: string[] }) {
+type ProjectProps = {
+    keys: string[];
+    response: ProjectThumbnailResponse;
+};
+
+export default function Projects({ keys, response }: ProjectProps) {
     const searchParams = useSearchParams();
     const editMode = searchParams.get("edit") === "true";
 
@@ -12,7 +18,7 @@ export default function Projects({ keys }: { keys: string[] }) {
             <div className="w-screen h-fit min-h-[100vh] relative flex flex-col">
                 <ScrollToTop />
                 <HeaderComponent newHidden={editMode} />
-                <GridComponents keys={keys} max={0} showTitle={false} editMode={editMode} />
+                <GridComponents keys={keys} response={response} max={0} showTitle={false} editMode={editMode} />
                 <ScrollComponent />
                 <FooterComponent/>
             </div>

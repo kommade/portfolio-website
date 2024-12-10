@@ -100,6 +100,9 @@ export const getProjectKey = async (id: string | Promise<string>) => {
 
 export const getProjectThumbnail = async (projectKey: string) => {
     const data = await redis.hmget(projectKey, ...["name", "desc", "image", "year", "id"]);
+    if (data == null) {
+        return { success: false };
+    }
     return { success: true, data: data };
 }
 
@@ -476,7 +479,6 @@ function getHostname() {
 }
 
 import { parseHTML } from "linkedom";
-import { unstable_cacheTag } from "next/cache";
 
 export const prefetchImagesForURL = async (href: string) => {
     const schema = process.env.NODE_ENV === "development" ? "http" : "https";
