@@ -1,13 +1,13 @@
 'use client';
 
-import { changeProjectDesc, changeProjectThumbnail, getProjectThumbnail, uploadNewProjectImage} from "@/functions/actions";
+import { changeProjectDesc, changeProjectThumbnail} from "@/functions/db";
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import LoadingComponent from "./LoadingComponent";
 import Link from "@/components/ui/link";
 import { DeleteWarningComponent, MessageDisplayComponent, PopUpComponent, usePopUp } from ".";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import SubmitFileConfirmationComponent from "./SubmitFileConfirmationComponent";
+import { uploadNewProjectImage } from "@/functions/actions";
 
 export interface ProjectThumbnailData {
     name: string;

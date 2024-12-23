@@ -1,7 +1,7 @@
 "use client";
 
-import { saveNewProjectData, uploadNewProjectImage, deleteUnusedImages, logout, getRole } from "@/functions/actions";
-import { useRouter, useSearchParams } from "next/navigation";
+import { saveNewProjectData, deleteUnusedImages } from "@/functions/db";
+import { useSearchParams } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import { FooterComponent, HeaderComponent, MessageDisplayComponent, PopUpComponent, ScrollComponent, usePopUp } from "@/components";
 import SubmitFileConfirmationComponent from "@/components/SubmitFileConfirmationComponent";
@@ -11,6 +11,7 @@ import Link from "@/components/ui/link";
 import React from "react";
 import ProjectSettingsComponent from "@/components/ProjectSettingsComponent";
 import FullScreenImageComponent from "@/components/FullScreenImageComponent";
+import { uploadNewProjectImage } from "@/functions/actions";
 
 
 export interface ProjectData {
@@ -46,7 +47,6 @@ export function ProjectPage({ projectKey, serverData, id, role }:
     { projectKey: string, serverData: ProjectData, id: string, role: string }
 ) {
     const searchParams = useSearchParams();
-    const router = useRouter();
     const [data, setData] = useState<ProjectData>(serverData);
     const editMode = searchParams.get("edit") === "true";
     const [popUp, setPopUp] = usePopUp();

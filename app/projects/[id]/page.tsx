@@ -1,12 +1,11 @@
-import { getProjectKey, getProjectData, getAllProjectIds, getRole } from "@/functions/actions";
+import { getProjectKey, getProjectData, getAllProjectIds } from "@/functions/db";
 import { FooterComponent, HeaderComponent, MessageDisplayComponent, } from "@/components";
 import { ProjectPage } from "./page-client";
+import { getRole } from "@/functions/actions";
 
 export function generateStaticParams() {
     return getAllProjectIds().then(ids => ids.map(id => ({ id })));
 }
-
-export const experimental_ppr = true
 
 type Params = Promise<{ id: string }>
 

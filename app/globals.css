@@ -6,6 +6,7 @@
     --color-air-force-blue: #3688d4;
     --color-warm-grey: #aaada3;
     --color-neutral-light-grey: #e4e5e1;
+    --color-muted: #e4e5e1;
 
     --background-image-gradient-radial: radial-gradient(var(--tw-gradient-stops));
     --background-image-gradient-conic: conic-gradient(
@@ -189,23 +190,23 @@ p {
     white-space: pre-line;
 }
 
-.animate-hidden.right {
+.animate-hdidden.right {
     opacity: 0;
     filter: blur(5px);
     transform: translateX(100%);
 }
 
-img.animate-hidden.right {
+img.animate-hiddden.right {
     transition-delay: 200ms;
 }
 
-.animate-hidden.left {
+.animate-hiddden.left {
     opacity: 0;
     filter: blur(5px);
     transform: translateX(-100%);
 }
 
-.animate-hidden.left.rotate {
+.animate-hiddden.left.rotate {
     transform: translateX(-100%) rotate(180deg);
 }
 

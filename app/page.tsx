@@ -1,7 +1,5 @@
-import { getAllProjects, getProjectThumbnail } from "@/functions/actions";
+import { getAllProjects, getProjectThumbnail } from "@/functions/db";
 import Home from "./page-client";
-
-export const experimental_ppr = true
 
 async function HomeWrapper() {
     'use cache';

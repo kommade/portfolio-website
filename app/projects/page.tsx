@@ -1,7 +1,5 @@
 import Projects from "./page-client";
-import { getAllProjects, getProjectThumbnail } from "@/functions/actions";
-
-export const experimental_ppr = true
+import { getAllProjects, getProjectThumbnail } from "@/functions/db";
 
 export default async function ProjectsWrapper() {
     'use cache';
