@@ -190,23 +190,23 @@ p {
     white-space: pre-line;
 }
 
-.animate-hdidden.right {
+.animate-hidden.right {
     opacity: 0;
     filter: blur(5px);
     transform: translateX(100%);
 }
 
-img.animate-hiddden.right {
+img.animate-hidden.right {
     transition-delay: 200ms;
 }
 
-.animate-hiddden.left {
+.animate-hidden.left {
     opacity: 0;
     filter: blur(5px);
     transform: translateX(-100%);
 }
 
-.animate-hiddden.left.rotate {
+.animate-hidden.left.rotate {
     transform: translateX(-100%) rotate(180deg);
 }
 
