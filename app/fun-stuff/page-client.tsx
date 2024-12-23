@@ -1,10 +1,11 @@
 "use client";
 
 import { HeaderComponent, FooterComponent, DeleteWarningComponent, PopUpComponent, usePopUp } from "@/components";
-import { getRole, logout, updateFunStuffName } from "@/functions/actions";
+import { updateFunStuffName } from "@/functions/db";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from 'react';
 import Image from "next/image";
+import { logout } from "@/functions/actions";
 
 export interface FunStuffData {
     sketchbook: ({ id:string, name: string, url: string } | null)[];
@@ -12,10 +13,10 @@ export interface FunStuffData {
     craft: ({ id:string, name: string, url: string } | null)[]
 }
 
-export const FunStuff = ({ data }: { data: FunStuffData }) => {
+export const FunStuff = ({ data, role }: { data: FunStuffData, role: "none" | "member" | "admin" | "expired" }) => {
     const [n, setN] = useState(data["sketchbook"].length);
-    const [percentage, setPercentage] = useState(-108); // Disclaimer: none of these are percentages
-    const [prevPercentage, setPrevPercentage] = useState(-108);
+    const [position, setPosition] = useState(0); // Disclaimer: none of these are percentages
+    const [prevPosition, setPrevPosition] = useState(0);
     const [mousePos, setMousePos] = useState(0);
     const imageHolder = useRef(null);
     const numberDisplay = useRef(null);
@@ -34,14 +35,6 @@ export const FunStuff = ({ data }: { data: FunStuffData }) => {
     const descRef = useRef(null);
     const [descText, setDescText] = useState("");
     const [descEdit, setDescEdit] = useState(false);
-    const [role, setRole] = useState<"none" | "member" | "admin" | "expired">("none")
-
-    useEffect(() => {
-        const getAccess = async () => {
-            setRole(await getRole())
-        }
-        getAccess();
-    }, [])
 
     useEffect(() => {
         if (role === "expired") {
@@ -61,6 +54,7 @@ export const FunStuff = ({ data }: { data: FunStuffData }) => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
+
     const handleMouseDown = (e: React.MouseEvent) => {
         if (currentFullScreen > -1) {
             return;
@@ -82,7 +76,7 @@ export const FunStuff = ({ data }: { data: FunStuffData }) => {
         }
         e.preventDefault();
         setMousePos(0);
-        setPrevPercentage(percentage);
+        setPrevPosition(position);
     };
 
     const handleTouchEnd = (e: React.TouchEvent) => {
@@ -91,7 +85,7 @@ export const FunStuff = ({ data }: { data: FunStuffData }) => {
         }
         e.preventDefault();
         setMousePos(0);
-        setPrevPercentage(percentage);
+        setPrevPosition(position);
     }
 
     const handleMouseMove = (e: React.MouseEvent) => {
@@ -105,8 +99,8 @@ export const FunStuff = ({ data }: { data: FunStuffData }) => {
         const mouseDelta = mousePos - e.clientX;
         const maxDelta = window.innerWidth / 2;
         const calcPercentage = (mouseDelta / maxDelta) * -100;
-        const nextPercentage = Math.max(Math.min(prevPercentage + calcPercentage, -20), (n - 1) * - 44 - 20);
-        setPercentage(nextPercentage);
+        const nextPercentage = Math.max(Math.min(prevPosition + calcPercentage, 0), (n - 1) * - 44);
+        setPosition(nextPercentage);
         updatePosition();
     };
 
@@ -120,8 +114,8 @@ export const FunStuff = ({ data }: { data: FunStuffData }) => {
         const mouseDelta = mousePos - e.touches[0].clientX;
         const maxDelta = window.innerWidth / 2;
         const calcPercentage = (mouseDelta / maxDelta) * -100 / 2;
-        const nextPercentage = Math.max(Math.min(prevPercentage + calcPercentage, -20), (n - 1) * - 44 - 20);
-        setPercentage(nextPercentage);
+        const nextPercentage = Math.max(Math.min(prevPosition + calcPercentage, 0), (n - 1) * - 44);
+        setPosition(nextPercentage);
         updatePosition();
     };
 
@@ -141,9 +135,9 @@ export const FunStuff = ({ data }: { data: FunStuffData }) => {
         } else {
             scrollAmount = 4
         }
-        const nextPercentage = Math.max(Math.min(prevPercentage + scrollDirection * scrollAmount, -20), (n - 1) * - 44 - 20);
-        setPercentage(nextPercentage);
-        setPrevPercentage(percentage);
+        const nextPercentage = Math.max(Math.min(prevPosition + scrollDirection * scrollAmount, 0), (n - 1) * - 44);
+        setPosition(nextPercentage);
+        setPrevPosition(position);
         updatePosition();
     };
 
@@ -164,39 +158,38 @@ export const FunStuff = ({ data }: { data: FunStuffData }) => {
         }
         const intIndex = parseInt(index)
         setCurrentFullScreen(intIndex);
-        data![category][intIndex]?.name && setDescText(data![category][intIndex]!.name)
-        const calcPercentage = intIndex * - 44 - 20;
-        setPercentage(calcPercentage);
-        setPrevPercentage(calcPercentage);
+        data![category][intIndex]?.name && setDescText(data[category][intIndex].name)
+        const calcPercentage = intIndex * - 44;
+        setPosition(calcPercentage);
+        setPrevPosition(calcPercentage);
         updatePosition(500, calcPercentage);
     }
 
-    const updatePosition = (duration: number = 1200, movement: number = percentage) => {
+    const updatePosition = (duration: number = 1200, movement: number = position) => {
         if (imageHolder.current) {
             if (window.innerWidth <= 1024) {
                 if (imageHolder.current) {
                     (imageHolder.current as HTMLElement).animate({
-                        transform: `translate(${movement}vmin, -50%`
+                        transform: `translate(${movement}vmin, 0%`
                     }, { duration: duration, fill: "forwards" });
                 }
             } else {
-    
                 if (imageHolder.current) {
                     (imageHolder.current as HTMLElement).animate({
-                        transform: `translate(${movement}vmin, calc(87px + 4vh))`
+                        transform: `translate(${movement}vmin, 0%)`
                     }, { duration: duration, fill: "forwards" });
                 }
             }
         }
         if (numberDisplay.current) {
             (numberDisplay.current as HTMLElement).animate({
-                transform: `translate(0, ${((movement + 20)/ ((n - 1) * 44)) * (n - 1) * 14}px)`
+                transform: `translate(0, ${(movement / ((n - 1) * 44)) * (n - 1) * 14}px)`
             }, { duration: duration, fill: "forwards" });
         }
         // scary vanilla javascript in a react dom !!!
         Array.from(document.getElementsByClassName("image")).forEach(element => {
             element.animate({
-                objectPosition: `${(movement + 20) * 100 / ((n - 1) * 44) + 100}% 50%`
+                objectPosition: `${(-movement * 100 / ((n - 1) * 44))}% 50%`
             }, { duration: duration, fill: "forwards" });
         });
     }
@@ -206,8 +199,8 @@ export const FunStuff = ({ data }: { data: FunStuffData }) => {
             return;
         }
         setN(data![newCategory].length)
-        setPercentage(-108)
-        setPrevPercentage(-108)
+        setPosition(-108)
+        setPrevPosition(-108)
         updatePosition(800, -108)
         setTransition(true)
         setTimeout(() => {
@@ -276,7 +269,7 @@ export const FunStuff = ({ data }: { data: FunStuffData }) => {
                     </div>
                     <div className={`w-fit h-[14px] absolute px-2 left-1/2 -translate-x-1/2 translate-y-[calc((87px_+_4vh)_/_2_-100%)] text-center flex transition-opacity duration-300 ease-in-out ${currentFullScreen > -1 ? "opacity-0" : ""}`}>
                         <h4 className="overflow-hidden">
-                            <div className={`-translate-y-[28px]`} ref={numberDisplay}>
+                            <div ref={numberDisplay}>
                                 {Array.from({ length: n }, (_, i) => i + 1).map((num, i) => (
                                     <React.Fragment key={`${i}-ticker`}>
                                         {num.toString()}&nbsp;
@@ -337,7 +330,7 @@ export const FunStuff = ({ data }: { data: FunStuffData }) => {
                             ) : <></>
                         }
                     </div>
-                    <article ref={imageHolder} className={`w-fit flex gap-[4vmin] absolute left-1/2 top-1/2 lg:top-0 transform -translate-x-[108vmin] -translate-y-1/2 lg:translate-y-[calc(87px_+_4vh)] select-none transition-opacity duration-300 ease-in-out ${transition ? 'opacity-0': ''}`}>
+                    <article ref={imageHolder} className={`w-fit flex gap-[4vmin] absolute left-1/2 top-1/2 lg:top-0 transform -translate-x-[20vmin] -translate-y-1/2 lg:translate-y-[calc(87px_+_4vh)] select-none transition-opacity duration-300 ease-in-out ${transition ? 'opacity-0': ''}`}>
                         {
                             data![category].map((image, index) => (
                                 <div key={`${image!.name}-div`} className={`relative transition-all duration-[800ms] ease-in-out ${currentFullScreen === index ? "w-[100vmin] h-[66.66vmin] lg:-translate-y-[87px] opacity-100 min-w-[40vmin] " : "w-[40vmin] min-w-[40vmin] h-[56vmin] -translate-x-0 " + (currentFullScreen > -1 ? "opacity-0" : "")}`}>
@@ -345,13 +338,13 @@ export const FunStuff = ({ data }: { data: FunStuffData }) => {
                                         key={image!.name}
                                         data-key={index}
                                         className={`image transition-all duration-[800ms] ease-in-out object-cover ${currentFullScreen === index ? "h-[66.66vmin] -translate-x-[calc((100%_-_40vmin)_/_2)]" : "h-[56vmin]" }`}
-                                        style={{objectPosition: `${-88 * 100 / ((n - 1) * 44) + 100}% 50%`}}
+                                        style={{objectPosition: `0% 50%`}}
                                         onPointerDown={handleMouseClick}
                                         src={image!.url}
                                         alt={image!.name}
                                         fill
                                         priority={index <= 5}
-                                        sizes="100vmin"
+                                        sizes="80vw"
                                         draggable={false}
                                         onContextMenu={(e) => e.preventDefault()}
                                     />

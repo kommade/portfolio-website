@@ -39,7 +39,7 @@ export default function Home({ keys, response }: HomeProps) {
                     <article className="info-container lg:p-16 p-4 h-fit ">
                         <div className="flex flex-col lg:flex-row justify-center items-center lg:items-stretch">
                             <div className="rotate-180 lg:rotate-0 lg:mr-[10px] mb-[10px] lg:mb-0 ">
-                                <h1 className="text-end lg:self-start text-pale-butter lg:[writing-mode:vertical-lr] animate-hidden left rotate">
+                                <h1 className="text-end lg:self-start !text-pale-butter lg:[writing-mode:vertical-lr] animate-hidden left rotate">
                                     About Me
                                 </h1>
                             </div>

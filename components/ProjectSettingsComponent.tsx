@@ -1,5 +1,5 @@
 import { ProjectData } from "@/app/projects/[id]/page-client"
-import { changeProjectSettings } from "@/functions/actions"
+import { changeProjectSettings } from "@/functions/db"
 import React from 'react'
 import ReactSwitch from "react-switch"
 

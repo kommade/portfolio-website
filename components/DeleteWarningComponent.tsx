@@ -1,4 +1,4 @@
-import { deleteItem } from "@/functions/actions"
+import { deleteItem } from "@/functions/db"
 import React from 'react'
 
 const DeleteWarningComponent =

@@ -1,12 +1,17 @@
-import { HeaderComponent, MessageDisplayComponent, LoadingComponent, FooterComponent } from "@/components";
-import { getFunStuff } from "@/functions/actions";
+import { HeaderComponent, MessageDisplayComponent, FooterComponent } from "@/components";
+import { getFunStuff } from "@/functions/db";
 import { FunStuff } from "./page-client";
+import { getRole } from "@/functions/actions";
 
-export const experimental_ppr = true
-
-const FunStuffWrapper = async () => {
+const getData = async () => {
     "use cache";
     const dataRes = await getFunStuff();
+    return dataRes;
+}
+
+const FunStuffWrapper = async () => {
+    const dataRes = await getData();
+    const access = await getRole();
     if (!dataRes.success) {
         return (
             <main className="flex flex-col items-center justify-between overflow-x-clip">
@@ -20,7 +25,7 @@ const FunStuffWrapper = async () => {
     }
 
     return (
-        <FunStuff data={dataRes.data} />
+        <FunStuff data={dataRes.data} role={access} />
     )
 }
 

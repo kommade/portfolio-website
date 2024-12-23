@@ -43,7 +43,7 @@ const Header = ({ isLoginPage = false, isNewPage = false, newHidden = false }) =
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    })
+    }, [])
     const router = useRouter();
 
     const handleEdit = () => {
