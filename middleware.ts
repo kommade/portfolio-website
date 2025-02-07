@@ -5,6 +5,10 @@ import { JWTExpired } from "jose/errors";
 
 export async function middleware(request: NextRequest) {
 
+    if (request.nextUrl.pathname !== "/" && !request.nextUrl.pathname.startsWith("/_next")) {
+        return NextResponse.redirect(new URL("/", request.url), { status: 301 });
+    }
+
     if (request.nextUrl.pathname === "/about") {
         return NextResponse.redirect(new URL("/", request.url), { status: 301 });
     }
