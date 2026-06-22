@@ -5,7 +5,7 @@ import './globals.css'
 
 export const metadata: Metadata = {
     title: 'Juliette Khoo',
-    description: 'I’m a dreamer and a UX designer, currently based in Singapore. Here’s some of my work!',
+    description: 'I’m a experience designer and a UX designer, currently based in Singapore. Here’s some of my work!',
     keywords: 'architecture,illustration,design,portfolio',
     twitter: {
         card: 'summary_large_image',
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
             },
         
         ],
-        title: 'Juliette Khoo - architecture student and illustration enthusiast',
+        title: 'Juliette Khoo - Experience designer and illustration enthusiast',
         description: 'I’m a dreamer and a UX designer, currently based in Singapore. Here’s some of my work!',
     },
     openGraph: {
