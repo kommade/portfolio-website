@@ -3,7 +3,7 @@ import { NextRequest } from 'next/server'
 import { jwtVerify } from "jose"; 
 import { JWTExpired } from "jose/errors";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
 
     if (request.nextUrl.pathname === "/about") {
         return NextResponse.redirect(new URL("/", request.url), { status: 301 });

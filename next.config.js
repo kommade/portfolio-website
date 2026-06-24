@@ -44,9 +44,9 @@ const nextConfig = {
             }
         ]
     },
+    cacheComponents: true,
     experimental: {
-        ppr: "incremental",
-        dynamicIO: true,
+        useCache: true
     },
     async rewrites() {
         return [
