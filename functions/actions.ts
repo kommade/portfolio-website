@@ -1,7 +1,7 @@
 "use server";
 
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import jwt, { TokenExpiredError } from "jsonwebtoken";
 import { Redis } from "@upstash/redis";
 import { cookies } from "next/headers";
