@@ -18,12 +18,12 @@ export const metadata: Metadata = {
         
         ],
         title: 'Juliette Khoo - Experience designer and illustration enthusiast',
-        description: 'I’m a dreamer and a UX designer, currently based in Singapore. Here’s some of my work!',
+        description: 'I’m a experience designer and a UX designer, currently based in Singapore. Here’s some of my work!',
     },
     openGraph: {
         url: 'https://juliettekhoo.com/',
         title: 'Juliette Khoo - architecture student and illustration enthusiast',
-        description: 'I’m a dreamer and a UX designer, currently based in Singapore. Here’s some of my work!',
+        description: 'I’m a experience designer and a UX designer, currently based in Singapore. Here’s some of my work!',
         images: [
             {
                 url: '/images/about-me.jpg',

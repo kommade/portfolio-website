@@ -298,7 +298,7 @@ const GridComponents = ({ keys, response, max, showTitle = true, editMode = fals
                 <input ref={fileSubmitRef} type="submit" />
             </form>
             {showTitle ?
-                <h2 className="w-full h-[34px] mt-[80px] lg:mt-[110px] text-center">I’m a dreamer and a UX designer, currently based in Singapore. Here’s some of my work:</h2>
+                <h2 className="w-full h-[34px] mt-[80px] lg:mt-[110px] text-center">I’m a experience designer and a UX designer, currently based in Singapore. Here’s some of my work:</h2>
                 : <div className="h-0 mt-[40px] lg:mt-[70px]"></div>
             }
             <section className={`work-display w-[85%] h-fit min-h-[calc(100vh_-_108px)] lg:min-h-[calc(100vh_-_138px)] left-[7.5%] relative justify-center mt-[30px] grid grid-cols-1 lg:grid-cols-3 grid-flow-row gap-y-6 gap-x-0 lg:gap-x-6 ${showTitle ? "" : "mb-[40px]"}`}>
