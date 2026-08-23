@@ -8,19 +8,79 @@
     --color-neutral-light-grey: #e4e5e1;
     --color-muted: #e4e5e1;
 
+    /* Figma style-guide swatches kept alongside the existing project colors. */
+    --color-monsoon-0: #ffffff;
+    --color-monsoon-50: #faf9f8;
+    --color-monsoon-100: #e7e0df;
+    --color-monsoon-200: #d3c7cb;
+    --color-monsoon-300: #beb0ba;
+    --color-monsoon-400: #a59aa7;
+    --color-monsoon-500: #8a8590;
+    --color-monsoon-600: #7a7480;
+    --color-monsoon-700: #6a656f;
+    --color-monsoon-800: #5a555d;
+    --color-monsoon-900: #49464c;
+    --color-monsoon-950: #39363b;
+    --color-monsoon-1000: #000000;
+
+    --color-grape-50: #fef0ff;
+    --color-grape-100: #eebff2;
+    --color-grape-200: #da90e0;
+    --color-grape-300: #b76fbd;
+    --color-grape-400: #944f9b;
+    --color-grape-500: #742e7b;
+    --color-grape-600: #6c1275;
+    --color-grape-700: #580060;
+    --color-grape-800: #400046;
+    --color-grape-900: #2c0031;
+
+    --color-jacksons-purple-50: #f4f4ff;
+    --color-jacksons-purple-100: #d3d0ff;
+    --color-jacksons-purple-200: #b4abff;
+    --color-jacksons-purple-300: #978ddf;
+    --color-jacksons-purple-400: #7b70c0;
+    --color-jacksons-purple-500: #6053a3;
+    --color-jacksons-purple-600: #523d9d;
+    --color-jacksons-purple-700: #401c90;
+    --color-jacksons-purple-800: #2d0071;
+    --color-jacksons-purple-900: #210a56;
+
+    --color-sage-green-50: #fffdf8;
+    --color-sage-green-100: #f8f6f1;
+    --color-sage-green-200: #f0efea;
+    --color-sage-green-300: #e9e8e3;
+    --color-sage-green-400: #e2e1dc;
+    --color-sage-green-500: #dcdad2;
+    --color-sage-green-600: #b5af95;
+    --color-sage-green-700: #82774d;
+    --color-sage-green-800: #4f4100;
+    --color-sage-green-900: #1e1800;
+
+    --color-brick-50: #fff2ef;
+    --color-brick-100: #ffcfc4;
+    --color-brick-200: #ffa997;
+    --color-brick-300: #f5866f;
+    --color-brick-400: #da6d58;
+    --color-brick-500: #c1543f;
+    --color-brick-600: #b13018;
+    --color-brick-700: #891700;
+    --color-brick-800: #5A0B00;
+    --color-brick-900: #340400
+
+
     --background-image-gradient-radial: radial-gradient(var(--tw-gradient-stops));
-    --background-image-gradient-conic: conic-gradient(
-        from 180deg at 50% 50%,
-        var(--tw-gradient-stops)
-    );
+    --background-image-gradient-conic: conic-gradient(from 180deg at 50% 50%,
+            var(--tw-gradient-stops));
 
     --animate-wiggle: wiggle 1s ease-in-out infinite;
 
     @keyframes wiggle {
+
         0%,
         100% {
             transform: none;
         }
+
         50% {
             transform: translateY(-5px);
         }
@@ -36,6 +96,7 @@
     color utility to any element that depends on these defaults.
 */
 @layer base {
+
     *,
     ::after,
     ::before,
@@ -46,144 +107,192 @@
 }
 
 body {
-        background: #fbfbf1;
-        overscroll-behavior-x: none;
+    background: #fbfbf1;
+    overscroll-behavior-x: none;
 }
 
 h1 {
-        font-size: 48px;
-        font-family: Junicode;
-        font-weight: normal;
-        line-height: 100%;
-        letter-spacing: -2.4px;
-        color: #3688d4;
+    font-size: 96px;
+    font-family: Gascogne;
+    font-weight: normal;
+    line-height: 125%;
+    letter-spacing: 0px;
+    color: #3688d4;
 }
 
 h2 {
-        font-size: 28px;
-        font-family: Junicode;
-        font-weight: normal;
-        line-height: 100%;
-        letter-spacing: -1.4px;
-        color: #37344b;
+    font-size: 72px;
+    font-family: Gascogne;
+    font-weight: normal;
+    line-height: 125%;
+    letter-spacing: 0px;
+    color: #37344b;
 }
 
 h3 {
-        font-size: 28px;
-        font-family: Junicode;
-        font-weight: normal;
-        font-style: italic;
-        line-height: 100%;
-        letter-spacing: -1.4px;
-        color: #37344b;
+    font-size: 48px;
+    font-family: Gascogne;
+    font-weight: normal;
+    line-height: 125%;
+    letter-spacing: 0px;
+    color: #37344b;
 }
 
 h4 {
-        font-size: 14px;
-        font-family: Epilogue;
-        font-weight: 600;
-        line-height: 100%;
-        letter-spacing: 0.28px;
-        color: #37344b;
+    font-size: 32px;
+    font-family: Gascogne;
+    font-weight: normal;
+    line-height: 133%;
+    letter-spacing: 0.64px;
+    color: #37344b;
 }
 
 h5 {
-        font-size: 16px;
-        font-family: Epilogue;
-        font-weight: normal;
-        line-height: 145%;
-        letter-spacing: 0.32px;
+    font-size: 24px;
+    font-family: Helvetica Neue;
+    font-weight: 500;
+    line-height: 133%;
+    letter-spacing: 0.48px;
+}
+
+h6 {
+    font-size: 20px;
+    font-family: Helvetica Neue;
+    font-weight: 500;
+    line-height: 145%;
+    letter-spacing: 0.4px;
+}
+
+.l-regular {
+    font-size: 16px;
+    font-family: Helvetica Neue;
+    font-weight: normal;
+    line-height: 145%;
+    letter-spacing: -0.32px;
+}
+
+.l-light {
+    font-size: 16px;
+    font-family: Helvetica Neue;
+    font-weight: 300;
+    line-height: 145%;
+    letter-spacing: -0.32px;
+}
+
+.m-regular {
+    font-size: 14px;
+    font-family: Helvetica Neue;
+    font-weight: normal;
+    line-height: 145%;
+    letter-spacing: -0.28px;
+}
+
+.m-light {
+    font-size: 14px;
+    font-family: Helvetica Neue;
+    font-weight: 300;
+    line-height: 145%;
+    letter-spacing: -0.28px;
 }
 
 .s-regular {
-        font-size: 12px;
-        font-family: Epilogue;
-        font-weight: normal;
-        line-height: 145%;
-        letter-spacing: 0.24px;
+    font-size: 12px;
+    font-family: Helvetica Neue;
+    font-weight: normal;
+    line-height: 145%;
+    letter-spacing: -0.24px;
 }
 
 .s-light {
-        font-size: 12px;
-        font-family: Epilogue;
-        font-weight: 300;
-        line-height: 145%;
-        letter-spacing: 0.24px;
+    font-size: 12px;
+    font-family: Helvetica Neue;
+    font-weight: 300;
+    line-height: 145%;
+    letter-spacing: -0.24px;
+}
+
+.text-navigation {
+    font-size: 12px;
+    font-family: Helvetica Neue;
+    font-weight: 300;
+    line-height: 145%;
+    letter-spacing: 1.08px;
 }
 
 .xs-regular {
-        font-size: 10px;
-        font-family: Epilogue;
-        font-weight: normal;
-        line-height: 145%;
-        letter-spacing: 0.2px;
+    font-size: 10px;
+    font-family: Epilogue;
+    font-weight: normal;
+    line-height: 145%;
+    letter-spacing: 0.2px;
 }
 
 .xs-semibold {
-        font-size: 10px;
-        font-family: Epilogue;
-        font-weight: 600;
-        line-height: 145%;
-        letter-spacing: 0.2px;
+    font-size: 10px;
+    font-family: Epilogue;
+    font-weight: 600;
+    line-height: 145%;
+    letter-spacing: 0.2px;
 }
 
 @media (max-width: 1023px) {
-        h1 {
-                font-size: 32px;
-                letter-spacing: -1.6px;
-        }
-        h2 {
-                font-size: 22px;
-                letter-spacing: -1.1px;
-        }
-        h3 {
-                font-size: 22px;
-                letter-spacing: -1.1px;
-        }
-        h4 {
-                font-size: 12px;
-                letter-spacing: 0.24px;
-        }
-        h5 {
-                font-size: 14px;
-                letter-spacing: 0.28px;
-        }
-        .s-regular {
-                font-size: 10px;
-                letter-spacing: 0.2px;
-        }
-        .s-light {
-                font-size: 10px;
-                letter-spacing: 0.2px;
-        }
-        .grid-wide {
-                grid-column: span 1;
-                aspect-ratio: 1 / 1;
-        }
-        .grid-long {
-                height: calc(85vw * 2 + 24px);
-        }
+    h1 {
+        font-size: 32px;
+    }
+
+    h2 {
+        font-size: 22px;
+    }
+
+    h3 {
+        font-size: 22px;
+    }
+
+    h4 {
+        font-size: 20px;
+        letter-spacing: 0.4px;
+    }
+
+    h5 {
+        font-size: 18px;
+        letter-spacing: 0.36px;
+    }
+
+    h6 {
+        font-size: 16px;
+        letter-spacing: 0.32px;
+    }
+
+    .grid-wide {
+        grid-column: span 1;
+        aspect-ratio: 1 / 1;
+    }
+
+    .grid-long {
+        height: calc(85vw * 2 + 24px);
+    }
 }
 
 @media (min-width: 1024px) {
-        .grid-wide {
-                grid-column: span 2;
-                height: calc((85vw - 48px) / 3);
-        }
+    .grid-wide {
+        grid-column: span 2;
+        height: calc((85vw - 48px) / 3);
+    }
 }
 
 .grid-long {
-        grid-row: span 2;
+    grid-row: span 2;
 }
 
 .fun-stuff-title {
-        text-align: start;
-        transition-property: color;
-        transition-duration: 300ms;
-        transition-timing-function: ease-in-out;
-        &:hover {
-                color: #3688d4;
-        }
+    text-align: start;
+    transition-property: color;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
+
+    &:hover {
+        color: #3688d4;
+    }
 }
 
 p {
@@ -259,12 +368,38 @@ img.animate-hidden.right {
     font-weight: 600;
 }
 
+@font-face {
+    font-family: 'Gascogne';
+    src: url('/fonts/Gascogne-Serial Regular.ttf');
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('/fonts/HelveticaNeue Regular.ttf');
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('/fonts/HelveticaNeue Light.ttf');
+    font-style: normal;
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('/fonts/HelveticaNeue Medium.ttf');
+    font-style: normal;
+    font-weight: 500;
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     display: none;
 }
 
-input[type=number]{
+input[type=number] {
     -moz-appearance: textfield;
     appearance: textfield;
 }

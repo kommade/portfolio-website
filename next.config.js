@@ -45,9 +45,6 @@ const nextConfig = {
         ]
     },
     cacheComponents: true,
-    experimental: {
-        useCache: true
-    },
     async rewrites() {
         return [
             {
