@@ -72,9 +72,39 @@ const Header = ({ isLoginPage = false, isNewPage = false, newHidden = false }) =
         }
     }
 
+    const navItems = [
+        { label: "CONTACT", href: "/contact" },
+        { label: "EXPLORATIONS", href: "/fun-stuff" },
+        { label: "CASE STORIES", href: "/projects" },
+        { label: "HOME", href: "/" },
+    ];
+
     return (
         <>
-            <header className=" w-[100vw] h-[40px] lg:h-[70px] fixed z-2024 bg-pale-butter flex flex-col justify-center shadow-sm">
+            <header className="fixed top-0 z-2026 w-full left-[50%] translate-x-[-50%] bg-sage-green-400">
+                <nav aria-label="Main navigation" className="flex h-[96px] items-start overflow-hidden bg-sage-green-400">
+                    {navItems.map((item, index) => {
+                        const isActiveIndex = navItems.findIndex((navItem) => navItem.href === pathname);
+                        const isActive = index === isActiveIndex;
+
+                        return (
+                            <div
+                                key={item.href}
+                                className={`relative flex min-w-0 flex-1 flex-col items-start ${index === 0 ? "" : "mr-[-16px]"} ${index === navItems.length - 1 ? "" : "ml-[-16px]"} ${isActive ? "z-2027" : ""}`}
+                            >
+                                <Link
+                                    href={item.href}
+                                    className={`relative z-10 flex h-[48px] w-full items-start justify-center  ${index === navItems.length - 1 || isActive ? "rounded-tr-2xl border-r" : ""} ${index === isActiveIndex + 1 ? "" : "rounded-tl-2xl border-l"} border-t border-monsoon-300 px-8 py-4 ${isActive ? "border-monsoon-700 bg-sage-green-50" : "bg-sage-green-400"}`}
+                                >
+                                    <span className={`whitespace-nowrap px-4 text-base uppercase tracking-[1.44px] text-navigation ${isActive ? "font-medium text-brick-500" : "font-light text-monsoon-900"}`}>
+                                        {item.label}
+                                    </span>
+                                </Link>
+                                <div className={`h-[48px] w-full border-monsoon-700 bg-sage-green-50 ${index === navItems.length - 1 ? "border-r " : " "} ${isActive ? "" : "border-t"}`} />
+                            </div>
+                        );
+                    })}
+                </nav>
                 <div ref={parentDropdownRef} className="fixed lg:left-[60px] left-[20px]">
                     {(!isNewPage && role === "admin" && !newHidden) && (
                         <>
@@ -113,27 +143,6 @@ const Header = ({ isLoginPage = false, isNewPage = false, newHidden = false }) =
                             </div>
                         </>
                     )}
-                </div>
-                <div className="fixed left-[50%] transform -translate-x-1/2">
-                    <Link className="" href="/" rel="noopener noreferrer">
-                        <h1 className="p-1 hover:cursor-pointer">
-                            Juliette Khoo
-                        </h1>
-                    </Link>
-                </div>
-                <div className="fixed lg:right-[60px] right-[20px]">
-                    {
-                        !isLoginPage ? (role === "none" ? (
-                            <Link className="place-self-center hover:cursor-pointer" href={pathname === "/" ? "/login" : `/login?redirect=${pathname}`} rel="noopener noreferrer">
-                                <h5>LOGIN</h5>
-                            </Link>
-                        ) : (
-                            <button className="place-self-center " onClick={() => handleLogOut(false)} rel="noopener noreferrer">
-                                <h5>LOGOUT</h5>
-                            </button>
-                        )
-                        ) : <></>
-                    }
                 </div>
             </header>
             <PopUpComponent popUpProps={popUp} />

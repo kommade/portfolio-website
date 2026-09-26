@@ -8,7 +8,6 @@
     --color-neutral-light-grey: #e4e5e1;
     --color-muted: #e4e5e1;
 
-    /* Figma style-guide swatches kept alongside the existing project colors. */
     --color-monsoon-0: #ffffff;
     --color-monsoon-50: #faf9f8;
     --color-monsoon-100: #e7e0df;
@@ -109,6 +108,32 @@
 body {
     background: #fbfbf1;
     overscroll-behavior-x: none;
+}
+
+.hero-section {
+    min-height: min(702px, calc(100vw * 0.5404));
+}
+
+.hero-viewport {
+    width: min(1299px, 100vw);
+    height: min(702px, calc(100vw * 0.5404));
+}
+
+.hero-canvas {
+    width: 1299px;
+    height: 702px;
+    transform: translateX(-50%);
+    transform-origin: top center;
+}
+
+@media (max-width: 1299px) {
+    .hero-viewport {
+        height: 528px;
+    }
+
+    .hero-canvas {
+        transform: translateX(-50%) scale(0.75);
+    }
 }
 
 h1 {

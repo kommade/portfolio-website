@@ -7,6 +7,7 @@ import Image from "next/image";
 import { logout } from "@/functions/actions";
 import { useEffect } from "react";
 import { ProjectThumbnailResponse } from "@/components/GridComponents";
+import TextileWeaveHero from "@/components/TextileWeaveHero";
 
 type HomeProps = {
     keys: string[];
@@ -28,13 +29,36 @@ export default function Home({ keys, response }: HomeProps) {
         <main className="flex flex-col items-center justify-between overflow-x-clip">
             <div className="w-screen h-fit min-h-[100vh] relative flex flex-col">
                 <ScrollToTop />
-                <HeaderComponent/>
-                <GridComponents keys={keys} response={response} max={12} />
+                <HeaderComponent />
+                <section className="hero-section relative flex w-full items-start justify-center overflow-hidden border-x border-monsoon-700 bg-sage-green-50 mt-[96px]">
+                    <div className="hero-viewport relative">
+                        <div className="hero-canvas absolute left-1/2 top-0">
+                        <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-[-50px] w-full -translate-x-1/2 opacity-80">
+                            <TextileWeaveHero />
+                        </div>
+                        <div className="absolute left-1/2 top-[209.79px] z-10 flex -translate-x-1/2 flex-col items-center gap-6 py-[3px] text-center leading-[1.2]">
+                            <h1 className="!m-0 !min-w-max !text-[96px] !leading-[1.2] !text-jacksons-purple-500">Juliette Khoo</h1>
+                            <div className="flex min-w-max items-start justify-center gap-12 font-[Gascogne] text-[36px] tracking-[0.72px] text-sage-green-800">
+                                <span>experience designer</span>
+                                <span>storyteller</span>
+                                <span>strategist</span>
+                            </div>
+                        </div>
+                        <img aria-hidden="true" className="pointer-events-none absolute left-[278px] top-[349px] z-20 h-[56.923px] w-[343px]" src="/images/hero-experience.svg" alt="" />
+                        <img aria-hidden="true" className="pointer-events-none absolute left-[653px] top-[384px] z-20 h-[15.191px] w-[169.197px] rotate-[-1.08deg]" src="/images/hero-underline.svg" alt="" />
+                        <img aria-hidden="true" className="pointer-events-none absolute left-[575px] top-[87px] z-20 h-[110.225px] w-[178.004px]" src="/images/hero-dots.svg" alt="" />
+                        <img aria-hidden="true" className="pointer-events-none absolute left-[358px] top-[339px] z-20 h-[20.413px] w-[20.413px] rotate-[-8.31deg]" src="/images/hero-star.svg" alt="" />
+                        <img aria-hidden="true" className="pointer-events-none absolute left-[835px] top-[329px] z-20 h-[79.773px] w-[149.815px]" src="/images/hero-strategist.svg" alt="" />
+                        </div>
+                    </div>
+                </section>
+
+                {/* <GridComponents keys={keys} response={response} max={12} />
                 <div className="w-[85%] mx-[7.5%] h-fit flex my-[32px] justify-center items-end">
                     <Link href="/projects" rel="noopener noreferrer">
                         <h5 className="text-warm-grey hover:text-black transition-colors">See all</h5>
                     </Link>
-                </div>
+                </div> */}
                 <section className="w-full h-fit relative bg-slate-400 flex justify-start">
                     <article className="info-container lg:p-16 p-4 h-fit ">
                         <div className="flex flex-col lg:flex-row justify-center items-center lg:items-stretch">
