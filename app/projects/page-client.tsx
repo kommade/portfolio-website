@@ -3,15 +3,20 @@
 import { FooterComponent, GridComponents, HeaderComponent, ScrollComponent, ScrollToTop } from "@/components";
 import { ProjectThumbnailResponse } from "@/components/GridComponents";
 import { useSearchParams } from "next/navigation";
+import CaseStories from "@/components/CaseStories";
+import type { ProjectThumbnailData } from "@/components/GridComponents";
 
 type ProjectProps = {
     keys: string[];
     response: ProjectThumbnailResponse;
+    admin?: boolean;
 };
 
-export default function Projects({ keys, response }: ProjectProps) {
+export default function Projects({ keys, response, admin = false }: ProjectProps) {
     const searchParams = useSearchParams();
     const editMode = searchParams.get("edit") === "true";
+
+    if (!editMode) return <CaseStories projects={response.flatMap(r => r.success && r.data ? [r.data as ProjectThumbnailData] : [])} admin={admin} />;
 
     return (
         <main className="flex flex-col items-center justify-between overflow-x-clip">

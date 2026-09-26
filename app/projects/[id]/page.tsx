@@ -2,6 +2,8 @@ import { getProjectKey, getProjectData, getAllProjectIds } from "@/functions/db"
 import { FooterComponent, HeaderComponent, MessageDisplayComponent, } from "@/components";
 import { ProjectPage } from "./page-client";
 import { getRole } from "@/functions/actions";
+import PortfolioShell from "@/components/PortfolioShell";
+import MagicKeyForm from "@/components/MagicKeyForm";
 
 export function generateStaticParams() {
     return getAllProjectIds().then(ids => ids.map(id => ({ id })));
@@ -35,6 +37,9 @@ async function DataFetcher({ id }: { id: Promise<string> }) {
                 </div>
             </main>
         );
+    }
+    if (data?.access === "member" && role !== "member" && role !== "admin") {
+        return <PortfolioShell title="Case Stories" mutedTitle><MagicKeyForm redirect={`/projects/${await id}`} /></PortfolioShell>;
     }
     return <ProjectPage projectKey={key!} serverData={data!} id={await id} role={role} />
     ;

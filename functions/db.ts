@@ -53,7 +53,7 @@ export const getProjectKey = async (id: string | Promise<string>) => {
 }
 
 export const getProjectThumbnail = async (projectKey: string) => {
-    const data = await redis.hmget(projectKey, ...["name", "desc", "image", "year", "id"]);
+    const data = await redis.hmget(projectKey, ...["name", "desc", "image", "year", "id", "sector", "domain"]);
     if (data == null) {
         return { success: false };
     }
@@ -176,13 +176,15 @@ export const getFunStuff = async () => {
     const sketchData = await getAllCategoryData(await redis.keys("sketchbook*"));
     const photogData = (await getAllCategoryData(await redis.keys("photography*")));
     const craftData = await getAllCategoryData(await redis.keys("craft*"));
+    const interactionData = await getAllCategoryData(await redis.keys("interaction:*"));
     return {
         data: {
             sketchbook: sketchData.data,
             photography: photogData.data.reverse(),
-            craft: craftData.data
+            craft: craftData.data,
+            interaction: interactionData.data
         },
-        success: sketchData.success && photogData.success && craftData.success
+        success: sketchData.success && photogData.success && craftData.success && interactionData.success
     };
 }
 export const getAllCategoryData = async (ids: string[]) => {
@@ -235,7 +237,7 @@ export const deleteItem = async (key: string) => {
                     }));
                     await redis.del(projectId);
                 }
-            } else if (key.startsWith("photography:") || key.startsWith("sketchbook:") || key.startsWith("craft:")) {
+            } else if (key.startsWith("photography:") || key.startsWith("sketchbook:") || key.startsWith("craft:") || key.startsWith("interaction:")) {
                 const funstuffData = await redis.hget(key, "url");
                 if (funstuffData && typeof funstuffData === "string" && funstuffData.startsWith("https://juliette-portfolio-website.s3.ap-southeast-2.amazonaws.com/")) {
                     const id = funstuffData.split("funstuff/")[1];

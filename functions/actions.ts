@@ -4,7 +4,8 @@ import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import bcrypt from 'bcryptjs';
 import jwt, { TokenExpiredError } from "jsonwebtoken";
 import { Redis } from "@upstash/redis";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
+import { createHash } from "node:crypto";
 import { logger } from "./db";
 import { ProjectData } from "@/components";
 import { Resend } from "resend";
@@ -282,3 +283,29 @@ export const prefetchImagesForURL = async (href: string) => {
         images,
     }
 }
+
+// Member passwords double as shared keys; administrator passwords are excluded.
+export const loginWithMagicKey = async (formData: FormData) => {
+    const password = formData.get("password");
+    if (typeof password !== "string" || !password || password.length > 256) {
+        return { success: false, message: "Please enter your magic key." };
+    }
+    const requestHeaders = await headers();
+    const address = requestHeaders.get("x-vercel-forwarded-for") || requestHeaders.get("x-forwarded-for") || "local";
+    const bucket = createHash("sha256").update(address.split(",")[0].trim()).digest("hex");
+    const attemptKey = `magic-key-attempts:${bucket}`;
+    const attempts = await redis.incr(attemptKey);
+    if (attempts === 1) await redis.expire(attemptKey, 900);
+    if (attempts > 10) return { success: false, message: "Too many attempts. Please try again in 15 minutes." };
+    const users = await redis.lrange<string>("users", 0, -1);
+    for (const username of users) {
+        const user = await redis.hgetall<User>(username);
+        if (user?.role !== "member" || typeof user.hash !== "string") continue;
+        if (!(await bcrypt.compare(password, user.hash))) continue;
+        const token = jwt.sign({ userId: username, role: "member" }, process.env.SECRET_KEY as string, { expiresIn: "1h" });
+        (await cookies()).set("token", token, { maxAge: 3600, httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "strict", path: "/" });
+        await redis.del(attemptKey);
+        return { success: true };
+    }
+    return { success: false, message: "That key didn’t work. Please try again." };
+};

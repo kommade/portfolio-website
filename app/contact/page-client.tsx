@@ -1,90 +1,41 @@
 "use client";
 
-import { HeaderComponent, FooterComponent, usePopUp, PopUpComponent } from "@/components";
+import { useState } from "react";
 import { submitContactForm } from "@/functions/actions";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import React from 'react'
+import PortfolioShell, { DesignIcon } from "@/components/PortfolioShell";
 
-const Contact = () => {
-    const router = useRouter()
-    const [popUp, setPopUp] = usePopUp();
-    return (
-        <main className="flex flex-col items-center justify-between overflow-x-clip">
-            <div className="w-screen h-[100vh] relative flex flex-col">
-                <HeaderComponent/>
-                <section className="w-full min-h-[calc(100%_-_128px)] lg:min-h-[calc(100vh_-_138px)] relative flex justify-center items-center mt-[40px] lg:mt-[70px]">
-                    <Image
-                        className="absolute -translate-x-[300px]"
-                        src="/images/contact-page-cat.png"
-                        alt="contact"
-                        width={250}
-                        height={333}
-                        priority
-                        draggable={false}
-                        onContextMenu={(e) => e.preventDefault()}
-                    />
-                    <form
-                        className="relative items-center justify-center flex flex-col"
-                        action={async (formData) => {
-                            const res = await submitContactForm(formData);
-                            if (res.success) {
-                                setPopUp({
-                                    message: "Message sent!",
-                                    type: "success",
-                                    duration: 1000
-                                });
-                                setTimeout(() => {
-                                    router.push("/");
-                                }, 1000);
-                            } else {
-                                switch (res.message) {
-                                    case "invalid email":
-                                        setPopUp({
-                                            message: "Invalid email",
-                                            type: "warning",
-                                            duration: 1000
-                                        })
-                                        break;
-                                    default:
-                                        setPopUp({
-                                            message: "Something went wrong",
-                                            type: "warning",
-                                            duration: 1000
-                                        })
-                                        break;
-                                }
-                            }
-                        }}
-                    >
-                        <div className="flex flex-col">
-                            <section className="flex flex-col m-2 gap-2.5">
-                                <label className="xs-semibold text-start text-eggplant-purple">
-                                    Name:
-                                </label>
-                                <input className="w-[300px] h-[35px] bg-neutral-200 pl-2 s-regular" spellCheck={false} name="name" required autoComplete="name"/>
-                            </section>
-                            <section className="flex flex-col m-2 gap-2.5">
-                                <label className="xs-semibold text-start text-eggplant-purple" >
-                                    Email:
-                                </label>
-                                <input className="w-[300px] h-[35px] bg-neutral-200 pl-2 s-regular focus:ring-2" spellCheck={false} name="email" type="email" required/>
-                            </section>
-                            <section className="flex flex-col m-2 gap-2.5">
-                                <label className="xs-semibold text-start text-eggplant-purple" >
-                                    Message:
-                                </label>
-                                <textarea className="w-[300px] h-[150px] bg-neutral-200 p-2 s-regular focus:ring-2 resize-none" name="message" required/>
-                            </section>
-                        </div>
-                        <input className="m-3 w-[300px] h-[54px] bg-eggplant-purple rounded-xl px-6 py-1 hover:cursor-pointer text-center s-light active:bg-orange-50 active:border active:border-eggplant-purple text-white active:text-eggplant-purple" type="submit" value="Submit" />
-                    </form>
-                </section>
-                <PopUpComponent popUpProps={popUp}/>
-                <FooterComponent/>
+export default function Contact() {
+    const [sent, setSent] = useState(false);
+    const [pending, setPending] = useState(false);
+    const [error, setError] = useState("");
+    return <PortfolioShell title="Contact">
+        <div className="contact-layout">
+            <div className={`contact-card${sent ? " contact-success" : ""}`}>
+                {sent ? <div role="status" className="key-intro"><DesignIcon name="sent" /><p>Your message has been sent</p></div> :
+                    <form onSubmit={async event => {
+                        event.preventDefault();
+                        if (pending) return;
+                        const formData = new FormData(event.currentTarget);
+                        setPending(true); setError("");
+                        try {
+                            const result = await submitContactForm(formData);
+                            if (result.success) setSent(true);
+                            else setError(result.message === "invalid email" ? "Please enter a valid email address." : "Your message could not be sent. Please try again.");
+                        } catch { setError("Your message could not be sent. Please try again."); }
+                        finally { setPending(false); }
+                    }} aria-busy={pending}>
+                        <label>Name<input name="name" autoComplete="name" required maxLength={200} /></label>
+                        <label>Email Address<input name="email" type="email" autoComplete="email" required maxLength={320} /></label>
+                        <label>Message<textarea name="message" required maxLength={10000} /></label>
+                        {error && <p className="form-error" role="alert">{error}</p>}
+                        <button className="design-button" disabled={pending} type="submit">{pending ? "Sending…" : "Send Message"}<DesignIcon name="send" /></button>
+                    </form>}
             </div>
-        </main>
-    )
+            <aside className="contact-copy">
+                <h2 className="section-heading">Thanks for dropping by!</h2>
+                <p>If you’d like to get in touch, please use the form and I’ll get back to you within 3-5 working days. In the meantime, connect with me on</p>
+                <p><a href="https://www.linkedin.com/in/juliette-khoo/" target="_blank" rel="noopener noreferrer">LinkedIn<DesignIcon name="external" /></a> and <a href="https://medium.com/@khoo.juliette" target="_blank" rel="noopener noreferrer">Medium<DesignIcon name="external" /></a>.</p>
+            </aside>
+        </div>
+    </PortfolioShell>;
 }
-
-export default Contact

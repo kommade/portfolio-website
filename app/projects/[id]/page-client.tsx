@@ -12,6 +12,7 @@ import React from "react";
 import ProjectSettingsComponent from "@/components/ProjectSettingsComponent";
 import FullScreenImageComponent from "@/components/FullScreenImageComponent";
 import { uploadNewProjectImage } from "@/functions/actions";
+import CaseStory from "@/components/CaseStory";
 
 
 export interface ProjectData {
@@ -44,6 +45,14 @@ export interface ProjectData {
 }
 
 export function ProjectPage({ projectKey, serverData, id, role }:
+    { projectKey: string, serverData: ProjectData, id: string, role: string }
+) {
+    const searchParams = useSearchParams();
+    if (role === "admin" && searchParams.get("edit") === "true") return <ProjectEditor projectKey={projectKey} serverData={serverData} id={id} role={role} />;
+    return <CaseStory data={serverData} id={id} admin={role === "admin"} />;
+}
+
+function ProjectEditor({ projectKey, serverData, id, role }:
     { projectKey: string, serverData: ProjectData, id: string, role: string }
 ) {
     const searchParams = useSearchParams();

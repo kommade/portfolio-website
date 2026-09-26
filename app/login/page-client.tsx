@@ -1,6 +1,7 @@
 "use client";
 
-import { FooterComponent, HeaderComponent, LoginComponent } from "@/components";
+import PortfolioShell from "@/components/PortfolioShell";
+import MagicKeyForm from "@/components/MagicKeyForm";
 import { useSearchParams } from "next/navigation";
 
 export function Login() {
@@ -8,12 +9,8 @@ export function Login() {
     const redirect = searchParams.get("redirect")
 
     return (
-        <main className="flex flex-col items-center justify-between overflow-x-clip">
-            <div className="w-screen h-[100vh] relative flex flex-col">
-                <HeaderComponent isLoginPage={true} />
-                <LoginComponent redirect={redirect ? redirect : "/"} />
-                <FooterComponent/>
-            </div>
-        </main>
+        <PortfolioShell title="Case Stories" mutedTitle>
+            <MagicKeyForm redirect={redirect || "/projects"} admin={searchParams.get("mode") === "admin"} />
+        </PortfolioShell>
     );
 }

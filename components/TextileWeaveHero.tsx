@@ -1,45 +1,7 @@
 export default function TextileWeaveHero() {
   return (
-    <div style={{ width: "100%" }}>
-      <style>{`
-        @keyframes weave-fabricFade { 0%,80%{opacity:1} 84%,100%{opacity:0} }
-        @keyframes weave-row0 { 0%,0%{stroke-dashoffset:1} 6.5%,100%{stroke-dashoffset:0} }
-        @keyframes weave-row1 { 0%,7.5%{stroke-dashoffset:1} 14%,100%{stroke-dashoffset:0} }
-        @keyframes weave-row2 { 0%,15%{stroke-dashoffset:1} 21.5%,100%{stroke-dashoffset:0} }
-        @keyframes weave-row3 { 0%,22.5%{stroke-dashoffset:1} 29%,100%{stroke-dashoffset:0} }
-        @keyframes weave-row4 { 0%,30%{stroke-dashoffset:1} 36.5%,100%{stroke-dashoffset:0} }
-        @keyframes weave-row5 { 0%,37.5%{stroke-dashoffset:1} 44%,100%{stroke-dashoffset:0} }
-        @keyframes weave-row6 { 0%,45%{stroke-dashoffset:1} 51.5%,100%{stroke-dashoffset:0} }
-        @keyframes weave-row7 { 0%,52.5%{stroke-dashoffset:1} 59%,100%{stroke-dashoffset:0} }
-        @keyframes weave-row8 { 0%,60%{stroke-dashoffset:1} 66.5%,100%{stroke-dashoffset:0} }
-        @keyframes weave-sh0 { 0%,5.8%{opacity:0;transform:translateX(0) rotate(0deg)} 6.2%,6.3%{opacity:0.85} 6.5%{transform:translateX(562px) rotate(6deg)} 6.9%,100%{opacity:0} }
-        @keyframes weave-sh1 { 0%,7%{opacity:0;transform:translateX(0) rotate(0deg)} 7.5%,7.6%{opacity:0.85} 13.8%,14%{transform:translateX(-562px) rotate(-5deg)} 14.3%,100%{opacity:0} }
-        @keyframes weave-sh2 { 0%,14.5%{opacity:0;transform:translateX(0) rotate(0deg)} 15%,15.1%{opacity:0.85} 21.3%,21.5%{transform:translateX(562px) rotate(7deg)} 21.8%,100%{opacity:0} }
-        @keyframes weave-sh3 { 0%,22%{opacity:0;transform:translateX(0) rotate(0deg)} 22.5%,22.6%{opacity:0.85} 28.8%,29%{transform:translateX(-562px) rotate(-6deg)} 29.3%,100%{opacity:0} }
-        @keyframes weave-sh4 { 0%,29.5%{opacity:0;transform:translateX(0) rotate(0deg)} 30%,30.1%{opacity:0.85} 36.3%,36.5%{transform:translateX(562px) rotate(5deg)} 36.8%,100%{opacity:0} }
-        @keyframes weave-sh5 { 0%,37%{opacity:0;transform:translateX(0) rotate(0deg)} 37.5%,37.6%{opacity:0.85} 43.8%,44%{transform:translateX(-562px) rotate(-7deg)} 44.3%,100%{opacity:0} }
-        @keyframes weave-sh6 { 0%,44.5%{opacity:0;transform:translateX(0) rotate(0deg)} 45%,45.1%{opacity:0.85} 51.3%,51.5%{transform:translateX(562px) rotate(6deg)} 51.8%,100%{opacity:0} }
-        @keyframes weave-sh7 { 0%,52%{opacity:0;transform:translateX(0) rotate(0deg)} 52.5%,52.6%{opacity:0.85} 58.8%,59%{transform:translateX(-562px) rotate(-5deg)} 59.3%,100%{opacity:0} }
-        @keyframes weave-sh8 { 0%,59.5%{opacity:0;transform:translateX(0) rotate(0deg)} 60%,60.1%{opacity:0.85} 66.3%,66.5%{transform:translateX(562px) rotate(6deg)} 66.8%,100%{opacity:0} }
+    <div className="hero-fabric">
 
-        @media (prefers-reduced-motion: no-preference) {
-          .weave-wefts { animation: weave-fabricFade 20s ease-in-out infinite; }
-          .weave-r0 { animation: weave-row0 20s linear infinite; } .weave-r1 { animation: weave-row1 20s linear infinite; }
-          .weave-r2 { animation: weave-row2 20s linear infinite; } .weave-r3 { animation: weave-row3 20s linear infinite; }
-          .weave-r4 { animation: weave-row4 20s linear infinite; } .weave-r5 { animation: weave-row5 20s linear infinite; }
-          .weave-r6 { animation: weave-row6 20s linear infinite; } .weave-r7 { animation: weave-row7 20s linear infinite; }
-          .weave-r8 { animation: weave-row8 20s linear infinite; }
-          .weave-d0 { animation: weave-sh0 20s linear infinite; transform-origin: 58px 60px; }
-          .weave-d1 { animation: weave-sh1 20s linear infinite; transform-origin: 620px 95px; }
-          .weave-d2 { animation: weave-sh2 20s linear infinite; transform-origin: 58px 130px; }
-          .weave-d3 { animation: weave-sh3 20s linear infinite; transform-origin: 620px 165px; }
-          .weave-d4 { animation: weave-sh4 20s linear infinite; transform-origin: 58px 200px; }
-          .weave-d5 { animation: weave-sh5 20s linear infinite; transform-origin: 620px 235px; }
-          .weave-d6 { animation: weave-sh6 20s linear infinite; transform-origin: 58px 270px; }
-          .weave-d7 { animation: weave-sh7 20s linear infinite; transform-origin: 620px 305px; }
-          .weave-d8 { animation: weave-sh8 20s linear infinite; transform-origin: 58px 340px; }
-        }
-      `}</style>
 
       <svg
         width="100%"

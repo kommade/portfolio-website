@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { NextRequest } from 'next/server'
-import { jwtVerify } from "jose"; 
+import { jwtVerify } from "jose";
 import { JWTExpired } from "jose/errors";
 
 export async function proxy(request: NextRequest) {
@@ -29,7 +29,14 @@ export async function proxy(request: NextRequest) {
         }
     }
     if (token && request.nextUrl.pathname === "/login") {
-        return NextResponse.redirect(new URL("/", request.url));
+        try {
+            const decoded = await jwtVerify(token.value, new TextEncoder().encode(process.env.SECRET_KEY as string));
+            if (decoded.payload.role === "admin" || (decoded.payload.role === "member" && request.nextUrl.searchParams.get("mode") !== "admin")) {
+                const redirect = request.nextUrl.searchParams.get("redirect") || "/projects";
+                return NextResponse.redirect(new URL(redirect.startsWith("/") && !redirect.startsWith("//") && !redirect.includes("\\") ? redirect : "/projects", request.url));
+            }
+        } catch {
+            // An expired cookie must not prevent signing in again.
+        }
     }
 }
- 

@@ -7,6 +7,21 @@ import Image from "next/image";
 import { getRole, logout } from "@/functions/actions";
 import { PopUpComponent, usePopUp } from "./PopUpComponent";
 
+export const portfolioNavigation = [
+    { label: "CONTACT", href: "/contact" },
+    { label: "EXPLORATIONS", href: "/fun-stuff" },
+    { label: "CASE STORIES", href: "/projects" },
+    { label: "HOME", href: "/" },
+];
+
+export function PortfolioNavigation() {
+    const pathname = usePathname();
+    const active = pathname === "/login" ? "/projects" : pathname;
+    return <nav className="portfolio-tabs" aria-label="Main navigation">
+        {portfolioNavigation.map(({ href, label }) => <Link key={href} href={href} aria-current={(href === "/" ? active === "/" : active.startsWith(href)) ? "page" : undefined}>{label}</Link>)}
+    </nav>;
+}
+
 const Header = ({ isLoginPage = false, isNewPage = false, newHidden = false }) => {
     const searchParams = useSearchParams();
     const pathname = usePathname();
@@ -72,12 +87,7 @@ const Header = ({ isLoginPage = false, isNewPage = false, newHidden = false }) =
         }
     }
 
-    const navItems = [
-        { label: "CONTACT", href: "/contact" },
-        { label: "EXPLORATIONS", href: "/fun-stuff" },
-        { label: "CASE STORIES", href: "/projects" },
-        { label: "HOME", href: "/" },
-    ];
+    const navItems = portfolioNavigation;
 
     return (
         <>

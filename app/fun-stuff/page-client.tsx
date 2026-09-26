@@ -6,14 +6,22 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from 'react';
 import Image from "next/image";
 import { logout } from "@/functions/actions";
+import Explorations from "@/components/Explorations";
 
 export interface FunStuffData {
+    interaction: ({ id:string, name: string, url: string } | null)[];
     sketchbook: ({ id:string, name: string, url: string } | null)[];
     photography: ({ id:string, name: string, url: string } | null)[];
     craft: ({ id:string, name: string, url: string } | null)[]
 }
 
 export const FunStuff = ({ data, role }: { data: FunStuffData, role: "none" | "member" | "admin" | "expired" }) => {
+    const searchParams = useSearchParams();
+    if (role === "admin" && searchParams.get("edit") === "true") return <FunStuffEditor data={data} role={role} />;
+    return <Explorations data={data} admin={role === "admin"} />;
+};
+
+const FunStuffEditor = ({ data, role }: { data: FunStuffData, role: "none" | "member" | "admin" | "expired" }) => {
     const [n, setN] = useState(data["sketchbook"].length);
     const [position, setPosition] = useState(0); // Disclaimer: none of these are percentages
     const [prevPosition, setPrevPosition] = useState(0);
@@ -22,7 +30,7 @@ export const FunStuff = ({ data, role }: { data: FunStuffData, role: "none" | "m
     const numberDisplay = useRef(null);
     const [transition, setTransition] = useState(false);
     const [currentFullScreen, setCurrentFullScreen] = useState(-1);
-    const [category, setCategory] = useState<"sketchbook" | "photography" | "craft">("sketchbook")
+    const [category, setCategory] = useState<"sketchbook" | "photography" | "craft" | "interaction">("sketchbook")
     const searchParams = useSearchParams();
     const editMode = searchParams.get("edit") === "true";
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -194,7 +202,7 @@ export const FunStuff = ({ data, role }: { data: FunStuffData, role: "none" | "m
         });
     }
 
-    const categoryClicked = (newCategory: "sketchbook" | "photography" | "craft") => {
+    const categoryClicked = (newCategory: "sketchbook" | "photography" | "craft" | "interaction") => {
         if (newCategory === category) {
             return;
         }
@@ -264,8 +272,9 @@ export const FunStuff = ({ data, role }: { data: FunStuffData, role: "none" | "m
                                 categoryClicked("craft")
                                 setDropdown(false)
                             }}>
-                            Craft
+                            Finished Objects
                         </div>
+                        <button className="w-full p-2 rounded-lg hover:bg-white text-left" onClick={() => { setDropdown(false); categoryClicked("interaction"); }}>Interaction</button>
                     </div>
                     <div className={`w-fit h-[14px] absolute px-2 left-1/2 -translate-x-1/2 translate-y-[calc((87px_+_4vh)_/_2_-100%)] text-center flex transition-opacity duration-300 ease-in-out ${currentFullScreen > -1 ? "opacity-0" : ""}`}>
                         <h4 className="overflow-hidden">

@@ -9,7 +9,7 @@ import ReactSwitch from "react-switch";
 const UploadComponent = ({ type }: { type: string | undefined }) => {
     const [dropdown, setDropdown] = useState(false);
     const [submit, setSubmit] = useState(false);
-    const [category, setCategory] = useState<"Sketchbook" | "Photography" | "Craft">("Sketchbook");
+    const [category, setCategory] = useState<"Sketchbook" | "Photography" | "Craft" | "Interaction">("Sketchbook");
     const [gridEnabled, setGridEnabled] = useState(true)
     const [accessPublic, setAccessPublic] = useState(true)
     const [popUp, setPopUp] = usePopUp();
@@ -276,8 +276,9 @@ const UploadComponent = ({ type }: { type: string | undefined }) => {
                                             setCategory("Craft")
                                             setDropdown(false)
                                         }}>
-                                        Craft
+                                        Finished Objects
                                     </div>
+                                    <button type="button" className="w-full p-2 rounded-lg hover:bg-white text-left" onClick={() => { setDropdown(false); setCategory("Interaction"); }}>Interaction</button>
                                 </div>
                             </section>
                             <section className="flex flex-col mt-2 gap-2.5">
