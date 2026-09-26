@@ -1,8 +1,13 @@
+import Image from "next/image";
+
 export default function HomeSections() {
     return <>
         <section className="home-section" id="about" aria-labelledby="about-title">
             <div className="home-section-layout">
-                <div className="home-photo-placeholder" aria-hidden="true"><img className="home-tape home-tape-about" src="/design/about-tape.png" alt="" /></div>
+                <div className="home-photo">
+                    <Image className="home-portrait" src="/images/about-me.jpg" alt="Juliette Khoo outdoors" fill sizes="(max-width:800px) 85vw, 332px" />
+                    <Image className="home-tape home-tape-about" src="/design/about-tape.png" width={121} height={109} alt="" />
+                </div>
                 <div className="home-section-copy">
                     <h2 className="section-heading" id="about-title">About Me</h2>
                     <p>I’m a designer who strives to improve products, services and experiences through a deep understanding of users. After four years of architecture school at the University of Bath, I was familiar with the rigour of technical design, equipped with the brains of a systems thinker and driven by the excitement of crafting narratives and experiences for people. However, I felt that my work lacked meaning. To me, meaningful work is work that listens to the voice of the customer.</p>
@@ -19,7 +24,11 @@ export default function HomeSections() {
                     <ul><li>Qualitative User Research</li><li>Workshop Planning &amp; Execution</li><li>Mapping Current State and Future State Journeys</li><li>Archetype Development</li><li>Visual Storytelling</li><li>Usability Testing</li><li>Stakeholder Engagement</li></ul>
                     <ul><li>Figma</li><li>Adobe Creative Suite (PS, ID, AI)</li><li>Rhino 7</li><li>html/css/java</li><li>Qualtrics</li></ul>
                 </div>
-                <div className="home-photo-placeholder" aria-hidden="true"><img className="home-tape home-tape-skills" src="/design/skills-tape.png" alt="" /><img className="home-tape home-tape-bottom" src="/design/skills-bottom-tape.png" alt="" /></div>
+                <div className="home-photo">
+                    <Image className="home-portrait" src="/images/about-me.jpg" alt="Juliette Khoo outdoors" fill sizes="(max-width:800px) 85vw, 332px" />
+                    <Image className="home-tape home-tape-skills" src="/design/skills-tape.png" width={132} height={103} alt="" />
+                    <Image className="home-tape home-tape-bottom" src="/design/skills-bottom-tape.png" width={170} height={71} alt="" />
+                </div>
             </div>
         </section>
     </>;

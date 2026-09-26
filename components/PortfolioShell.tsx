@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import type { ReactNode } from "react";
 import { portfolioNavigation as navigation, PortfolioNavigation } from "./HeaderComponent";
 
@@ -12,13 +13,13 @@ export function DesignIcon({ name }: { name: "arrow" | "send" | "sent" | "extern
         external: "1050-2838-imgExternalLink1",
         lock: "1038-2621-imgIconLock",
     };
-    // Preserve the exported SVG's intrinsic dimensions.
-    return <img className="design-icon" src={`/design/${sources[name]}.svg`} alt="" aria-hidden="true" />;
+    const size = name === "external" ? 16 : 24;
+    return <Image className="design-icon" src={`/design/${sources[name]}.svg`} width={size} height={size} alt="" aria-hidden="true" />;
 }
 
 export function DesignChip({ children, colour = "sage" }: { children: ReactNode; colour?: "grape" | "brick" | "sage" }) {
     const icon = { grape: "imgEllipse1", sage: "imgEllipse2", brick: "imgEllipse3" }[colour];
-    return <span className="design-chip"><img src={`/design/1038-2100-${icon}.svg`} alt="" />{children}</span>;
+    return <span className="design-chip"><Image src={`/design/1038-2100-${icon}.svg`} width={12} height={12} alt="" />{children}</span>;
 }
 
 export default function PortfolioShell({ children, title, mutedTitle = false, className = "", tools }: {
@@ -29,6 +30,7 @@ export default function PortfolioShell({ children, title, mutedTitle = false, cl
             <a className="skip-link" href="#page-content">Skip to content</a>
             <header className="portfolio-header">
                 <PortfolioNavigation />
+                <div className="portfolio-page-cap" aria-hidden="true" />
             </header>
             <main id="page-content" className="portfolio-content">
                 {title && <h1 className={`portfolio-title${mutedTitle ? " is-muted" : ""}`}>{title}</h1>}

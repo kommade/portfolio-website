@@ -1,26 +1,14 @@
-import Image from "next/image"
-import { HeaderComponent } from "."
+import PortfolioShell from "./PortfolioShell";
 
 const LoadingComponent = () => {
     return (
-        <main className="flex flex-col items-center justify-between overflow-x-clip">
-            <div className="w-screen relative flex flex-col">
-                <HeaderComponent/>
-                <div className="w-full min-h-[calc(100vh_-_108px)] lg:min-h-[calc(100vh_-_138px)] relative items-center justify-center mt-[40px] lg:mt-[70px] flex flex-col">
-                    <h2>
-                        Almost done...
-                    </h2>
-                    <Image
-                        className=" animate-spin"
-                        width={24}
-                        height={24}
-                        src="/icons/loading.png"
-                        alt="Loading..."
-                        priority={true}
-                    />
-                </div>
+        <PortfolioShell className="portfolio-loading">
+            <div className="loading-state" role="status" aria-live="polite">
+                <div className="loading-mark" aria-hidden="true"><span /><span /><span /></div>
+                <h1 className="loading-title">Almost there…</h1>
+                <p>Loading the page. Just a moment.</p>
             </div>
-        </main>
+        </PortfolioShell>
     )
 }
 

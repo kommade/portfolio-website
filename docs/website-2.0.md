@@ -20,7 +20,7 @@ The portfolio continues to display existing Redis/S3 content. Figma sample proje
 - Optional `sector` and `domain` strings on each `project:<key>` Redis hash populate the preview chips. Missing values are omitted; existing projects remain compatible.
 - Existing project body sections generate the case-story contents links and image viewer. Existing team, skillset, and approach fields populate the three overview blocks.
 - The new Interaction category uses `interaction:<id>` records with the same `name` and `url` fields as other explorations. It can be populated through the existing upload form. The existing `craft` records display as “Finished Objects.”
-- The homepage's two gray image areas are placeholders in the final Figma screens; they remain placeholders pending final imagery.
+- Both homepage photo areas currently use `public/images/about-me.jpg`, with the Figma tape decorations retained. The second photo can be replaced when final imagery is available.
 - The healthcare example and its prototype-animation placeholder in Figma are not database projects. The implemented detail template uses existing project content.
 
 ## Checks
