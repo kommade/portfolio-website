@@ -34,9 +34,11 @@ test("existing member password creates a member session", async () => {
     expect(cookie[2].sameSite).toBe("strict");
     expect(attempts).toBe(0);
 });
-test("administrator passwords cannot become magic keys", async () => {
-    expect((await loginWithMagicKey(form("test-admin-password"))).success).toBe(false);
-    expect(cookie).toBeUndefined();
+test("administrator password creates an administrator session", async () => {
+    expect(await loginWithMagicKey(form("test-admin-password"))).toEqual({ success: true });
+    const payload = jwt.verify(cookie[1], process.env.SECRET_KEY);
+    expect(payload.role).toBe("admin");
+    expect(payload.userId).toBe("owner");
 });
 test("unknown keys do not create a session", async () => {
     expect((await loginWithMagicKey(form("wrong-key"))).success).toBe(false);

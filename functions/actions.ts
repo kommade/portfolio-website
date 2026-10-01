@@ -284,7 +284,7 @@ export const prefetchImagesForURL = async (href: string) => {
     }
 }
 
-// Member passwords double as shared keys; administrator passwords are excluded.
+// The magic-key field accepts member and administrator passwords.
 export const loginWithMagicKey = async (formData: FormData) => {
     const password = formData.get("password");
     if (typeof password !== "string" || !password || password.length > 256) {
@@ -300,9 +300,9 @@ export const loginWithMagicKey = async (formData: FormData) => {
     const users = await redis.lrange<string>("users", 0, -1);
     for (const username of users) {
         const user = await redis.hgetall<User>(username);
-        if (user?.role !== "member" || typeof user.hash !== "string") continue;
+        if ((user?.role !== "member" && user?.role !== "admin") || typeof user.hash !== "string") continue;
         if (!(await bcrypt.compare(password, user.hash))) continue;
-        const token = jwt.sign({ userId: username, role: "member" }, process.env.SECRET_KEY as string, { expiresIn: "1h" });
+        const token = jwt.sign({ userId: username, role: user.role }, process.env.SECRET_KEY as string, { expiresIn: "1h" });
         (await cookies()).set("token", token, { maxAge: 3600, httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "strict", path: "/" });
         await redis.del(attemptKey);
         return { success: true };

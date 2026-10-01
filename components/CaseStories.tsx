@@ -23,6 +23,6 @@ export default function CaseStories({ projects, admin = false }: { projects: Pro
                 </dl>
                 <Link className="design-button" href={`/projects/${project.id}`}>View Case Story<DesignIcon name="arrow" /></Link>
             </section>
-        </div> : <p className="case-empty">Case stories will appear here soon.</p>}
+        </div> : <p className="case-empty l-regular">Case stories will appear here soon.</p>}
     </PortfolioShell>;
 }

@@ -38,7 +38,7 @@ export default function PortfolioShell({ children, title, mutedTitle = false, cl
                 {children}
             </main>
             <footer className="portfolio-footer">
-                <p>© 2026 Juliette Khoo<br />Designed and built by Juliette and <a href="https://github.com/kommade" target="_blank" rel="noopener noreferrer">Jarrell Khoo</a></p>
+                <p className="l-regular">© 2026 Juliette Khoo<br />Designed and built by Juliette and <a href="https://github.com/kommade" target="_blank" rel="noopener noreferrer">Jarrell Khoo</a></p>
                 <nav aria-label="Footer navigation">{navigation.map(({ href, label }) => <Link key={href} href={href}>{label}</Link>)}</nav>
             </footer>
         </div>

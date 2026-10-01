@@ -24,7 +24,7 @@ export default function Explorations({ data, admin }: { data: FunStuffData; admi
                 {images.map((item,index) => <button className="exploration-tile" key={item.id} onClick={() => setViewer(index)} aria-label={`View ${item.name}`}>
                     <Image src={item.url} alt={item.name} fill sizes="(max-width:800px) 45vw, 500px" priority={index < 3} />
                 </button>)}
-            </div> : <p className="exploration-empty" id="exploration-gallery" role="status">New explorations are on their way.</p>}
+            </div> : <p className="exploration-empty l-regular" id="exploration-gallery" role="status">New explorations are on their way.</p>}
             <nav className="case-list exploration-categories" aria-label="Exploration categories">
                 {categories.map(item => <button key={item.key} aria-pressed={category === item.key} aria-controls="exploration-gallery" onClick={() => setCategory(item.key)}>{item.label}</button>)}
             </nav>

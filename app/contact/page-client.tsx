@@ -11,7 +11,7 @@ export default function Contact() {
     return <PortfolioShell title="Contact">
         <div className="contact-layout">
             <div className={`contact-card${sent ? " contact-success" : ""}`}>
-                {sent ? <div role="status" className="key-intro"><DesignIcon name="sent" /><p>Your message has been sent</p></div> :
+                {sent ? <div role="status" className="key-intro"><DesignIcon name="sent" /><p className="l-regular">Your message has been sent</p></div> :
                     <form onSubmit={async event => {
                         event.preventDefault();
                         if (pending) return;
@@ -27,14 +27,14 @@ export default function Contact() {
                         <label>Name<input name="name" autoComplete="name" required maxLength={200} /></label>
                         <label>Email Address<input name="email" type="email" autoComplete="email" required maxLength={320} /></label>
                         <label>Message<textarea name="message" required maxLength={10000} /></label>
-                        {error && <p className="form-error" role="alert">{error}</p>}
+                        {error && <p className="form-error xs-regular" role="alert">{error}</p>}
                         <button className="design-button" disabled={pending} type="submit">{pending ? "Sending…" : "Send Message"}<DesignIcon name="send" /></button>
                     </form>}
             </div>
             <aside className="contact-copy">
                 <h2 className="section-heading">Thanks for dropping by!</h2>
-                <p>If you’d like to get in touch, please use the form and I’ll get back to you within 3-5 working days. In the meantime, connect with me on</p>
-                <p><a href="https://www.linkedin.com/in/juliette-khoo/" target="_blank" rel="noopener noreferrer">LinkedIn<DesignIcon name="external" /></a> and <a href="https://medium.com/@khoo.juliette" target="_blank" rel="noopener noreferrer">Medium<DesignIcon name="external" /></a>.</p>
+                <p className="l-regular">If you’d like to get in touch, please use the form and I’ll get back to you within 3-5 working days. In the meantime, connect with me on</p>
+                <p className="l-regular"><a href="https://www.linkedin.com/in/juliette-khoo/" target="_blank" rel="noopener noreferrer">LinkedIn<DesignIcon name="external" /></a> and <a href="https://medium.com/@khoo.juliette" target="_blank" rel="noopener noreferrer">Medium<DesignIcon name="external" /></a>.</p>
             </aside>
         </div>
     </PortfolioShell>;

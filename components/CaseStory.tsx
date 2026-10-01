@@ -11,7 +11,7 @@ const plainText = (value: string) => value.replace(/<br\s*\/?>/gi, "\n");
 
 function StoryText({ text }: { text: string }) {
     const parts = plainText(text).split("Click here to view the full thesis book.");
-    return <p>{parts.map((part, index) => <span key={index}>{index > 0 && <>Click <a className="story-text-link" href="https://www.yumpu.com/en/document/view/68308775/window-to-another-world-spreads" target="_blank" rel="noopener noreferrer">here</a> to view the full thesis book.</>}{part}</span>)}</p>;
+    return <p className="l-regular">{parts.map((part, index) => <span key={index}>{index > 0 && <>Click <a className="story-text-link" href="https://www.yumpu.com/en/document/view/68308775/window-to-another-world-spreads" target="_blank" rel="noopener noreferrer">here</a> to view the full thesis book.</>}{part}</span>)}</p>;
 }
 
 export default function CaseStory({ data, id, admin }: { data: ProjectData; id: string; admin: boolean }) {
@@ -36,9 +36,9 @@ export default function CaseStory({ data, id, admin }: { data: ProjectData; id: 
                 <h1 className="story-title">{data.name}</h1>
                 <div className="story-meta"><span>{data.year}</span>{sidebar["project-type"].length > 0 && <><span aria-hidden="true">•</span><span>{sidebar["project-type"].join(", ")}</span></>}</div>
                 <div className="story-blocks">
-                    <div><DesignChip colour="grape">Team</DesignChip><p>{sidebar.team.join("\n")}</p></div>
-                    <div><DesignChip colour="brick">Skillset</DesignChip><p>{sidebar.skillset.join("\n")}</p></div>
-                    <div><DesignChip>Methods</DesignChip><p>{sidebar.approach.join("\n")}</p></div>
+                    <div><DesignChip colour="grape">Team</DesignChip><p className="s-light">{sidebar.team.join("\n")}</p></div>
+                    <div><DesignChip colour="brick">Skillset</DesignChip><p className="s-light">{sidebar.skillset.join("\n")}</p></div>
+                    <div><DesignChip>Methods</DesignChip><p className="s-light">{sidebar.approach.join("\n")}</p></div>
                 </div>
                 <section className="story-section" id="challenge"><h2>The Challenge</h2><StoryText text={main.cover.text} />{picture(main.cover.image,data.name)}</section>
                 {main.body.normal.map((section,index) => <section className="story-section" id={`section-${index}`} key={index}>
