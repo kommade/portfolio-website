@@ -1,4 +1,4 @@
-import { deleteItem } from "@/functions/db"
+import { deleteItem } from "@/functions/legacy-editor-actions"
 import React from 'react'
 
 const DeleteWarningComponent =

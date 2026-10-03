@@ -1,4 +1,6 @@
-import { HeaderComponent, MessageDisplayComponent, FooterComponent } from "@/components";
+import HeaderComponent from "@/components/HeaderComponent";
+import FooterComponent from "@/components/FooterComponent";
+import MessageDisplayComponent from "@/components/MessageDisplayComponent";
 import { getFunStuff } from "@/functions/db";
 import { FunStuff } from "./page-client";
 import { getRole } from "@/functions/actions";

@@ -1,7 +1,7 @@
 "use client";
 
-import { HeaderComponent, FooterComponent, DeleteWarningComponent, PopUpComponent, usePopUp } from "@/components";
-import { updateFunStuffName } from "@/functions/db";
+import { HeaderComponent, FooterComponent, DeleteWarningComponent, PopUpComponent, usePopUp } from "@/components/index";
+import { updateFunStuffName } from "@/functions/legacy-editor-actions";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from 'react';
 import Image from "next/image";

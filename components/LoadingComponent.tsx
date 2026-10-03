@@ -5,7 +5,7 @@ const LoadingComponent = () => {
         <PortfolioShell className="portfolio-loading">
             <div className="loading-state" role="status" aria-live="polite">
                 <div className="loading-mark" aria-hidden="true"><span /><span /><span /></div>
-                <h1 className="loading-title">Almost there…</h1>
+                <h1 className="h3 loading-title">Almost there…</h1>
                 <p className="l-regular">Loading the page. Just a moment.</p>
             </div>
         </PortfolioShell>

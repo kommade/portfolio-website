@@ -24,17 +24,17 @@ export default function Contact() {
                         } catch { setError("Your message could not be sent. Please try again."); }
                         finally { setPending(false); }
                     }} aria-busy={pending}>
-                        <label>Name<input name="name" autoComplete="name" required maxLength={200} /></label>
-                        <label>Email Address<input name="email" type="email" autoComplete="email" required maxLength={320} /></label>
-                        <label>Message<textarea name="message" required maxLength={10000} /></label>
+                        <label className="l-regular">Name<input className="l-regular" name="name" autoComplete="name" required maxLength={200} /></label>
+                        <label className="l-regular">Email Address<input className="l-regular" name="email" type="email" autoComplete="email" required maxLength={320} /></label>
+                        <label className="l-regular">Message<textarea className="l-regular" name="message" required maxLength={10000} /></label>
                         {error && <p className="form-error xs-regular" role="alert">{error}</p>}
-                        <button className="design-button" disabled={pending} type="submit">{pending ? "Sending…" : "Send Message"}<DesignIcon name="send" /></button>
+                        <button className="l-regular design-button" disabled={pending} type="submit">{pending ? "Sending…" : "Send Message"}<DesignIcon name="send" /></button>
                     </form>}
             </div>
             <aside className="contact-copy">
-                <h2 className="section-heading">Thanks for dropping by!</h2>
+                <h2 className="h5 section-heading">Thanks for dropping by!</h2>
                 <p className="l-regular">If you’d like to get in touch, please use the form and I’ll get back to you within 3-5 working days. In the meantime, connect with me on</p>
-                <p className="l-regular"><a href="https://www.linkedin.com/in/juliette-khoo/" target="_blank" rel="noopener noreferrer">LinkedIn<DesignIcon name="external" /></a> and <a href="https://medium.com/@khoo.juliette" target="_blank" rel="noopener noreferrer">Medium<DesignIcon name="external" /></a>.</p>
+                <p className="l-regular"><a className="l-regular" href="https://www.linkedin.com/in/juliette-khoo/" target="_blank" rel="noopener noreferrer">LinkedIn<DesignIcon name="external" /></a> and <a className="l-regular" href="https://medium.com/@khoo.juliette" target="_blank" rel="noopener noreferrer">Medium<DesignIcon name="external" /></a>.</p>
             </aside>
         </div>
     </PortfolioShell>;

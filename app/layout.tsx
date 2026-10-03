@@ -2,6 +2,10 @@ import type { Metadata, Viewport } from 'next'
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import './globals.css'
+import { Geist } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
     title: 'Juliette Khoo',
@@ -45,7 +49,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
     return (
-        <html lang="en">
+        <html lang="en" className={cn("font-sans", geist.variable)}>
             <head>
                 <link rel="preconnect" fetchPriority="high" href="juliette-portfolio-website.s3.ap-southeast-2.amazonaws.com" crossOrigin="use-credentials" />
             </head>

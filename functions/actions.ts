@@ -6,8 +6,8 @@ import jwt, { TokenExpiredError } from "jsonwebtoken";
 import { Redis } from "@upstash/redis";
 import { cookies, headers } from "next/headers";
 import { createHash } from "node:crypto";
-import { logger } from "./db";
-import { ProjectData } from "@/components";
+import { logger } from "./activity";
+import type { ProjectData } from "@/lib/project-content";
 import { Resend } from "resend";
 import emailTemplate from "./emailTemplate";
 import sizeOf from "image-size";
@@ -80,6 +80,7 @@ export const getRole = async () => {
 }
 
 export const submitNewFunStuff = async (formData: FormData) => {
+    if (await getRole() !== "admin") return { success: false, message: "Admin access required." };
     const category = formData.get("type")!;
     const keys = await redis.keys(`${category}:*`);
     const nextId = keys.length;
@@ -113,6 +114,7 @@ export const submitNewFunStuff = async (formData: FormData) => {
 };
 
 export const uploadNewProjectThumbnail = async (formData: FormData) => {
+    if (await getRole() !== "admin") return { success: false, message: "Admin access required." };
     const id = formData.get("id") as string;
     const image = formData.get('image') as File;
     const imageBuffer = await image.arrayBuffer();
@@ -133,6 +135,7 @@ export const uploadNewProjectThumbnail = async (formData: FormData) => {
 }
 
 export const uploadNewProjectImage = async (formData: FormData) => {
+    if (await getRole() !== "admin") return { success: false, message: "Admin access required." };
     const id = formData.get("id") as string;
     const image = formData.get('image') as File;
     const imageBuffer = await image.arrayBuffer();
@@ -152,6 +155,7 @@ export const uploadNewProjectImage = async (formData: FormData) => {
     }
 }
 export const createNewProject = async (formData: FormData) => {
+    if (await getRole() !== "admin") return { success: false, message: "Admin access required." };
     const keys = await redis.keys("project:*");
     const nextId = keys.length;
     const projectKey = `project:${nextId}`;

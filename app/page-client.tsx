@@ -3,7 +3,7 @@
 import PortfolioShell from "@/components/PortfolioShell";
 import HomeSections from "@/components/HomeSections";
 import { useSearchParams } from "next/navigation";
-import { usePopUp, PopUpComponent, ScrollToTop, ScrollComponent } from "@/components";
+import { usePopUp, PopUpComponent, ScrollToTop, ScrollComponent } from "@/components/index";
 import Image from "next/image";
 import { logout } from "@/functions/actions";
 import { useEffect } from "react";
@@ -32,11 +32,11 @@ export default function Home() {
                             <TextileWeaveHero />
                         </div>
                         <div className="hero-intro">
-                            <h1 className="hero-name">Juliette Khoo</h1>
+                            <h1 className="h1 hero-name">Juliette Khoo</h1>
                             <div className="hero-roles">
-                                <span>experience designer</span>
-                                <span>storyteller</span>
-                                <span>strategist</span>
+                                <span className="h4">experience designer</span>
+                                <span className="h4">storyteller</span>
+                                <span className="h4">strategist</span>
                             </div>
                         </div>
                         <Image aria-hidden="true" className="hero-decoration hero-experience" src="/images/hero-experience.svg" width={343} height={57} alt="" />

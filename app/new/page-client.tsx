@@ -1,6 +1,6 @@
 "use client";
 
-import { HeaderComponent, FooterComponent, UploadComponent } from "@/components";
+import { HeaderComponent, FooterComponent, UploadComponent } from "@/components/index";
 import { useSearchParams } from "next/navigation";
 
 export function New() {

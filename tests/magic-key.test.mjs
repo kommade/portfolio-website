@@ -15,7 +15,7 @@ mock.module("next/headers", () => ({
     headers: async () => new Headers({ "x-vercel-forwarded-for": "127.0.0.1" }),
     cookies: async () => ({ set: (...args) => { cookie = args; } }),
 }));
-mock.module("../functions/db", () => ({ logger: () => {} }));
+mock.module("../functions/activity", () => ({ logger: () => {} }));
 const { loginWithMagicKey } = await import("../functions/actions.ts");
 const memberHash = await bcrypt.hash("test-member-key", 4);
 const adminHash = await bcrypt.hash("test-admin-password", 4);

@@ -41,7 +41,7 @@ export default function PhotoViewer({ images, index, close }: { images: GalleryI
         </div>
         <div className="photo-controls">
             <button aria-label="Previous photo" disabled={current === 0} onClick={() => go(current - 1)}><Image src="/design/1199-818-imgLucideMoveUp.svg" width={24} height={24} alt="" /></button>
-            <p className="photo-count s-regular" aria-live="polite" aria-label={`Photo ${current + 1} of ${images.length}`}><span>{String(current + 1).padStart(2,"0")}</span><span>{String(images.length).padStart(2,"0")}</span></p>
+            <p className="photo-count s-regular" aria-live="polite" aria-label={`Photo ${current + 1} of ${images.length}`}><span className="s-regular">{String(current + 1).padStart(2,"0")}</span><span className="s-regular">{String(images.length).padStart(2,"0")}</span></p>
             <button aria-label="Next photo" disabled={current === images.length - 1} onClick={() => go(current + 1)}><Image src="/design/1199-818-imgLucideMoveDown.svg" width={24} height={24} alt="" /></button>
         </div>
     </dialog>;

@@ -1,4 +1,6 @@
-import { FooterComponent, HeaderComponent, MessageDisplayComponent } from "@/components"
+import HeaderComponent from "@/components/HeaderComponent";
+import FooterComponent from "@/components/FooterComponent";
+import MessageDisplayComponent from "@/components/MessageDisplayComponent";
 import React from 'react'
 
 const notFound = () =>

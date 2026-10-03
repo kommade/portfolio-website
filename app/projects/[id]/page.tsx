@@ -1,50 +1,25 @@
 import { getProjectKey, getProjectData, getAllProjectIds } from "@/functions/db";
-import { FooterComponent, HeaderComponent, MessageDisplayComponent, } from "@/components";
 import { ProjectPage } from "./page-client";
 import { getRole } from "@/functions/actions";
+import { isHidden } from "@/lib/project-content";
+import { notFound } from "next/navigation";
 import PortfolioShell from "@/components/PortfolioShell";
 import MagicKeyForm from "@/components/MagicKeyForm";
 
 export function generateStaticParams() {
-    return getAllProjectIds().then(ids => ids.map(id => ({ id })));
+    // Keep one sample route for Cache Components if every project is hidden.
+    return getAllProjectIds().then(ids => (ids.length ? ids : ["__empty"]).map(id => ({ id })));
 }
 
-type Params = Promise<{ id: string }>
-
-async function fetchData(id: string) {
-    "use cache";
-    const keyRes = await getProjectKey(id);
-    if (keyRes.success === false) {
-        return { success: false};
-    }
-    const dataRes = await getProjectData(keyRes.data!);
-    if (dataRes.success === false) {
-        return { success: false};
-    }
-    return { success: true, key: keyRes.data!, data: dataRes.data!};
-}
-
-async function DataFetcher({ id }: { id: Promise<string> }) {
-    const { success, key, data } = await fetchData(await id);
+export default async function ProjectPageWrapper({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
     const role = await getRole();
-    if (!success) {
-        return (
-            <main className="flex flex-col items-center justify-between overflow-x-clip">
-                <div className="w-screen relative flex flex-col">
-                    <HeaderComponent />
-                    <MessageDisplayComponent text="Whoops! Something went wrong." />
-                    <FooterComponent/>
-                </div>
-            </main>
-        );
+    const key = await getProjectKey(id);
+    if (!key.success) notFound();
+    const result = await getProjectData(key.data!);
+    if (!result.success || !result.data || (isHidden(result.data.hidden) && role !== "admin")) notFound();
+    if (result.data.access === "member" && role !== "member" && role !== "admin") {
+        return <PortfolioShell title="Case Stories" mutedTitle><MagicKeyForm redirect={`/projects/${id}`} /></PortfolioShell>;
     }
-    if (data?.access === "member" && role !== "member" && role !== "admin") {
-        return <PortfolioShell title="Case Stories" mutedTitle><MagicKeyForm redirect={`/projects/${await id}`} /></PortfolioShell>;
-    }
-    return <ProjectPage projectKey={key!} serverData={data!} id={await id} role={role} />
-    ;
-}
-
-export default async function ProjectPageWrapper({ params }: { params: Params }) {
-    return <DataFetcher id={params.then(p => p.id)} />;
+    return <ProjectPage projectKey={key.data!} serverData={result.data} id={id} role={role} />;
 }

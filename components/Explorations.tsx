@@ -18,7 +18,7 @@ export default function Explorations({ data, admin }: { data: FunStuffData; admi
     const [category, setCategory] = useState<(typeof categories)[number]["key"]>("photography");
     const [viewer, setViewer] = useState<number | null>(null);
     const images = (data[category] || []).filter((item): item is GalleryImage => !!item?.url);
-    return <PortfolioShell title="Explorations" tools={admin && <><Link href="/fun-stuff?edit=true">Edit explorations</Link><Link href="/new?type=funstuff">New exploration</Link></>}>
+    return <PortfolioShell title="Explorations" tools={admin && <><Link className="m-regular" href="/fun-stuff?edit=true">Edit explorations</Link><Link className="m-regular" href="/new?type=funstuff">New exploration</Link></>}>
         <div className="exploration-layout">
             {images.length ? <div className="exploration-grid" id="exploration-gallery" aria-label={categories.find(item => item.key === category)?.label}>
                 {images.map((item,index) => <button className="exploration-tile" key={item.id} onClick={() => setViewer(index)} aria-label={`View ${item.name}`}>
@@ -26,7 +26,7 @@ export default function Explorations({ data, admin }: { data: FunStuffData; admi
                 </button>)}
             </div> : <p className="exploration-empty l-regular" id="exploration-gallery" role="status">New explorations are on their way.</p>}
             <nav className="case-list exploration-categories" aria-label="Exploration categories">
-                {categories.map(item => <button key={item.key} aria-pressed={category === item.key} aria-controls="exploration-gallery" onClick={() => setCategory(item.key)}>{item.label}</button>)}
+                {categories.map(item => <button className="h5" key={item.key} aria-pressed={category === item.key} aria-controls="exploration-gallery" onClick={() => setCategory(item.key)}>{item.label}</button>)}
             </nav>
         </div>
         {viewer !== null && <PhotoViewer images={images} index={viewer} close={() => setViewer(null)} />}

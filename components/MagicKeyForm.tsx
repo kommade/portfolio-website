@@ -25,12 +25,12 @@ export default function MagicKeyForm({ redirect = "/projects", admin = false }: 
         finally { setPending(false); }
     }}>
         <div className="key-intro"><DesignIcon name="lock" /><p className="l-regular">{admin ? "Sign in to manage your portfolio." : "Sorry, you’ll need the magic key to access this."}</p></div>
-        {admin && <label>Username<input name="username" autoComplete="username" required /></label>}
+        {admin && <label className="l-regular">Username<input className="l-regular" name="username" autoComplete="username" required /></label>}
         <div className="key-input-row">
-            <input name="password" type="password" autoComplete="current-password" aria-label={admin ? "Password" : "Magic key"} placeholder={admin ? "Password" : "Enter magic key here…"} required maxLength={256} />
-            <button className="design-button" aria-label="Unlock case stories" type="submit" disabled={pending}><DesignIcon name="arrow" /></button>
+            <input className="l-regular" name="password" type="password" autoComplete="current-password" aria-label={admin ? "Password" : "Magic key"} placeholder={admin ? "Password" : "Enter magic key here…"} required maxLength={256} />
+            <button className="l-regular design-button" aria-label="Unlock case stories" type="submit" disabled={pending}><DesignIcon name="arrow" /></button>
         </div>
         {error && <p className="form-error xs-regular" role="alert">{error}</p>}
-        {admin && <Link href="/login">Use a magic key instead</Link>}
+        {admin && <Link className="m-regular" href="/login">Use a magic key instead</Link>}
     </form>;
 }

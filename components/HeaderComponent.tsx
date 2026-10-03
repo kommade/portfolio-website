@@ -18,7 +18,7 @@ export function PortfolioNavigation() {
     const pathname = usePathname();
     const active = pathname === "/login" ? "/projects" : pathname;
     return <nav className="portfolio-tabs" aria-label="Main navigation">
-        {portfolioNavigation.map(({ href, label }) => <Link key={href} href={href} aria-current={(href === "/" ? active === "/" : active.startsWith(href)) ? "page" : undefined}>{label}</Link>)}
+        {portfolioNavigation.map(({ href, label }) => <Link className="text-navigation" key={href} href={href} aria-current={(href === "/" ? active === "/" : active.startsWith(href)) ? "page" : undefined}>{label}</Link>)}
     </nav>;
 }
 

@@ -1,9 +1,9 @@
 'use client';
 
-import { changeProjectDesc, changeProjectThumbnail} from "@/functions/db";
+import { changeProjectDesc, changeProjectThumbnail} from "@/functions/legacy-editor-actions";
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Link from "@/components/ui/link";
-import { DeleteWarningComponent, MessageDisplayComponent, PopUpComponent, usePopUp } from ".";
+import { DeleteWarningComponent, MessageDisplayComponent, PopUpComponent, usePopUp } from "./index";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import SubmitFileConfirmationComponent from "./SubmitFileConfirmationComponent";

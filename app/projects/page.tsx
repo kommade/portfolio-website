@@ -1,12 +1,12 @@
-import Projects from "./page-client";
 import { getAllProjects, getProjectThumbnail } from "@/functions/db";
 import { getRole } from "@/functions/actions";
+import { isHidden } from "@/lib/project-content";
+import CaseStories from "@/components/CaseStories";
+import type { ProjectThumbnailData } from "@/components/GridComponents";
 
 export default async function ProjectsWrapper() {
-    const keys = await getAllProjects();
-    const res = await Promise.all(keys.map(getProjectThumbnail));
     const role = await getRole();
-    return (
-        <Projects keys={keys} response={res} admin={role === "admin"}/>
-    )
+    const responses = await Promise.all((await getAllProjects()).map(getProjectThumbnail));
+    const projects = responses.flatMap(result => result.success && result.data?.id && (role === "admin" || !isHidden(result.data.hidden)) ? [result.data as ProjectThumbnailData] : []);
+    return <CaseStories projects={projects} admin={role === "admin"} />;
 }
