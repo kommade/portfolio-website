@@ -15,6 +15,7 @@ export interface ProjectThumbnailData {
     image: string;
     year: string;
     id: string;
+    date_created?: string;
     [key: string]: unknown;
 }
 

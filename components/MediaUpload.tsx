@@ -1,12 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { createMediaUpload } from "@/functions/media-actions";
 import { validateMedia, type MediaKind } from "@/lib/media";
+
+export const UploadTrackingContext = createContext<(url: string) => void>(() => {});
 
 export default function MediaUpload({ kind = "image", onUploaded, onBusy }: { kind?: MediaKind; onUploaded: (url: string) => void; onBusy: (busy: boolean) => void }) {
     const [progress, setProgress] = useState<number | null>(null);
     const [error, setError] = useState("");
+    const trackUpload = useContext(UploadTrackingContext);
     const request = useRef<XMLHttpRequest | null>(null);
     const uploaded = useRef(onUploaded);
     uploaded.current = onUploaded;
@@ -19,6 +22,7 @@ export default function MediaUpload({ kind = "image", onUploaded, onBusy }: { ki
         try {
             const signed = await createMediaUpload(kind, type, file.size);
             if (!signed.success) throw new Error(signed.message);
+            trackUpload(signed.publicUrl);
             const form = new FormData();
             Object.entries(signed.fields).forEach(([key, value]) => form.append(key, value));
             form.append("file", file);

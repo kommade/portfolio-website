@@ -16,6 +16,11 @@ const cspHeader = `
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    experimental: {
+        serverActions: {
+            allowedOrigins: ["juliettekhoo.vercel.app"],
+        },
+    },
     images: {
         minimumCacheTTL: 31536000,
         remotePatterns: [

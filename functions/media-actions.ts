@@ -4,6 +4,16 @@ import { S3Client } from "@aws-sdk/client-s3";
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
 import { requireAdmin } from "./project-auth";
 import { mediaLimits, validateMedia, type MediaKind } from "@/lib/media";
+import { cleanupMediaCandidates, validateCleanupUrls } from "./media-cleanup";
+
+export async function discardProjectMedia(urls: string[]) {
+    try {
+        await requireAdmin();
+        validateCleanupUrls(urls);
+        const pending = await cleanupMediaCandidates(urls);
+        return { success: pending.length === 0, pending, message: pending.length ? "Some unused files could not be deleted. Please retry cleanup." : "Unused files deleted." };
+    } catch (error) { return { success: false, pending: urls, message: error instanceof Error ? error.message : "Unable to delete unused files." }; }
+}
 
 export async function createMediaUpload(kind: MediaKind, type: string, size: number) {
     try {

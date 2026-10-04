@@ -47,44 +47,6 @@ export default function TextileWeaveHero() {
             <path className="weave-r7" d="M620,306 Q545,303 470,307 T320,304 T170,307 T58,305" pathLength="1" strokeDasharray="1" />
             <path className="weave-r8" d="M58,339 Q135,342 210,338 T360,341 T510,338 T620,340" pathLength="1" strokeDasharray="1" />
           </g>
-          <g stroke="#CFCFC4" strokeWidth="1" strokeLinecap="round" fill="none">
-            <line className="weave-r0" x1="99" y1="55" x2="99" y2="65" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r0" x1="247" y1="55" x2="247" y2="65" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r0" x1="395" y1="55" x2="395" y2="65" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r0" x1="543" y1="55" x2="543" y2="65" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r1" x1="62" y1="90" x2="62" y2="100" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r1" x1="210" y1="90" x2="210" y2="100" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r1" x1="358" y1="90" x2="358" y2="100" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r1" x1="506" y1="90" x2="506" y2="100" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r2" x1="99" y1="125" x2="99" y2="135" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r2" x1="247" y1="125" x2="247" y2="135" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r2" x1="395" y1="125" x2="395" y2="135" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r2" x1="543" y1="125" x2="543" y2="135" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r3" x1="62" y1="160" x2="62" y2="170" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r3" x1="210" y1="160" x2="210" y2="170" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r3" x1="358" y1="160" x2="358" y2="170" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r3" x1="506" y1="160" x2="506" y2="170" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r4" x1="99" y1="195" x2="99" y2="205" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r4" x1="247" y1="195" x2="247" y2="205" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r4" x1="395" y1="195" x2="395" y2="205" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r4" x1="543" y1="195" x2="543" y2="205" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r5" x1="62" y1="230" x2="62" y2="240" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r5" x1="210" y1="230" x2="210" y2="240" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r5" x1="358" y1="230" x2="358" y2="240" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r5" x1="506" y1="230" x2="506" y2="240" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r6" x1="99" y1="265" x2="99" y2="275" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r6" x1="247" y1="265" x2="247" y2="275" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r6" x1="395" y1="265" x2="395" y2="275" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r6" x1="543" y1="265" x2="543" y2="275" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r7" x1="62" y1="300" x2="62" y2="310" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r7" x1="210" y1="300" x2="210" y2="310" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r7" x1="358" y1="300" x2="358" y2="310" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r7" x1="506" y1="300" x2="506" y2="310" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r8" x1="99" y1="335" x2="99" y2="345" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r8" x1="247" y1="335" x2="247" y2="345" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r8" x1="395" y1="335" x2="395" y2="345" pathLength="1" strokeDasharray="1" />
-            <line className="weave-r8" x1="543" y1="335" x2="543" y2="345" pathLength="1" strokeDasharray="1" />
-          </g>
         </g>
 
         <g fill="none" stroke="#C9CAFF" strokeWidth="0.75" strokeLinecap="round">

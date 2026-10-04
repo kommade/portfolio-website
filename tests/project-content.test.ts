@@ -1,6 +1,12 @@
 import { expect, test } from "bun:test";
-import { blankProject, canViewProject, isHidden, newBlock, safeImage, safeLink, storyBlocks, validateProject } from "../lib/project-content";
+import { blankProject, canViewProject, isHidden, newBlock, newestProjectsFirst, safeImage, safeLink, storyBlocks, validateProject } from "../lib/project-content";
 import { validateMedia } from "../lib/media";
+
+test("projects sort newest first while undated legacy projects keep their relative order", () => {
+    const projects = [{ id: "legacy-a" }, { id: "older", date_created: "2026-09-01T00:00:00.000Z" }, { id: "legacy-b", date_created: "invalid" }, { id: "newer", date_created: "2026-10-04T00:00:00.000Z" }];
+    expect(newestProjectsFirst(projects).map(project => project.id)).toEqual(["newer", "older", "legacy-a", "legacy-b"]);
+    expect(projects[0].id).toBe("legacy-a");
+});
 
 test("legacy content converts without mutating or dropping original image/text fields", () => {
     const project = blankProject();

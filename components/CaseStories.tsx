@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import type { ProjectThumbnailData } from "./GridComponents";
 import { deleteProject, setProjectHidden } from "@/functions/project-actions";
+import { discardProjectMedia } from "@/functions/media-actions";
 import { isHidden } from "@/lib/project-content";
 import PortfolioShell, { DesignChip, DesignIcon } from "./PortfolioShell";
 import { AdminIcon, ConfirmDialog } from "./AdminControls";
@@ -18,19 +19,25 @@ export default function CaseStories({ projects, admin = false }: { projects: Pro
     const [busy, setBusy] = useState(false);
     const [error, setError] = useState("");
     const [status, setStatus] = useState("");
+    const [cleanupPending, setCleanupPending] = useState<string[]>([]);
     const router = useRouter();
     const project = projects.find(item => item.id === selected) || projects[0];
-    const mutate = async (action: () => Promise<{ success: boolean; message?: string }>, message: string) => {
+    const mutate = async (action: () => Promise<{ success: boolean; message?: string; cleanupPending?: string[] }>, message: string) => {
         setBusy(true); setError(""); setStatus("");
         try {
             const result = await action();
             if (!result.success) { setError(result.message || "Unable to update this story."); return; }
+            if (result.cleanupPending?.length) {
+                setCleanupPending(pending => [...new Set([...pending, ...result.cleanupPending!])]);
+                setError("The project was deleted, but some unused files could not be removed. Retry file cleanup.");
+            }
             setDeleting(null); setStatus(message); router.refresh();
         } catch { setError("Unable to update. Please try again."); }
         finally { setBusy(false); }
     };
     return <PortfolioShell title="Case Stories">
         {(error || status) && <p className={error ? "m-regular case-admin-message editor-error" : "m-regular case-admin-message"} role={error ? "alert" : "status"}>{error || status}</p>}
+        {admin && cleanupPending.length > 0 && <div className="case-admin-message"><button className="l-regular admin-button" type="button" disabled={busy} onClick={() => mutate(async () => { const result = await discardProjectMedia(cleanupPending); setCleanupPending(result.pending); return result; }, "Unused files deleted.")}>Retry file cleanup</button></div>}
         <div className="case-list-layout">
             <div>
                 {admin && <div className="case-admin-toolbar"><Link className="l-regular admin-button admin-primary" href="/new?type=project">New Page<AdminIcon name="new-page" /></Link><button className="l-regular admin-button" type="button" onClick={() => setEditing(!editing)} aria-pressed={editing}>{editing ? "Done" : "Edit"}<AdminIcon name="edit" /></button></div>}
@@ -51,6 +58,6 @@ export default function CaseStories({ projects, admin = false }: { projects: Pro
                 {admin && <div className="case-preview-admin"><Link className="l-regular admin-button" href={`/projects/${project.id}?edit=true`}>Edit story<AdminIcon name="edit" /></Link><button className="l-regular admin-button" disabled={busy} type="button" onClick={() => mutate(() => setProjectHidden(project.id, !isHidden(project.hidden)), isHidden(project.hidden) ? "Project shown to visitors." : "Project hidden from visitors.")}>{isHidden(project.hidden) ? <Eye /> : <EyeOff />}{isHidden(project.hidden) ? "Show project" : "Hide project"}</button><p className="s-regular editor-help">{isHidden(project.hidden) ? "Only admins can see this project, including at its direct URL." : "Hidden projects remain available to admins."}</p></div>}
             </section>}
         </div>
-        {deleting && <ConfirmDialog title={`Delete “${deleting.name}”?`} busy={busy} close={() => setDeleting(null)} confirm={() => mutate(() => deleteProject(deleting.id), "Project deleted.")}><p className="l-regular">This removes the story from the website. You can hide it instead if you want to keep it for later.</p>{error && <p className="m-regular editor-error" role="alert">{error}</p>}</ConfirmDialog>}
+        {deleting && <ConfirmDialog title={`Delete “${deleting.name}”?`} busy={busy} close={() => setDeleting(null)} confirm={() => mutate(() => deleteProject(deleting.id), "Project and unused uploads deleted.")}><p className="l-regular">This permanently removes the story and its uploaded files. Files used by other stories are kept. You can hide the story instead if you want to keep it for later.</p>{error && <p className="m-regular editor-error" role="alert">{error}</p>}</ConfirmDialog>}
     </PortfolioShell>;
 }

@@ -6,7 +6,7 @@ export default function HomeSections() {
             <div className="home-section-layout">
                 <div className="home-photo">
                     <Image className="home-portrait" src="/images/about-me.jpg" alt="Juliette Khoo outdoors" fill sizes="(max-width:800px) 85vw, 332px" />
-                    <Image className="home-tape home-tape-about" src="/design/about-tape.png" width={121} height={109} alt="" />
+                    <Image className="home-tape home-tape-about" src="/design/about-tape.svg" width={121} height={109} alt="" />
                 </div>
                 <div className="home-section-copy">
                     <h2 className="h5 section-heading" id="about-title">About Me</h2>
@@ -26,8 +26,8 @@ export default function HomeSections() {
                 </div>
                 <div className="home-photo">
                     <Image className="home-portrait" src="/images/skills-competencies.jpeg" alt="A hand-drawn workspace with a computer, sketchbooks and design tools" fill sizes="(max-width:800px) 85vw, 332px" />
-                    <Image className="home-tape home-tape-skills" src="/design/skills-tape.png" width={132} height={103} alt="" />
-                    <Image className="home-tape home-tape-bottom" src="/design/skills-bottom-tape.png" width={170} height={71} alt="" />
+                    <Image className="home-tape home-tape-skills" src="/design/skills-tape.svg" width={132} height={103} alt="" />
+                    <Image className="home-tape home-tape-bottom" src="/design/skills-bottom-tape.svg" width={170} height={71} alt="" />
                 </div>
             </div>
         </section>

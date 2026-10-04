@@ -1,12 +1,18 @@
+import Image from "next/image";
 import PortfolioShell from "./PortfolioShell";
 
 const LoadingComponent = () => {
     return (
         <PortfolioShell className="portfolio-loading">
             <div className="loading-state" role="status" aria-live="polite">
-                <div className="loading-mark" aria-hidden="true"><span /><span /><span /></div>
-                <h1 className="h3 loading-title">Almost there…</h1>
-                <p className="l-regular">Loading the page. Just a moment.</p>
+                <div className="loading-mark" aria-hidden="true">
+                    <div className="loading-chain-position">
+                        <div className="loading-chain">
+                            <Image className="loading-chain-image" src="/design/loading-chain.svg" width={418} height={27.3333} alt="" preload />
+                        </div>
+                    </div>
+                </div>
+                <p className="h5 loading-title">Loading...</p>
             </div>
         </PortfolioShell>
     )

@@ -46,7 +46,7 @@ export const getProjectKey = async (id: string | Promise<string>) => {
 export const getProjectThumbnail = async (projectKey: string) => {
     "use cache";
     cacheTag("projects" );
-    const data = await redis.hmget(projectKey, ...["name", "desc", "image", "year", "id", "sector", "domain", "hidden"]);
+    const data = await redis.hmget(projectKey, ...["name", "desc", "image", "year", "id", "sector", "domain", "hidden", "date_created"]);
     if (data == null) {
         return { success: false };
     }
@@ -58,7 +58,7 @@ export const getProjectThumbnail = async (projectKey: string) => {
 export const getProjectData = async (projectKey: string) => {
     "use cache";
     cacheTag("projects" );
-    const data = await redis.hmget(projectKey, ...["name", "year", "data", "access", "id", "desc", "image", "sector", "domain", "hidden", "revision"]);
+    const data = await redis.hmget(projectKey, ...["name", "year", "data", "access", "id", "desc", "image", "sector", "domain", "hidden", "revision", "date_created"]);
     if (data && data.data && typeof data.data === "string") {
         const serialized = data.data;
         try { data.data = JSON.parse(serialized); }

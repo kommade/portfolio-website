@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { portfolioNavigation as navigation, PortfolioNavigation } from "./HeaderComponent";
+import ScrollComponent from "./ScrollComponent";
 
 export function DesignIcon({ name }: { name: "arrow" | "send" | "sent" | "external" | "lock" }) {
     const sources = {
@@ -41,6 +42,7 @@ export default function PortfolioShell({ children, title, mutedTitle = false, cl
                 <p className="h6">© 2026 Juliette Khoo<br />Designed and built by Juliette and <a className="h6" href="https://github.com/kommade" target="_blank" rel="noopener noreferrer">Jarrell Khoo</a></p>
                 <nav aria-label="Footer navigation">{navigation.map(({ href, label }) => <Link className="text-navigation" key={href} href={href}>{label}</Link>)}</nav>
             </footer>
+            <ScrollComponent />
         </div>
     </div>;
 }

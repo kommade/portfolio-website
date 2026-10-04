@@ -27,7 +27,12 @@ export interface ProjectData {
     };
 }
 
-export type ProjectRecord = ProjectData & { id: string; desc: string; image: string; sector: string; domain: string; hidden: boolean; revision: number };
+export type ProjectRecord = ProjectData & { id: string; desc: string; image: string; sector: string; domain: string; hidden: boolean; revision: number; date_created?: string };
+export function newestProjectsFirst<T extends { date_created?: unknown }>(projects: T[]): T[] {
+    const created = (project: T) => typeof project.date_created === "string" ? Date.parse(project.date_created) || 0 : 0;
+    // Stable sort leaves undated legacy projects in their existing relative order.
+    return [...projects].sort((a, b) => created(b) - created(a));
+}
 export const isHidden = (value: unknown) => value === true || value === "true" || value === 1 || value === "1";
 export const canViewProject = (project: { hidden?: unknown; access?: unknown }, role: string) =>
     (!isHidden(project.hidden) || role === "admin") && (project.access !== "member" || role === "member" || role === "admin");
