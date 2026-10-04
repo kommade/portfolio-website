@@ -14,12 +14,20 @@ export const portfolioNavigation = [
     { label: "HOME", href: "/" },
 ];
 
-export function PortfolioNavigation() {
+function PortfolioTabs({ active }: { active?: string }) {
+    return <nav className="portfolio-tabs" aria-label="Main navigation">
+        {portfolioNavigation.map(({ href, label }) => <Link className="text-navigation" key={href} href={href} aria-current={active && (href === "/" ? active === "/" : active.startsWith(href)) ? "page" : undefined}>{label}</Link>)}
+    </nav>;
+}
+
+function ActivePortfolioNavigation() {
     const pathname = usePathname();
     const active = pathname === "/login" ? "/projects" : pathname;
-    return <nav className="portfolio-tabs" aria-label="Main navigation">
-        {portfolioNavigation.map(({ href, label }) => <Link className="text-navigation" key={href} href={href} aria-current={(href === "/" ? active === "/" : active.startsWith(href)) ? "page" : undefined}>{label}</Link>)}
-    </nav>;
+    return <PortfolioTabs active={active} />;
+}
+
+export function PortfolioNavigation() {
+    return <Suspense fallback={<PortfolioTabs />}><ActivePortfolioNavigation /></Suspense>;
 }
 
 const Header = ({ isLoginPage = false, isNewPage = false, newHidden = false }) => {

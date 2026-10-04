@@ -12,6 +12,7 @@ import PortfolioShell from "./PortfolioShell";
 import StoryContent from "./StoryContent";
 import MediaUpload, { UploadTrackingContext } from "./MediaUpload";
 import { AdminIcon } from "./AdminControls";
+import { readPendingMedia, storePendingMedia } from "@/lib/pending-media-cleanup";
 
 function Field({ label, value, change, multiline = false, help, readOnly = false }: { label: string; value: string; change: (value: string) => void; multiline?: boolean; help?: string; readOnly?: boolean }) {
     return <label className="m-regular editor-field"><span className="m-regular">{label}</span>{multiline ? <textarea className="l-regular" rows={3} value={value} onChange={event => change(event.target.value)} /> : <input className="l-regular" value={value} readOnly={readOnly} onChange={event => change(event.target.value)} />}{help && <small className="s-regular">{help}</small>}</label>;
@@ -56,6 +57,8 @@ function BlockFields({ block, change, busy, uploading }: { block: StoryBlock; ch
         case "video": return <><MediaUpload kind="video" onUploaded={url => change({ ...block, url })} onBusy={busy} /><MediaUrlField label="Video URL" value={block.url} change={url => change({ ...block, url })} /><Field label="Video title" value={block.title} change={title => change({ ...block, title })} /><Field label="Video caption" value={block.caption} change={caption => change({ ...block, caption })} /><fieldset className="editor-mini-card"><legend className="m-regular">Poster image (optional)</legend><MediaUpload onUploaded={poster => change({ ...block, poster })} onBusy={busy} /><MediaUrlField label="Poster URL" value={block.poster} change={poster => change({ ...block, poster })} /></fieldset><fieldset className="editor-mini-card"><legend className="m-regular">Accessibility captions (optional)</legend><MediaUpload kind="subtitles" onUploaded={subtitles => change({ ...block, subtitles })} onBusy={busy} /><MediaUrlField label="WebVTT captions URL" value={block.subtitles} change={subtitles => change({ ...block, subtitles })} /></fieldset></>;
         case "cards": return <><div className="editor-card-list">{block.cards.map((card, index) => <fieldset className={`editor-mini-card story-stat-${card.colour}`} key={card.id}><legend className="m-regular">Card {index + 1}</legend>
             <Field label="Value or headline" value={card.value} change={value => change({ ...block, cards: block.cards.map(item => item.id === card.id ? { ...item, value } : item) })} />
+            <label className="m-regular editor-check"><input type="checkbox" checked={card.countUp === true} onChange={event => change({ ...block, cards: block.cards.map(item => item.id === card.id ? { ...item, countUp: event.target.checked } : item) })} />Count up when this card comes into view</label>
+            {card.countUp && <p className="s-regular editor-help">Enter a number or percentage above, such as 1,250 or 99.1%. Preview plays the animation.</p>}
             <Field label="Card text" multiline value={card.text} change={text => change({ ...block, cards: block.cards.map(item => item.id === card.id ? { ...item, text } : item) })} />
             <label className="m-regular editor-field"><span className="m-regular">Colour</span><select className="l-regular" value={card.colour} onChange={event => change({ ...block, cards: block.cards.map(item => item.id === card.id ? { ...item, colour: event.target.value as typeof card.colour } : item) })}>{cardColours.map(colour => <option className="l-regular" key={colour} value={colour}>{colour}</option>)}</select></label>
             <div className="editor-actions"><button className="l-regular admin-button" type="button" disabled={index === 0} onClick={() => { const cards = [...block.cards]; [cards[index - 1], cards[index]] = [cards[index], cards[index - 1]]; change({ ...block, cards }); }}>Move earlier</button><button className="l-regular admin-button" type="button" disabled={block.cards.length === 1} onClick={() => change({ ...block, cards: block.cards.filter(item => item.id !== card.id) })}>Remove card</button></div>
@@ -132,9 +135,10 @@ export default function ProjectEditor({ initial, projectKey = null }: { initial:
             const next = { ...data, revision: result.revision };
             draftMedia.current.clear(); setUndo(null); setCleanupPending(result.cleanupPending);
             setData(next); setSaved(JSON.stringify(next)); setKey(result.projectKey); setMessage("Changes saved.");
-            if (result.cleanupPending.length) setError("Your story was saved, but some unused files could not be deleted. Retry cleanup below.");
-            if (!result.cleanupPending.length && (!key || initial.id !== result.id)) router.replace(`/projects/${result.id}?edit=true`);
-            router.refresh();
+            storePendingMedia(result.id, [...new Set([...readPendingMedia(initial.id), ...readPendingMedia(result.id), ...result.cleanupPending])]);
+            if (initial.id !== result.id) storePendingMedia(initial.id, []);
+            leaving.current = true;
+            router.replace(`/projects/${result.id}`);
         } catch { setError("Unable to save. Your edits are still here; please try again."); }
         finally { setSaving(false); }
     };

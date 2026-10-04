@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
-import Image from "next/image";
+import { FilePlus, Pencil, Trash2 } from "lucide-react";
 
 export function AdminIcon({ name }: { name: "new-page" | "edit" | "trash" }) {
-    return <Image className="admin-icon" src={`/design/admin-${name}.svg`} width={24} height={24} alt="" aria-hidden="true" />;
+    const Icon = { "new-page": FilePlus, edit: Pencil, trash: Trash2 }[name];
+    return <Icon className="admin-icon" aria-hidden="true" />;
 }
 
 export function ConfirmDialog({ title, children, confirm, close, busy = false, action = "Delete" }: { title: string; children: ReactNode; confirm: () => void; close: () => void; busy?: boolean; action?: string }) {

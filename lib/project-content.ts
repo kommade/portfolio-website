@@ -1,7 +1,9 @@
+import { parseCountUpValue } from "./count-up";
+
 export const cardColours = ["sage", "grape", "purple", "brick"] as const;
 export type CardColour = typeof cardColours[number];
 export type StoryImage = { url: string; alt: string; caption: string };
-export type StoryCard = { id: string; value: string; text: string; colour: CardColour };
+export type StoryCard = { id: string; value: string; text: string; colour: CardColour; countUp?: boolean };
 export type StoryBlock = { id: string } & (
     | { type: "heading"; text: string }
     | { type: "text"; text: string }
@@ -131,7 +133,12 @@ export function validateProject(value: unknown): asserts value is ProjectRecord 
             case "cards": {
                 const cards = arr(b.cards, 8), cardIds = new Set();
                 if (!cards.length || !text(b.caption, 4000)) fail("Add at least one card.");
-                for (const value of cards) { const c = obj(value); if (!text(c.id, 100) || cardIds.has(c.id) || !text(c.value, 100) || !text(c.text, 2000) || !cardColours.includes(c.colour as CardColour)) fail("Invalid card content or colour."); cardIds.add(c.id); }
+                for (const value of cards) {
+                    const c = obj(value);
+                    if (!text(c.id, 100) || cardIds.has(c.id) || !text(c.value, 100) || !text(c.text, 2000) || !cardColours.includes(c.colour as CardColour) || (c.countUp !== undefined && typeof c.countUp !== "boolean")) fail("Invalid card content or colour.");
+                    if (c.countUp && !parseCountUpValue(c.value as string)) fail("Count-up cards need a number or percentage, such as 1,250 or 99.1% (up to 6 decimal places).");
+                    cardIds.add(c.id);
+                }
                 break;
             }
             default: fail("Unknown content block.");

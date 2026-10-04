@@ -2,20 +2,21 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { ArrowRight, ExternalLink, Lock, MailCheck, SendHorizontal } from "lucide-react";
 import type { ReactNode } from "react";
 import { portfolioNavigation as navigation, PortfolioNavigation } from "./HeaderComponent";
 import ScrollComponent from "./ScrollComponent";
 
 export function DesignIcon({ name }: { name: "arrow" | "send" | "sent" | "external" | "lock" }) {
-    const sources = {
-        arrow: "1038-2100-imgLucideIcons",
-        send: "1050-2838-imgLucideIcons1",
-        sent: "1050-2838-imgLucideIcons",
-        external: "1050-2838-imgExternalLink1",
-        lock: "1038-2621-imgIconLock",
+    const icons = {
+        arrow: ArrowRight,
+        send: SendHorizontal,
+        sent: MailCheck,
+        external: ExternalLink,
+        lock: Lock,
     };
-    const size = name === "external" ? 16 : 24;
-    return <Image className="design-icon" src={`/design/${sources[name]}.svg`} width={size} height={size} alt="" aria-hidden="true" />;
+    const Icon = icons[name];
+    return <Icon className={`design-icon design-icon-${name}`} aria-hidden="true" />;
 }
 
 export function DesignChip({ children, colour = "sage" }: { children: ReactNode; colour?: "grape" | "brick" | "sage" }) {
