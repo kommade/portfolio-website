@@ -56,7 +56,7 @@ const UploadComponent = ({ type }: { type: string | undefined }) => {
                             if (out.success) {
                                 setPopUp({ message: "Created new project!", type: "success", duration: 1000 })
                                 setTimeout(() => {
-                                    router.push(`/projects/${out.message}`);
+                                    router.push(`/case-stories/${out.message}`);
                                     setSubmit(false)
                                 }, 1000);
                             } else {

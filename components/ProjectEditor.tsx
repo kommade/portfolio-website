@@ -143,13 +143,13 @@ export default function ProjectEditor({ initial, projectKey = null }: { initial:
             storePendingMedia(result.id, [...new Set([...readPendingMedia(initial.id), ...readPendingMedia(result.id), ...result.cleanupPending])]);
             if (initial.id !== result.id) storePendingMedia(initial.id, []);
             leaving.current = true;
-            router.replace(`/projects/${result.id}`);
+            router.replace(`/case-stories/${result.id}`);
         } catch { setError("Unable to save. Your edits are still here; please try again."); }
         finally { setSaving(false); }
     };
     const toolbar: ReactNode = <div className="editor-toolbar"><div><span className="h4 editor-eyebrow">{key ? "Edit Case Story" : "New Case Story"}</span><p className="m-regular" role="status">{uploads ? "Uploading media…" : message || (dirty ? "Unsaved changes" : key ? "All changes saved" : "Draft · not saved yet")}{data.hidden && " · Hidden from visitors"}</p></div><div className="editor-actions">
         <button className="l-regular admin-button" type="button" disabled={busy} onClick={() => setPreview(!preview)}>{preview ? <AdminIcon name="edit" /> : <Eye />}{preview ? "Keep editing" : "Preview"}</button>
-        <button className="l-regular admin-button" type="button" disabled={busy} onClick={() => { if (!dirty || window.confirm("Discard unsaved changes and uploads and return to case stories?")) void discardAndNavigate("/projects"); }}>Cancel</button>
+        <button className="l-regular admin-button" type="button" disabled={busy} onClick={() => { if (!dirty || window.confirm("Discard unsaved changes and uploads and return to case stories?")) void discardAndNavigate("/case-stories"); }}>Cancel</button>
         <button className="l-regular admin-button admin-primary" type="button" disabled={busy} onClick={save}>{saving ? "Saving…" : "Save changes"}</button>
     </div></div>;
     return <UploadTrackingContext.Provider value={trackUploadUrl}><PortfolioShell className="portfolio-story portfolio-editor">

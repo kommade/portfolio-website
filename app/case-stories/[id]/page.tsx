@@ -19,7 +19,7 @@ export default async function ProjectPageWrapper({ params }: { params: Promise<{
     const result = await getProjectData(key.data!);
     if (!result.success || !result.data || (isHidden(result.data.hidden) && role !== "admin")) notFound();
     if (result.data.access === "member" && role !== "member" && role !== "admin") {
-        return <PortfolioShell title="Case Stories" mutedTitle><MagicKeyForm redirect={`/projects/${id}`} /></PortfolioShell>;
+        return <PortfolioShell title="Case Stories" mutedTitle><MagicKeyForm redirect={`/case-stories/${id}`} /></PortfolioShell>;
     }
     return <ProjectPage projectKey={key.data!} serverData={result.data} id={id} role={role} />;
 }

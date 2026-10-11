@@ -1,5 +1,5 @@
 import React from 'react'
-import { ProjectData } from "@/app/projects/[id]/page-client";
+import type { ProjectData } from "@/lib/project-content";
 import Image from "next/image";
 import Link from "@/components/ui/link";
 

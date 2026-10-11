@@ -41,7 +41,7 @@ export async function saveProject(projectKey: string | null, value: ProjectRecor
             "data", JSON.stringify(value.data), "revision", revision]);
         if (!Array.isArray(result) || result[0] !== "ok") throw new Error(result === "url" ? "That page URL is already in use." : result === "missing" ? "This story was deleted. Copy your edits before leaving." : "This story changed in another window. Copy your edits and reload before saving.");
         updateTag("projects");
-        revalidatePath("/projects", "layout");
+        revalidatePath("/case-stories", "layout");
         const currentKeys = new Set(projectMediaUrls(value).map(uploadedMediaKey));
         const removedMedia = [...projectMediaUrls({ data: result[1], image: result[2] }, true), ...draftMedia].filter(url => !currentKeys.has(uploadedMediaKey(url)));
         const cleanupPending = await cleanupMediaCandidates(removedMedia);
@@ -64,7 +64,7 @@ export async function setProjectHidden(id: string, hidden: boolean) {
             return 1`, [id], [hidden ? "1" : "0"]);
         if (!result) throw new Error("This story no longer exists.");
         updateTag("projects");
-        revalidatePath("/projects", "layout");
+        revalidatePath("/case-stories", "layout");
         return { success: true as const };
     } catch (error) { return { success: false as const, message: error instanceof Error ? error.message : "Unable to change visibility." }; }
 }
@@ -83,7 +83,7 @@ export async function deleteProject(id: string) {
             return {data,image}`, [id], []);
         if (!result) throw new Error("This story no longer exists.");
         updateTag("projects");
-        revalidatePath("/projects", "layout");
+        revalidatePath("/case-stories", "layout");
         const cleanupPending = await cleanupMediaCandidates(projectMediaUrls({ data: (result as string[])[0], image: (result as string[])[1] }, true));
         return { success: true as const, cleanupPending };
     } catch (error) { return { success: false as const, message: error instanceof Error ? error.message : "Unable to delete this story." }; }

@@ -52,6 +52,15 @@ const nextConfig = {
         ]
     },
     cacheComponents: true,
+    async redirects() {
+        return [
+            {
+                source: "/projects/:path*",
+                destination: "/case-stories/:path*",
+                permanent: true,
+            },
+        ];
+    },
     async rewrites() {
         return [
             {

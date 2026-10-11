@@ -116,7 +116,7 @@ const GridComponents = ({ keys, response, max, showTitle = true, editMode = fals
         }
         return (
             <Link
-                href={`/projects/${data.id}`}
+                href={`/case-stories/${data.id}`}
                 rel="noopener noreferrer"
                 className={`animate-hidden left bg-white relative overflow-hidden shadow-sm ${span.row === 2 ? 'grid-long' : span.col === 2 ? 'grid-wide' : 'aspect-square'} ${editMode ? " cursor-default" : ""}`}
                 onClick={(e) => {
@@ -224,7 +224,7 @@ const GridComponents = ({ keys, response, max, showTitle = true, editMode = fals
         if (successes.every((s) => s)) {
             setPopUp({ message: "Changes saved successfully", type: "success", duration: 1000 });
             setTimeout(() => {
-                router.push("/projects");
+                router.push("/case-stories");
             }, 1000);
         } else {
             setPopUp({ message: "Error saving changes", type: "warning", duration: 1000 });

@@ -94,6 +94,6 @@ export default function StoryContent({ data }: { data: ProjectData }) {
             </div>
             <div className="story-body">{blocks.map(block => <StoryBlockView key={block.id} block={block} picture={picture} anchorId={anchors.get(block.id)} />)}</div>
         </article>
-        <aside className="story-contents"><DesignChip colour="grape">Contents</DesignChip><nav aria-label="Case story contents">{sections.map(section => <a className="m-light" key={section.id} href={`#${anchors.get(section.id)}`} aria-current={active === anchors.get(section.id) ? "location" : undefined}>{section.text}</a>)}</nav><Link className="m-light" href="/projects">All case stories</Link></aside>
+        <aside className="story-contents"><DesignChip colour="grape">Contents</DesignChip><nav aria-label="Case story contents">{sections.map(section => <a className="m-light" key={section.id} href={`#${anchors.get(section.id)}`} aria-current={active === anchors.get(section.id) ? "location" : undefined}>{section.text}</a>)}</nav><Link className="m-light" href="/case-stories">All case stories</Link></aside>
     </div>{viewer !== null && images[viewer] && <PhotoViewer images={images} index={viewer} close={() => setViewer(null)} />}</>;
 }

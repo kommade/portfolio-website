@@ -17,9 +17,9 @@ mock.module("next/navigation", () => ({ notFound: () => { throw new Error("NOT_F
 mock.module("../components/CaseStories", () => ({ default: () => null }));
 mock.module("../components/PortfolioShell", () => ({ default: () => null }));
 mock.module("../components/MagicKeyForm", () => ({ default: () => null }));
-mock.module("../app/projects/[id]/page-client", () => ({ ProjectPage: () => null }));
-const { default: list } = await import("../app/projects/page");
-const { default: detail } = await import("../app/projects/[id]/page");
+mock.module("../app/case-stories/[id]/page-client", () => ({ ProjectPage: () => null }));
+const { default: list } = await import("../app/case-stories/page");
+const { default: detail } = await import("../app/case-stories/[id]/page");
 beforeEach(() => { role = "none"; record = { ...blankProject(), id: "hidden", name: "Secret" }; });
 
 test("server filters hidden titles, images and records before serializing the list", async () => {
@@ -47,6 +47,7 @@ test("magic-key gate still protects visible member stories", async () => {
     record.hidden = false; record.access = "member";
     const page = await detail({ params: Promise.resolve({ id: "hidden" }) });
     expect(page.props.serverData).toBeUndefined();
+    expect(page.props.children.props.redirect).toBe("/case-stories/hidden");
     role = "member";
     const unlocked = await detail({ params: Promise.resolve({ id: "hidden" }) });
     expect(unlocked.props.serverData.name).toBe("Secret");

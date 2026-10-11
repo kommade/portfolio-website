@@ -32,8 +32,8 @@ export async function proxy(request: NextRequest) {
         try {
             const decoded = await jwtVerify(token.value, new TextEncoder().encode(process.env.SECRET_KEY as string));
             if (decoded.payload.role === "admin" || (decoded.payload.role === "member" && request.nextUrl.searchParams.get("mode") !== "admin")) {
-                const redirect = request.nextUrl.searchParams.get("redirect") || "/projects";
-                return NextResponse.redirect(new URL(redirect.startsWith("/") && !redirect.startsWith("//") && !redirect.includes("\\") ? redirect : "/projects", request.url));
+                const redirect = request.nextUrl.searchParams.get("redirect") || "/case-stories";
+                return NextResponse.redirect(new URL(redirect.startsWith("/") && !redirect.startsWith("//") && !redirect.includes("\\") ? redirect : "/case-stories", request.url));
             }
         } catch {
             // An expired cookie must not prevent signing in again.

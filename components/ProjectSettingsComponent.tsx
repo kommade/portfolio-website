@@ -1,4 +1,4 @@
-import { ProjectData } from "@/app/projects/[id]/page-client"
+import type { ProjectData } from "@/lib/project-content"
 import { changeProjectSettings } from "@/functions/legacy-editor-actions"
 import React from 'react'
 import ReactSwitch from "react-switch"

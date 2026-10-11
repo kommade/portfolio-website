@@ -6,7 +6,7 @@ import Link from "next/link";
 import { login, loginWithMagicKey } from "@/functions/actions";
 import { DesignIcon } from "./PortfolioShell";
 
-export default function MagicKeyForm({ redirect = "/projects", admin = false }: { redirect?: string; admin?: boolean }) {
+export default function MagicKeyForm({ redirect = "/case-stories", admin = false }: { redirect?: string; admin?: boolean }) {
     const router = useRouter();
     const [pending, setPending] = useState(false);
     const [error, setError] = useState("");
@@ -18,7 +18,7 @@ export default function MagicKeyForm({ redirect = "/projects", admin = false }: 
         try {
             const result = await (admin ? login(data) : loginWithMagicKey(data));
             if (result.success) {
-                router.replace(redirect.startsWith("/") && !redirect.startsWith("//") && !redirect.includes("\\") ? redirect : "/projects");
+                router.replace(redirect.startsWith("/") && !redirect.startsWith("//") && !redirect.includes("\\") ? redirect : "/case-stories");
                 router.refresh();
             } else setError(result.message || "That key didn’t work. Please try again.");
         } catch { setError("Unable to sign in right now. Please try again."); }

@@ -10,7 +10,7 @@ import { PopUpComponent, usePopUp } from "./PopUpComponent";
 export const portfolioNavigation = [
     { label: "CONTACT", href: "/contact" },
     { label: "EXPLORATIONS", href: "/fun-stuff" },
-    { label: "CASE STORIES", href: "/projects" },
+    { label: "CASE STORIES", href: "/case-stories" },
     { label: "HOME", href: "/" },
 ];
 
@@ -22,7 +22,7 @@ function PortfolioTabs({ active }: { active?: string }) {
 
 function ActivePortfolioNavigation() {
     const pathname = usePathname();
-    const active = pathname === "/login" ? "/projects" : pathname;
+    const active = pathname === "/login" ? "/case-stories" : pathname;
     return <PortfolioTabs active={active} />;
 }
 
@@ -75,15 +75,15 @@ const Header = ({ isLoginPage = false, isNewPage = false, newHidden = false }) =
             setPopUp({ message: "You are already in edit mode!", type: "message", duration: 1000 })
             return;
         }
-        const editableRoutes = ["/fun-stuff", "/projects"]
+        const editableRoutes = ["/fun-stuff", "/case-stories"]
         if (editableRoutes.map((route) => pathname.startsWith(route)).some((bool) => bool)) {
-            if (pathname.startsWith("/projects")) {
+            if (pathname.startsWith("/case-stories")) {
                 router.push(`${pathname}?edit=true`)
             } else if (pathname.startsWith("/fun-stuff")) {
                 router.push("/fun-stuff?edit=true")
             }
         } else {
-            setPopUp({ message: "Go to the page you want to edit first! To edit project thumbnails or delete projects, go to /projects!", type: "message", duration: 2000 })
+            setPopUp({ message: "Go to the page you want to edit first! To edit project thumbnails or delete projects, go to /case-stories!", type: "message", duration: 2000 })
         }
     }
 

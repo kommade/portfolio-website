@@ -41,7 +41,7 @@ test("hidden projects are admin-only, even for members; legacy visibility remain
 
 test("unsafe links and unsupported image sources cannot be saved", () => {
     for (const url of ["javascript:alert(1)", "data:text/html,test", "//evil.test", "/\\evil.test", "https://test.com\n"]) expect(safeLink(url)).toBe(false);
-    for (const url of ["https://example.com/a?x=1", "/projects/story", "mailto:hi@example.com", "#challenge"]) expect(safeLink(url)).toBe(true);
+    for (const url of ["https://example.com/a?x=1", "/case-stories/story", "mailto:hi@example.com", "#challenge"]) expect(safeLink(url)).toBe(true);
     expect(safeImage("https://untrusted.test/image.jpg")).toBe(false);
     const project = blankProject(); project.name = "Story"; project.id = "story";
     project.data.main.blocks = [{ id: "cta", type: "button", label: "Read", href: "javascript:alert(1)", newTab: false }];

@@ -10,7 +10,7 @@ export function Login() {
 
     return (
         <PortfolioShell title="Case Stories" mutedTitle>
-            <MagicKeyForm redirect={redirect || "/projects"} admin={searchParams.get("mode") === "admin"} />
+            <MagicKeyForm redirect={redirect || "/case-stories"} admin={searchParams.get("mode") === "admin"} />
         </PortfolioShell>
     );
 }

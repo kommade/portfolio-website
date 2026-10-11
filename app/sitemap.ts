@@ -9,7 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 1,
         },
         {
-            url: 'https://juliettekhoo.com/projects',
+            url: 'https://juliettekhoo.com/case-stories',
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.8,
