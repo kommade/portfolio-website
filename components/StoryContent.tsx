@@ -86,7 +86,13 @@ export default function StoryContent({ data }: { data: ProjectData }) {
     return <><div className="story-layout">
         <article className="story-article">
             <h1 className="h3 story-title">{data.name || "Untitled case story"}</h1>
-            <div className="story-meta"><span className="l-regular">{data.year}</span>{sidebar["project-type"].length > 0 && <><span className="l-regular" aria-hidden="true">•</span><span className="l-regular">{sidebar["project-type"].join(", ")}</span></>}</div>
+            <div className="story-meta *:l-regular">
+                <span>{data.year}</span>
+                <span aria-hidden="true">•</span>
+                <span>{data.domain}</span>
+                <span aria-hidden="true">•</span>
+                <span>{data.sector}</span>
+            </div>
             <div className="story-blocks">
                 <div><DesignChip colour="grape">{sidebar.labels?.team || "Team"}</DesignChip><p className="s-light">{sidebar.team.join("\n")}</p></div>
                 <div><DesignChip colour="brick">{sidebar.labels?.skillset || "Skillset"}</DesignChip><p className="s-light">{sidebar.skillset.join("\n")}</p></div>

@@ -19,6 +19,8 @@ export type StoryBlock = { id: string } & (
 export interface ProjectData {
     name: string;
     year: string;
+    domain: string,
+    sector: string,
     access: "member" | "public";
     hidden?: boolean;
     data: {
