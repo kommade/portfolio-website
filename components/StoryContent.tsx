@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { safeLink, storyBlocks, type ProjectData, type StoryBlock, type StoryCard } from "@/lib/project-content";
+import { safeLink, storyBlocks, storyImages, type ProjectData, type StoryBlock, type StoryCard } from "@/lib/project-content";
 import { DesignChip, DesignIcon } from "./PortfolioShell";
 import PhotoViewer from "./PhotoViewer";
 import { Card } from "./ui/card";
@@ -13,6 +13,7 @@ import { parseCountUpValue } from "@/lib/count-up";
 import CountUpTo from "./CountUpTo";
 import { sectionAnchors } from "@/lib/section-anchors";
 import StoryVideo from "./StoryVideo";
+import ImageToggle from "./ImageToggle";
 
 // A small, deliberately restricted format: never render stored HTML as executable markup.
 export function RichText({ text, typography = "l-regular" }: { text: string; typography?: "l-regular" | "l-light" | "m-light" }) {
@@ -27,7 +28,7 @@ export function RichText({ text, typography = "l-regular" }: { text: string; typ
         <ul className={typography} key={i}>{paragraph.split("\n").map((line, j) => <li className={typography} key={j}>{inline(line.slice(2))}</li>)}</ul> : <p className={typography} key={i}>{inline(paragraph)}</p>)}</div>;
 }
 
-type StoryPicture = (url: string, alt: string, loaded?: (width: number, height: number) => void) => ReactNode;
+type StoryPicture = (url: string, alt: string, loaded?: (width: number, height: number) => void, imageId?: string) => ReactNode;
 
 function StoryGallery({ block, picture }: { block: Extract<StoryBlock, { type: "gallery" }>; picture: StoryPicture }) {
     const [ratios, setRatios] = useState<Record<string, number>>({});
@@ -41,7 +42,7 @@ function StoryGallery({ block, picture }: { block: Extract<StoryBlock, { type: "
                     if (!height) return;
                     const value = width / height;
                     setRatios(current => current[item.url] === value ? current : { ...current, [item.url]: value });
-                })}
+                }, `${block.id}-image-${block.images.indexOf(item)}`)}
                 {item.caption && <figcaption><RichText typography="m-light" text={item.caption} /></figcaption>}
             </figure>)}
         </div>)}
@@ -57,8 +58,9 @@ export function StoryBlockView({ block, picture, anchorId }: { block: StoryBlock
     switch (block.type) {
         case "heading": return <section id={anchorId || sectionAnchors([block]).get(block.id)} className="story-section story-heading"><h2 className="h4">{block.text}</h2></section>;
         case "text": return <RichText text={block.text} />;
-        case "image": return <figure className="story-media">{picture(block.image.url, block.image.alt)}{block.image.caption && <figcaption><RichText typography="m-light" text={block.image.caption} /></figcaption>}</figure>;
+        case "image": return <figure className="story-media">{picture(block.image.url, block.image.alt, undefined, `${block.id}-image-0`)}{block.image.caption && <figcaption><RichText typography="m-light" text={block.image.caption} /></figcaption>}</figure>;
         case "gallery": return <StoryGallery block={block} picture={picture} />;
+        case "image-toggle": return <ImageToggle options={block.options} renderImage={(image, index) => picture(image.url, image.alt, undefined, `${block.id}-image-${index}`)} renderCaption={text => <RichText typography="m-light" text={text} />} />;
         case "video": return block.url ? <figure className="story-media"><StoryVideo block={block} />{block.caption && <figcaption><RichText typography="m-light" text={block.caption} /></figcaption>}</figure> : null;
         case "button": return <div className="story-action">{safeLink(block.href) ? <a className="l-regular design-button" href={block.href} target={block.newTab ? "_blank" : undefined} rel="noopener noreferrer">{block.label}<DesignIcon name="arrow" /></a> : <span className="l-regular design-button" aria-disabled="true">{block.label}<DesignIcon name="arrow" /></span>}</div>;
         case "cards": return <div className="story-outcomes"><div className="story-card-grid">{block.cards.map(card => <Card className={`story-stat story-stat-${card.colour}`} key={card.id}>
@@ -74,13 +76,13 @@ export default function StoryContent({ data }: { data: ProjectData }) {
     const { sidebar } = data.data;
     const sections = blocks.filter((block): block is Extract<StoryBlock, { type: "heading" }> => block.type === "heading");
     const anchors = sectionAnchors(sections);
-    const images = blocks.flatMap(block => block.type === "image" ? [block.image] : block.type === "gallery" ? block.images : []).filter(item => item.url).map((item, index) => ({ url: item.url, name: item.alt || data.name, id: String(index) }));
+    const images = storyImages(blocks).map(item => ({ url: item.url, name: item.alt || data.name, id: item.id }));
     useEffect(() => {
         const observer = new IntersectionObserver(entries => { const visible = entries.find(entry => entry.isIntersecting); if (visible) setActive(visible.target.id); }, { rootMargin: "-100px 0px -55% 0px" });
         document.querySelectorAll(".story-heading").forEach(section => observer.observe(section));
         return () => observer.disconnect();
     }, [data]);
-    const picture: StoryPicture = (url, label, loaded) => url && <button type="button" className="story-image" onClick={() => setViewer(images.findIndex(image => image.url === url))} aria-label={`Enlarge ${label || "story image"}`}><Image src={url} alt={label} width={1200} height={800} sizes="(max-width:800px) 90vw, 911px" onLoad={event => loaded?.(event.currentTarget.naturalWidth, event.currentTarget.naturalHeight)} /></button>;
+    const picture: StoryPicture = (url, label, loaded, imageId) => url && <button type="button" className="story-image" onClick={() => setViewer(images.findIndex(image => imageId ? image.id === imageId : image.url === url))} aria-label={`Enlarge ${label || "story image"}`}><Image src={url} alt={label} width={1200} height={800} sizes="(max-width:800px) 90vw, 911px" onLoad={event => loaded?.(event.currentTarget.naturalWidth, event.currentTarget.naturalHeight)} /></button>;
     return <><div className="story-layout">
         <article className="story-article">
             <h1 className="h3 story-title">{data.name || "Untitled case story"}</h1>

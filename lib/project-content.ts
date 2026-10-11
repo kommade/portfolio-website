@@ -3,12 +3,14 @@ import { parseCountUpValue } from "./count-up";
 export const cardColours = ["sage", "grape", "purple", "brick"] as const;
 export type CardColour = typeof cardColours[number];
 export type StoryImage = { url: string; alt: string; caption: string };
+export type ImageToggleOption = { label: string; image: StoryImage };
 export type StoryCard = { id: string; value: string; text: string; colour: CardColour; countUp?: boolean };
 export type StoryBlock = { id: string } & (
     | { type: "heading"; text: string }
     | { type: "text"; text: string }
     | { type: "image"; image: StoryImage }
     | { type: "gallery"; images: StoryImage[] }
+    | { type: "image-toggle"; options: [ImageToggleOption, ImageToggleOption] }
     | { type: "video"; url: string; poster: string; caption: string; title: string; subtitles: string }
     | { type: "button"; label: string; href: string; newTab: boolean }
     | { type: "cards"; cards: StoryCard[]; caption: string }
@@ -73,6 +75,7 @@ export function newBlock(type: StoryBlock["type"]): StoryBlock {
         case "text": return { id, type, text: "" };
         case "image": return { id, type, image: { url: "", alt: "", caption: "" } };
         case "gallery": return { id, type, images: [{ url: "", alt: "", caption: "" }, { url: "", alt: "", caption: "" }] };
+        case "image-toggle": return { id, type, options: [{ label: "Before", image: { url: "", alt: "", caption: "" } }, { label: "After", image: { url: "", alt: "", caption: "" } }] };
         case "video": return { id, type, url: "", poster: "", caption: "", title: "", subtitles: "" };
         case "button": return { id, type, label: "View more", href: "", newTab: true };
         case "cards": return { id, type, caption: "", cards: [{ id: crypto.randomUUID(), value: "", text: "", colour: "sage" }] };
@@ -96,6 +99,14 @@ export function storyBlocks(project: ProjectData): StoryBlock[] {
         blocks.push({ id: "gallery-images", type: "gallery", images: body.grid.images.filter(Boolean).map(url => ({ url, alt: body.grid.header || project.name, caption: "" })) });
     }
     return blocks;
+}
+
+// Keep every image occurrence in page order, including the hidden toggle image.
+export function storyImages(blocks: StoryBlock[]): (StoryImage & { id: string })[] {
+    return blocks.flatMap(block => {
+        const images = block.type === "image" ? [block.image] : block.type === "gallery" ? block.images : block.type === "image-toggle" ? block.options.map(option => option.image) : [];
+        return images.map((image, index) => ({ ...image, id: `${block.id}-image-${index}` })).filter(image => image.url);
+    });
 }
 
 // This schema is also checked on the server; client validation is only a convenience.
@@ -128,6 +139,16 @@ export function validateProject(value: unknown): asserts value is ProjectRecord 
             case "text": if (!text(b.text)) fail("A text block is too long."); break;
             case "image": image(b.image); break;
             case "gallery": arr(b.images, 12).forEach(image); break;
+            case "image-toggle": {
+                const options = arr(b.options, 2);
+                if (options.length !== 2) fail("An image toggle needs exactly two images and labels.");
+                for (const value of options) {
+                    const option = obj(value);
+                    if (!text(option.label, 100) || !option.label.trim()) fail("Add a label for each image toggle option (up to 100 characters).");
+                    image(option.image);
+                }
+                break;
+            }
             case "video": if (!text(b.url, 2048) || !safeVideo(b.url) || !text(b.poster, 2048) || !safeImage(b.poster) || !text(b.title, 300) || !text(b.caption, 4000) || !text(b.subtitles, 2048) || !safeVideo(b.subtitles)) fail("Invalid video or poster URL."); break;
             case "button": if (!text(b.label, 150) || !b.label.trim() || !text(b.href, 2048) || !safeLink(b.href) || typeof b.newTab !== "boolean") fail("Add a button label and a valid web, email or page link."); break;
             case "cards": {

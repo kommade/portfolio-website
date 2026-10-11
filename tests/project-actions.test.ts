@@ -125,6 +125,21 @@ test("saving an uploaded-then-removed draft cleans up unreferenced uploads", asy
     expect(deletedKeys).toEqual(["projects/uploads/draft.mp4"]);
 });
 
+test("saving toggle images retains both uploads, then removing the toggle cleans up both", async () => {
+    const draft = project();
+    const urls = ["before", "after"].map(name => `${mediaOrigin}/projects/uploads/${name}.jpg`);
+    draft.data.main.blocks = [{ id: "toggle", type: "image-toggle", options: [
+        { label: "Before", image: { url: urls[0], alt: "Before", caption: "" } },
+        { label: "After", image: { url: urls[1], alt: "After", caption: "" } },
+    ] }];
+    expect((await saveProject("project:1", draft, urls)).success).toBe(true);
+    expect(deletedKeys).toEqual([]);
+    result = ["ok", JSON.stringify(draft.data), ""];
+    const updated = structuredClone(draft); updated.data.main.blocks = [];
+    expect((await saveProject("project:1", updated)).success).toBe(true);
+    expect(deletedKeys.sort()).toEqual(["projects/uploads/after.jpg", "projects/uploads/before.jpg"]);
+});
+
 test("project deletion preserves files referenced by another project or an exploration", async () => {
     const old = project();
     const shared = `${mediaOrigin}/projects/uploads/shared.jpg`;
