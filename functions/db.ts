@@ -56,13 +56,9 @@ export const getProjectThumbnail = async (projectKey: string) => {
 
 
 export const getProjectData = async (projectKey: string) => {
-<<<<<<< HEAD
-    const data = await redis.hmget(projectKey, ...["name", "year", "data", "access", "domain", "sector"]);
-=======
     "use cache";
     cacheTag("projects" );
     const data = await redis.hmget(projectKey, ...["name", "year", "data", "access", "id", "desc", "image", "sector", "domain", "hidden", "revision", "date_created"]);
->>>>>>> b808a9149355adfbbd320243f138367bfb0d04d6
     if (data && data.data && typeof data.data === "string") {
         const serialized = data.data;
         try { data.data = JSON.parse(serialized); }
