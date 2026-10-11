@@ -9,7 +9,7 @@ const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
     title: 'Juliette Khoo',
-    description: 'I’m a experience designer and a UX designer, currently based in Singapore. Here’s some of my work!',
+    description: 'CONTACT · EXPLORATIONS · CASE STORIES · HOME',
     keywords: 'architecture,illustration,design,portfolio',
     twitter: {
         card: 'summary_large_image',
@@ -22,12 +22,12 @@ export const metadata: Metadata = {
         
         ],
         title: 'Juliette Khoo - Experience designer and illustration enthusiast',
-        description: 'I’m a experience designer and a UX designer, currently based in Singapore. Here’s some of my work!',
+        description: 'CONTACT · EXPLORATIONS · CASE STORIES · HOME',
     },
     openGraph: {
         url: 'https://juliettekhoo.com/',
         title: 'Juliette Khoo - experience designer and illustration enthusiast',
-        description: 'I’m a experience designer and a UX designer, currently based in Singapore. Here’s some of my work!',
+        description: 'CONTACT · EXPLORATIONS · CASE STORIES · HOME',
         images: [
             {
                 url: '/images/about-me.jpg',

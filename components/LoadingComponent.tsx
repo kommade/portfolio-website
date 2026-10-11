@@ -12,7 +12,7 @@ const LoadingComponent = () => {
                         </div>
                     </div>
                 </div>
-                <p className="h5 loading-title">Loading...</p>
+                <h4 className="loading-title">Loading...</h4>
             </div>
         </PortfolioShell>
     )
