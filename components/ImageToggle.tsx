@@ -15,7 +15,7 @@ export default function ImageToggle({ options, renderImage, renderCaption }: {
 
     return <div className="story-image-toggle">
         <div className="story-image-toggle-controls" role="group" aria-label="Choose image">
-            {options.map((option, index) => <button className="m-regular story-image-toggle-button" key={index} type="button" aria-pressed={active === index} aria-controls={panelId} disabled={!option.image.url} onClick={() => setSelected(index)}>{option.label}</button>)}
+            {options.map((option, index) => <button className="l-regular story-image-toggle-button" key={index} type="button" aria-pressed={active === index} aria-controls={panelId} disabled={!option.image.url} onClick={() => setSelected(index)}>{option.label}</button>)}
         </div>
         <figure className="story-media" id={panelId} aria-label={option?.label}>
             {option && renderImage(option.image, active)}

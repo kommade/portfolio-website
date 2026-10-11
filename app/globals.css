@@ -739,12 +739,12 @@ input[type=number] {
 .story-gallery .story-image { @apply flex items-center justify-center; height: var(--gallery-image-height); }
 .story-gallery .story-image img { width: 100%; height: 100%; object-fit: contain; }
 .story-image-toggle { @apply grid gap-5; }
-.story-image-toggle-controls { @apply flex flex-wrap justify-center gap-1 rounded-full border border-monsoon-300 bg-sage-green-100 p-1; width: fit-content; max-width: 100%; justify-self: center; }
-.story-image-toggle-button { @apply rounded-full px-5 py-2 text-monsoon-900; overflow-wrap: anywhere; cursor: pointer; }
-.story-image-toggle-button[aria-pressed=true] { @apply bg-grape-400 text-white; }
-.story-image-toggle-button:hover:not(:disabled) { @apply bg-grape-100 text-grape-800; }
-.story-image-toggle-button[aria-pressed=true]:hover { @apply bg-grape-500 text-white; }
-.story-image-toggle-button:focus-visible { @apply outline-2 outline-offset-2 outline-grape-400; }
+.story-image-toggle-controls { @apply flex items-stretch justify-center rounded-full border border-monsoon-100 bg-brick-50 p-1; width: fit-content; min-width: min(203px, 100%); max-width: 100%; justify-self: center; }
+.story-image-toggle-button { @apply flex flex-1 min-w-0 items-center justify-center rounded-full px-5 py-2 text-monsoon-950; overflow-wrap: anywhere; cursor: pointer; }
+.story-image-toggle-button[aria-pressed=true] { @apply bg-brick-400 text-white; box-shadow: 0 2px 5px rgb(0 0 0 / 15%); }
+.story-image-toggle-button:hover:not(:disabled) { @apply bg-brick-100; }
+.story-image-toggle-button[aria-pressed=true]:hover { @apply bg-brick-500 text-white; }
+.story-image-toggle-button:focus-visible { @apply outline-2 outline-offset-2 outline-brick-400; }
 .story-image-toggle-button:disabled { @apply opacity-40 cursor-not-allowed; }
 .story-image-toggle .story-image { @apply flex items-center justify-center; }
 .story-image-toggle .story-image img { @apply w-full object-contain; max-height: 75vh; }
