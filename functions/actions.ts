@@ -227,7 +227,7 @@ export const submitContactForm = async (formData : FormData) => {
     }
     let fromEmail = "onboarding@resend.dev"
     if (process.env.NODE_ENV === "production") {
-        fromEmail = "hi@juliettekhoo.com"
+        fromEmail = "hi@juliettekhoo.vercel.app"
     }
     try {
         await resend.emails.send({

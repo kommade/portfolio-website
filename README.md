@@ -24,7 +24,7 @@ This portfolio website serves as a platform to showcase her projects, skills, an
 
 ## Getting Started
 
-View the live portfolio website [here](https://juliettekhoo.com/).
+View the live portfolio website [here](https://juliettekhoo.vercel.app/).
 
 To run the website locally:
 

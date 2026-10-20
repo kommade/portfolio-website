@@ -21,12 +21,12 @@ export const metadata: Metadata = {
             },
         
         ],
-        title: 'Juliette Khoo - Experience designer and illustration enthusiast',
+        title: 'Juliette Khoo - Product & experience design',
         description: 'CONTACT · EXPLORATIONS · CASE STORIES · HOME',
     },
     openGraph: {
-        url: 'https://juliettekhoo.com/',
-        title: 'Juliette Khoo - experience designer and illustration enthusiast',
+        url: 'https://juliettekhoo.vercel.app/',
+        title: 'Juliette Khoo - Product & experience design',
         description: 'CONTACT · EXPLORATIONS · CASE STORIES · HOME',
         images: [
             {
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
             },
         ],
     },
-    metadataBase: new URL("https://juliettekhoo.com/"),
+    metadataBase: new URL("https://juliettekhoo.vercel.app/"),
 }
 
 export const viewport: Viewport = {

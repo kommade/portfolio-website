@@ -5,7 +5,7 @@ const s3 = new S3Client({ region: process.env.AWS_REGION, credentials: { accessK
 try {
     const result = await s3.send(new GetBucketCorsCommand({ Bucket: process.env.AMPLIFY_BUCKET }));
     if (process.argv.includes("--enable-uploads")) {
-        const origins = ["https://juliettekhoo.com", "https://www.juliettekhoo.com", "http://localhost:3000", "https://juliettekhoo.vercel.app"];
+        const origins = ["https://www.juliettekhoo.vercel.app", "http://localhost:3000", "https://juliettekhoo.vercel.app"];
         const rules = result.CORSRules || [];
         const originalRuleCount = rules.length;
         for (const origin of origins) {
