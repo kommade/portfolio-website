@@ -8,10 +8,10 @@ import { getRole, logout } from "@/functions/actions";
 import { PopUpComponent, usePopUp } from "./PopUpComponent";
 
 export const portfolioNavigation = [
-    { label: "HOME", href: "/" },
-    { label: "CASE STORIES", href: "/case-stories" },
-    { label: "EXPLORATIONS", href: "/fun-stuff" },
     { label: "CONTACT", href: "/contact" },
+    { label: "EXPLORATIONS", href: "/fun-stuff" },
+    { label: "CASE STORIES", href: "/case-stories" },
+    { label: "HOME", href: "/" },
 ];
 
 function PortfolioTabs({ active }: { active?: string }) {
