@@ -15,7 +15,7 @@ export default function HomeSections() {
                     <p className="l-regular">While I primarily work with digital interfaces, I also have experience in omnichannel and strategic design.</p>
                     <p className="l-regular">My story began with four years of studying architecture at the University of Bath. Architecture taught me to approach technical implementation with rigour and to think in systems. A short stint as a UX intern drew me to experience design because it allowed me to engage more directly with users and make their voices central to the design process.</p>
                     <p className="l-regular">As a design consultant, I place great importance on helping stakeholders see the value of investing in robust research and design. My speciality lies in crafting compelling visual narratives and workshop activities that bring stakeholders closer to their customers.</p>
-                    <p className="l-regular">Outside of work, I enjoy taking forever to finish books, knitting and crocheting, dreaming up new DIY projects, and getting in a good workout. Once in a blue moon, I also <Link href="https://medium.com/@khoo.juliette">write</Link></p>
+                    <p className="l-regular">Outside of work, I enjoy taking forever to finish books, knitting and crocheting, dreaming up new DIY projects, and getting in a good workout. Once in a blue moon, I also <Link className="underline" target="_blank" rel="noopener noreferrer" href="https://medium.com/@khoo.juliette">write</Link>.</p>
                 </div>
             </div>
         </section>
