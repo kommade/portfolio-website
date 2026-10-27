@@ -15,7 +15,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         images: [
             {
-                url: '/images/about-me.jpg',
+                url: '/images/about-me.jpeg',
                 width: 800,
                 height: 600,
             },
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
         description: 'CONTACT · EXPLORATIONS · CASE STORIES · HOME',
         images: [
             {
-                url: '/images/about-me.jpg',
+                url: '/images/about-me.jpeg',
                 width: 800,
                 height: 600,
             },
