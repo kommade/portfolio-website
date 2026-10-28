@@ -8,10 +8,10 @@ import { getRole, logout } from "@/functions/actions";
 import { PopUpComponent, usePopUp } from "./PopUpComponent";
 
 export const portfolioNavigation = [
-    { label: "CONTACT", href: "/contact" },
-    { label: "EXPLORATIONS", href: "/fun-stuff" },
-    { label: "CASE STORIES", href: "/case-stories" },
     { label: "HOME", href: "/" },
+    { label: "CASE STORIES", href: "/case-stories" },
+    { label: "EXPLORATIONS", href: "/fun-stuff" },
+    { label: "CONTACT", href: "/contact" },
 ];
 
 function PortfolioTabs({ active }: { active?: string }) {
@@ -108,11 +108,12 @@ const Header = ({ isLoginPage = false, isNewPage = false, newHidden = false }) =
                         return (
                             <div
                                 key={item.href}
-                                className={`relative flex min-w-0 flex-1 flex-col items-start ${index === 0 ? "" : "mr-[-16px]"} ${index === navItems.length - 1 ? "" : "ml-[-16px]"} ${isActive ? "z-2027" : ""}`}
+                                style={{ zIndex: isActive ? navItems.length + 1 : navItems.length - index }}
+                                className={`relative flex min-w-0 flex-1 flex-col items-start ${index === 0 ? "" : "mr-[-16px]"} ${index === navItems.length - 1 ? "" : "ml-[-16px]"}`}
                             >
                                 <Link
                                     href={item.href}
-                                    className={`relative z-10 flex h-[48px] w-full items-start justify-center  ${index === navItems.length - 1 || isActive ? "rounded-tr-2xl border-r" : ""} ${index === isActiveIndex + 1 ? "" : "rounded-tl-2xl border-l"} border-t border-monsoon-300 px-8 py-4 ${isActive ? "border-monsoon-700 bg-sage-green-50" : "bg-sage-green-400"}`}
+                                    className={`relative z-10 flex h-[48px] w-full items-start justify-center rounded-tr-2xl border-r ${index === 0 || isActive ? "rounded-tl-2xl border-l" : ""} border-t border-monsoon-300 px-8 py-4 ${isActive ? "border-monsoon-700 bg-sage-green-50" : "bg-sage-green-400"}`}
                                 >
                                     <span className={`whitespace-nowrap px-4 text-base uppercase tracking-[1.44px] text-navigation ${isActive ? "font-medium text-brick-500" : "font-light text-monsoon-900"}`}>
                                         {item.label}

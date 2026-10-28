@@ -453,12 +453,12 @@ input[type=number] {
 .portfolio-tabs { @apply relative grid grid-cols-4; height: 57px; background: var(--color-sage-green-800); border-radius: var(--folder-radius) var(--folder-radius) 0 0; }
 /* Keep the folder's top edge continuous behind the rounded tab joins. */
 .portfolio-tabs::before { content: ""; position: absolute; inset: 0; border: 1px solid var(--color-monsoon-300); border-bottom: 0; border-radius: inherit; pointer-events: none; }
-.portfolio-tabs a { display: flex; justify-content: center; align-items: center; padding: 16px; border: 1px solid var(--color-monsoon-300); border-bottom: 0; border-right: 0; border-radius: var(--folder-radius) 0 0 0; background: var(--color-sage-green-800); color: white; font-weight: 300; font-size: 16px; letter-spacing: .09em; text-transform: uppercase; position: relative; }
-.portfolio-tabs a:first-child { border-left-color: var(--folder-outline); }
-.portfolio-tabs a:last-child { border-right: 1px solid var(--folder-outline); border-top-right-radius: var(--folder-radius); }
-.portfolio-tabs a[aria-current] { background: var(--paper); color: var(--color-brick-500); font-weight: 500; border-color: var(--folder-outline); border-right: 1px solid var(--folder-outline); border-top-right-radius: var(--folder-radius); margin-bottom: -1px; z-index: 2; }
-/* The active page owns the seam on its right; its neighbour has no second outline. */
-.portfolio-tabs a[aria-current] + a { border-left: 0; border-top-left-radius: 0; }
+.portfolio-tabs a { display: flex; justify-content: center; align-items: center; padding: 16px; border: 1px solid var(--color-monsoon-300); border-bottom: 0; border-left: 0; border-radius: 0 var(--folder-radius) 0 0; background: var(--color-sage-green-800); color: white; font-weight: 300; font-size: 16px; letter-spacing: .09em; text-transform: uppercase; position: relative; }
+.portfolio-tabs a:first-child { border-left: 1px solid var(--folder-outline); border-top-left-radius: var(--folder-radius); }
+.portfolio-tabs a:last-child { border-right-color: var(--folder-outline); }
+.portfolio-tabs a[aria-current] { background: var(--paper); color: var(--color-brick-500); font-weight: 500; border-color: var(--folder-outline); border-left: 1px solid var(--folder-outline); border-radius: var(--folder-radius) var(--folder-radius) 0 0; margin-bottom: -1px; z-index: 2; }
+/* The active page owns the seam on its left; its previous neighbour has no second outline. */
+.portfolio-tabs a:has(+ a[aria-current]) { border-right: 0; border-top-right-radius: 0; }
 .portfolio-tabs a:hover { color: var(--color-brick-300); }
 .portfolio-page-cap { height: calc(var(--folder-radius) + 1px); position: relative; background: var(--color-sage-green-800); }
 .portfolio-page-cap::before { content: ""; position: absolute; inset: 0; background: var(--paper); border: 1px solid var(--folder-outline); border-bottom: 0; border-radius: var(--folder-radius) var(--folder-radius) 0 0; }
